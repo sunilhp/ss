@@ -42,7 +42,7 @@ function loadedMessagesList(messagesList) {
           Accept: 'application/json',
           'Content-Type': 'application/json',
       },
-      body: JSON.stringify(),
+     // body: JSON.stringify(""),
       })
       .then((response) => response.json())
       .then((responseJson) => { 

@@ -12,8 +12,8 @@ fetch(`${C.API}/services/get`, {
   headers: {
     Accept: 'application/json',
     'Content-Type': 'application/json',
-  },
-  body: JSON.stringify(),
+  }//,
+  //body: JSON.stringify(""),
   })
   .then((response) => response.json())
   .then((responseJson) => { 
@@ -29,7 +29,14 @@ fetch(`${C.API}/services/get`, {
        tmp.customerName = rs[i].customer.name;
        tmp.customerCity = rs[i].customer.city;
        tmp.customerState = rs[i].customer.state;
-       new_service_data.push(tmp);
+       if(rs[i].state == "New")
+        new_service_data.push(tmp);
+       if(rs[i].state == "In Progress")
+        progress_service_data.push(tmp);
+       if(rs[i].state == "Pending")
+        pending_service_data.push(tmp);
+       if(rs[i].state == "Completed")
+        completed_service_data.push(tmp);
     }
   })
   .catch(err => {console.warn(err) })
@@ -37,7 +44,7 @@ fetch(`${C.API}/services/get`, {
 
 export default compose(
   withState('tabIndex', 'setTabIndex', 0),
-  withState('tabs', 'setTabs', ['New', 'In Progress','Pending', 'Complete' ]),
+  withState('tabs', 'setTabs', ['New', 'In Progress','Pending', 'Completed' ]),
   withState('new_services', 'setData', new_service_data),
   withState('progress_services', 'setData', progress_service_data),
   withState('pending_services', 'setData', pending_service_data),
