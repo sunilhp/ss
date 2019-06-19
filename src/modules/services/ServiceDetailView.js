@@ -53,7 +53,10 @@ const recommendations = [
   { id: 4, title: 'Shoes ZUYF 32', brand: 'Ring', rating: '2.1', price: '$2' },
 ];
 
+
 export default function ServiceDetailScreen(props) {
+
+
   const _renderRecommendationCard = ({ item }) => (
     <TouchableOpacity style={styles.recommendationItem}>
       <View style={styles.recommendationItemTopContainer}>
@@ -64,12 +67,12 @@ export default function ServiceDetailScreen(props) {
             </Caption>
           </View>
         )}
-
-        <View style={styles.recommendationItemRating}>
-          <Caption bold color={colors.yellow}>
-            {item.rating}
-          </Caption>
-        </View>
+ 
+         <View style={styles.recommendationItemRating}>
+           <Caption bold color={colors.yellow}>
+             {item.rating}
+           </Caption>
+         </View>
       </View>
       <Image
         style={{ width: 150, height: 100 }}
@@ -93,9 +96,19 @@ export default function ServiceDetailScreen(props) {
         </View>
       </View>
     </TouchableOpacity>
+  
   );
-
+ 
   const itemParams = props.navigation.state.params;
+
+  
+const formattedimages = [];
+  for(i=0;i<itemParams.images.length;i++)
+  {
+    itemParams.images[i] = itemParams.images[i].replace(/\\/g,"/");
+    dd = {uri : itemParams.images[i] };
+    formattedimages.push( dd);
+  }
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}>
@@ -105,28 +118,19 @@ export default function ServiceDetailScreen(props) {
             flex: 1,
           }}
         >
-          <Text style={{ color: colors.primaryLight }}>
-            {itemParams.title.split(' ')[0]}
-          </Text>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignSelf: 'stretch',
-              marginTop: 8,
-            }}
-          >
+          <View>
             <Title bold color={colors.gray}>
               {itemParams.title}
             </Title>
-            <Title bold color={colors.yellow}>
-              4.8
-            </Title>
+            <Text>
+              {itemParams.serviceType}, {itemParams.createdOn}
+            </Text>
+           
           </View>
           <View style={{ paddingTop: 20 }}>
           {/* <Text color={colors.primaryLight}>Size Guide</Text> */}
-          <Text style={{ color: colors.primaryLight }}>{itemParams.name}</Text>
-          <Text color={colors.primaryLight}>{itemParams.city}</Text>
+          <Text style={{ color: colors.primaryLight }}>{itemParams.name},{itemParams.city}</Text>
+          <Text>{itemParams.message}</Text>
           <View style={styles.row}>
             <View style={styles.sizeDropdownContainer}>
               <Dropdown
@@ -137,7 +141,7 @@ export default function ServiceDetailScreen(props) {
                   'New',
                   'In Progress',
                   'Pending',
-                  'Complete',
+                  'Complete'
                  
                 ]}
                 onSelect={index =>
@@ -163,6 +167,7 @@ export default function ServiceDetailScreen(props) {
               />
             </View>
           </View>
+
         </View>
         </View>
         
@@ -179,10 +184,7 @@ export default function ServiceDetailScreen(props) {
               source={item}
             />
           )}
-          data={[
-            require('../../../assets/images/nike1.png'),
-            require('../../../assets/images/nike2.jpg'),
-          ]}
+          data={formattedimages}
         />
         {itemParams.badge && (
           <View style={styles.badge}>
@@ -198,7 +200,7 @@ export default function ServiceDetailScreen(props) {
             {itemParams.price}
           </Title>
           <Caption underline size={15} color={colors.lightGray}>
-            Free delivery & returns
+           
           </Caption>
         </View>
 

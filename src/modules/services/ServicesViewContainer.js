@@ -22,13 +22,21 @@ fetch(`${C.API}/services/get`, {
     rs = tmpres.data;
     for(i=0;i<rs.length;i++)
     {
+      
        var tmp = {};
-       tmp.id = rs[i].id; //status also
+       tmp.id = rs[i].id; 
        tmp.priority = rs[i].priority;
+       tmp.images = rs[i].service_images;
+       tmp.createdOn =rs[i].created_on;
+       tmp.message = rs[i].message;
+       tmp.serviceType = rs[i].service_type.name;
        tmp.product = rs[i].product.name;
+       tmp.productType = rs[i].product_type;
        tmp.customerName = rs[i].customer.name;
        tmp.customerCity = rs[i].customer.city;
        tmp.customerState = rs[i].customer.state;
+       tmp.customerEmail = rs[i].customer.email;
+       tmp.customerPhone = rs[i].customer.phone;
        if(rs[i].state == "New")
         new_service_data.push(tmp);
        if(rs[i].state == "In Progress")
