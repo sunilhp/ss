@@ -141,7 +141,7 @@ const formattedimages = [];
                   'New',
                   'In Progress',
                   'Pending',
-                  'Complete'
+                  'Completed'
                  
                 ]}
                 onSelect={index =>
