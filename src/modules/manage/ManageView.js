@@ -84,7 +84,7 @@ export default function ManageScreen(props) {
         </TouchableOpacity>
       </View>
 
-
+{/* 
       <View style={styles.row}>
         <TouchableOpacity
             onPress={() => props.navigation.navigate({ routeName: 'Chat' })}
@@ -192,6 +192,8 @@ export default function ManageScreen(props) {
           <Text style={styles.itemText}>Login</Text>
         </TouchableOpacity>
       </View>
+    
+     */}
     </View>
   );
 }

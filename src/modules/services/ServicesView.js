@@ -23,33 +23,6 @@ export default class ServicesScreen extends React.Component {
       this.props.tabIndex
     ];
   _openArticle = article => {
-    // fetch(`${C.API}/services/get`, {
-    //   method: 'POST',
-    //   headers: {
-    //     Accept: 'application/json',
-    //     'Content-Type': 'application/json',
-    //   }//,
-    // //  body: JSON.stringify(""),//JSON.stringify({"email":"sunil@webhopers.in", "password":"1122"}),
-    //   })
-    //   .then((response) => response.json())
-    //   .then((responseJson) => { 
-    //     tmpres = responseJson;
-    //     console.warn(tmpres);
-    //     rs = tmpres.data;
-    //     for(i=0;i<rs.length;i++)
-    //     {
-    //        var tmp = {};
-    //        tmp.id = rs[i].id; //status also
-    //        tmp.priority = rs[i].priority;
-    //        tmp.product = rs[i].product.name;
-    //        tmp.customerName = rs[i].customer.name;
-    //        tmp.customerCity = rs[i].customer.city;
-    //        tmp.customerState = rs[i].customer.state;
-    //        new_service_data.push(tmp);
-    //     }
-    //   })
-      
-      
 
     this.props.navigation.navigate({
       routeName: 'ServiceDetail',

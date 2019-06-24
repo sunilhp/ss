@@ -21,8 +21,7 @@ fetch(`${C.API}/services/get`, {
 
     rs = tmpres.data;
     for(i=0;i<rs.length;i++)
-    {
-      
+    { 
        var tmp = {};
        tmp.id = rs[i].id; 
        tmp.priority = rs[i].priority;
@@ -30,13 +29,20 @@ fetch(`${C.API}/services/get`, {
        tmp.createdOn =rs[i].created_on;
        tmp.message = rs[i].message;
        tmp.serviceType = rs[i].service_type.name;
+       tmp.serviceTypeId = rs[i].service_type.id;
+       tmp.productId = rs[i].product.id;
        tmp.product = rs[i].product.name;
-       tmp.productType = rs[i].product_type;
+       tmp.productTypeId = rs[i].product_type.id;
+       tmp.productType = rs[i].product_type.name;
+       tmp.productDescription = rs[i].description;
+       tmp.customerId = rs[i].customer.id;
        tmp.customerName = rs[i].customer.name;
        tmp.customerCity = rs[i].customer.city;
        tmp.customerState = rs[i].customer.state;
        tmp.customerEmail = rs[i].customer.email;
        tmp.customerPhone = rs[i].customer.phone;
+       tmp.customerAddress = rs[i].customer.address;
+       tmp.customerZipcode = rs[i].customer.zipcode;
        if(rs[i].state == "New")
         new_service_data.push(tmp);
        if(rs[i].state == "In Progress")
