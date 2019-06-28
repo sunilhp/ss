@@ -44,21 +44,21 @@ const ServiceAssign = (props) => {
             <Text style={styles.textStyle} >Status</Text>
             <CustomPicker 
                 options={renderServiceStatus(props.job_status)}
-                value={{label: props.job_status.name ,value: props.job_status.id }}
+                //value={{label: props.job_status.name ,value: props.job_status.id }}
                 
                 getLabel={(item) => item.label}
                 onValueChange={(value, i) => {
-                    props.onChange('serviceStatus', { id: value.value, name: value.label })
+                    props.onChange('selectedServiceStatus', { id: value.value, name: value.label })
                 }}
              />
             <Text style={styles.textStyle} >Executive</Text>
              <CustomPicker 
                 options={renderExecutiveInfo(props.assigned_to)}
-                value={{label: props.assigned_to.name ,value: props.assigned_to.id }}
+                //value={{label: props.assigned_to.name ,value: props.assigned_to.id }}
                 
                 getLabel={(item) => item.label}
                 onValueChange={(value, i) => {
-                    props.onChange('executiveInfo', { id: value.value, name: value.label })
+                    props.onChange('selectedExecutive', { id: value.value, name: value.label })
                 }}
              />
             <Text style={styles.textStyle} >Appointment time</Text>
@@ -92,14 +92,12 @@ const renderFormMessage = (message, state) => {
 }
 
 const renderExecutiveInfo = (executiveInfoList) => {
-    console.warn('executive', executiveInfoList)
     return executiveInfoList.map(it => {
         return {value: it.id,label :it.name}
     }) 
 }
 
 const renderServiceStatus = (serviceStatusList) => {
-    console.warn('service', serviceStatusList)
     return serviceStatusList.map(it => {
         return {value: it.id,label :it.name}
     }) 
@@ -121,6 +119,7 @@ const styles = StyleSheet.create({
     textStyle:{
         marginTop:20,
         height:30,
+        width:'100%',
         fontSize:17
     },
     buttonsStyle:{

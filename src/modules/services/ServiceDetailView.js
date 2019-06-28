@@ -167,22 +167,16 @@ class ServiceHistory extends React.Component {
 
         {/* Service assigned to executive View */}
         <View style={styles.componentsSection}>
-         
-        <View style={{flexDirection: 'row', justifyContent: 'flex-end',}}>
-                <Text style={styles.componentSectionHeader}> Assign service </Text> 
-        </View> 
-
+          <View style={{flexDirection: 'row', justifyContent: 'flex-end',}}>
+            <Text style={styles.componentSectionHeader}> Assign service </Text> 
+          </View> 
           <View style={styles.row}>
-          <TouchableOpacity key={itemParams.id} style={styles.itemTwoContainer}> 
-        
-           <ServiceAssign  />
+            <TouchableOpacity key={itemParams.id} > 
+          
+              <ServiceAssign  />
 
-
-
-
-
-          </TouchableOpacity>
-        </View>
+            </TouchableOpacity>
+          </View>
         </View>
       
 

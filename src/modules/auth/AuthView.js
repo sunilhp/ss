@@ -18,11 +18,14 @@ import C from '../../../Constants';
 import SimpleToast from 'react-native-simple-toast';
 import Toast from 'react-native-simple-toast';
 import SyncStorage from 'sync-storage';
+import { StackActions ,NavigationActions } from 'react-navigation'
 
 const FORM_STATES = {
   LOGIN: 0,
   REGISTER: 1,
 };
+
+
 
 export default class AuthScreen extends React.Component {
   
@@ -39,6 +42,9 @@ export default class AuthScreen extends React.Component {
   };
 
   componentWillMount() {
+
+    this.setState({username:"sunil@webhopers.in",password:"1234"})
+
     this.keyboardDidShowListener = Keyboard.addListener(
       Platform.select({ android: 'keyboardDidShow', ios: 'keyboardWillShow' }),
       this._keyboardDidShow.bind(this),
@@ -50,7 +56,6 @@ export default class AuthScreen extends React.Component {
   }
 
   componentDidMount() {
-    console.log(this.props);
     Animated.timing(this.state.anim, { toValue: 3000, duration: 3000 }).start();
   }
 
@@ -100,10 +105,17 @@ export default class AuthScreen extends React.Component {
       
       if(res.data.data.user.role == "admin")
       {
-        Toast.show("welcom user");
         SyncStorage.set('LOGIN_DETAILS',res.data.data.token);
         
-        this.props.navigation.navigate({ routeName: 'Home' });
+        const resetAction = StackActions.reset({
+          index: 0,
+          actions: [
+            NavigationActions.navigate({ routeName: 'Main'})
+          ]
+          })
+          this.props.navigation.dispatch(resetAction)
+
+        //this.props.navigation.navigate({ routeName: 'Home' });
       }
       else
       {
@@ -154,16 +166,6 @@ export default class AuthScreen extends React.Component {
               onChangeText={(username) => this.setState({ username}) }
             />
 
-            {this.state.formState === FORM_STATES.REGISTER && (
-              <TextInput
-                placeholder="Email"
-                style={styles.textInput}
-                autoCapitalize="none"
-                autoCorrect={false}
-                keyboardType="email-address"
-              />
-            )}
-
             <TextInput
               placeholder="Password"
               secureTextEntry
@@ -180,72 +182,11 @@ export default class AuthScreen extends React.Component {
                 rounded
                 style={{ alignSelf: 'stretch', marginBottom: 10 }}
                 caption={
-                  this.state.formState === FORM_STATES.LOGIN
-                    ? 'Login'
-                    : 'Register'
+                  this.state.formState ='Login'
                 }
                 onPress={() => this.userlogin()}
               />
 
-              {!this.state.isKeyboardVisible && (
-                <View style={styles.socialLoginContainer}>
-                  <Button
-                    style={styles.socialButton}
-                    bordered
-                    rounded
-                    icon={require('../../../assets/images/google-plus.png')}
-                    onPress={() => this.props.navigation.goBack()}
-                  />
-                  <Button
-                    style={[styles.socialButton, styles.socialButtonCenter]}
-                    bordered
-                    rounded
-                    icon={require('../../../assets/images/twitter.png')}
-                    onPress={() => this.props.navigation.goBack()}
-                  />
-                  <Button
-                    style={styles.socialButton}
-                    bordered
-                    rounded
-                    icon={require('../../../assets/images/facebook.png')}
-                    onPress={() => this.props.navigation.goBack()}
-                  />
-                </View>
-              )}
-
-              {!this.state.isKeyboardVisible && (
-                <TouchableOpacity
-                  onPress={() => {
-                    LayoutAnimation.spring();
-                    this.setState({
-                      formState: isRegister
-                        ? FORM_STATES.LOGIN
-                        : FORM_STATES.REGISTER,
-                    });
-                  }}
-                  style={{ paddingTop: 30, flexDirection: 'row' }}
-                >
-                  <Text
-                    style={{
-                      color: colors.white,
-                      fontFamily: fonts.primaryRegular,
-                    }}
-                  >
-                    {isRegister
-                      ? 'Already have an account?'
-                      : "Don't have an account?"}
-                  </Text>
-                  <Text
-                    style={{
-                      color: colors.white,
-                      fontFamily: fonts.primaryBold,
-                      marginLeft: 5,
-                    }}
-                  >
-                    {isRegister ? 'Login' : 'Register'}
-                  </Text>
-                </TouchableOpacity>
-              )}
             </Animated.View>
           </Animated.View>
         </View>

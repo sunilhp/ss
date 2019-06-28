@@ -3,6 +3,7 @@ import {StyleSheet, View, Text, TouchableOpacity, ScrollView, Image} from 'react
 import { fonts, colors } from './../../styles';
 import { Button} from '../../common';
 import SyncStorage from 'sync-storage';
+import { StackActions ,NavigationActions } from 'react-navigation'
 
 const allIcon = require('../../../assets/images/service/service-all.png');
 const newIcon = require('../../../assets/images/service/service-new.png');
@@ -18,194 +19,189 @@ class HomeScreen extends React.Component {
   
   constructor(props) {
     super(props);
-  }
-
-
-  componentWillMount() {
     var token = SyncStorage.get('LOGIN_DETAILS');
-    if(token != null)
+    if(token == null || token == undefined)
     {
-      console.warn("hello user")
+      const resetAction = StackActions.reset({
+      index: 0,
+      actions: [
+        NavigationActions.navigate({ routeName: 'Auth'})
+      ]
+      })
+      this.props.navigation.dispatch(resetAction)
     }
-    else
-    {
-      this.props.navigation.navigate({ routeName: 'Auth' });
-    }
+    
   }
-  componentDidMount(){
-    var token = SyncStorage.get('LOGIN_DETAILS');
-    if(token != null)
-    {
-      console.warn("hello user")
-    }
-    else
-    {
-      this.props.navigation.navigate({ routeName: 'Auth' });
-    }
-  }
+ 
+  
 
   render() {
-    return (
-      <ScrollView
-      style={styles.container}
-      contentContainerStyle={{ paddingBottom: 20 }}
-      >
-      <View style={styles.componentsSection}>
-        <Text style={styles.componentSectionHeader}>Services Jobs</Text>
-        <View style={styles.row}>
-          <TouchableOpacity
-      onPress={() => this.props.navigation.navigate({ routeName: 'Service'})}
-      style={styles.item}>
-        <Image
-        resizeMode="contain"
-        source={allIcon}
-        style={styles.itemImage}
-        />
-        <Text style={styles.itemText}>All</Text>
-        <Text style={styles.itemCount}>170</Text>
-      </TouchableOpacity>
-          <TouchableOpacity
-      onPress={() => props.navigation.navigate({ routeName: 'Gallery' })}
-      style={styles.item}
-      >
-        <Image
-        resizeMode="contain"
-        source={newIcon}
-        style={styles.itemImage}
-        />
-        <Text style={styles.itemText}>New</Text>
-        <Text style={styles.itemCount}>12</Text>
-      </TouchableOpacity>
-          <TouchableOpacity
-      onPress={() => props.navigation.navigate({ routeName: 'Profile' })}
-      style={styles.item}
-      >
+    return(  <ScrollView
+    style={styles.container}
+    contentContainerStyle={{ paddingBottom: 20 }}
+    >
+    <View style={styles.componentsSection}>
+      <Text style={styles.componentSectionHeader}>Services Jobs</Text>
+      <View style={styles.row}>
+        <TouchableOpacity
+    onPress={() => this.props.navigation.navigate({ routeName: 'Service'})}
+    style={styles.item}>
       <Image
       resizeMode="contain"
-      source={urgentIcon}
+      source={allIcon}
       style={styles.itemImage}
       />
-      <Text style={styles.itemText}>Urgent</Text>
-      <Text style={styles.itemCount}>5</Text>
-      </TouchableOpacity>
-      </View>
-        <View style={styles.row}>
-          <TouchableOpacity
-      onPress={() => props.navigation.navigate({ routeName: 'Charts' })}
-      style={styles.item}>
+      <Text style={styles.itemText}>All</Text>
+      <Text style={styles.itemCount}>170</Text>
+    </TouchableOpacity>
+        <TouchableOpacity
+    onPress={() => props.navigation.navigate({ routeName: 'Gallery' })}
+    style={styles.item}
+    >
       <Image
       resizeMode="contain"
-      source={pendingIcon}
+      source={newIcon}
       style={styles.itemImage}
       />
-      <Text style={styles.itemText}>Pending</Text>
+      <Text style={styles.itemText}>New</Text>
+      <Text style={styles.itemCount}>12</Text>
+    </TouchableOpacity>
+        <TouchableOpacity
+    onPress={() => props.navigation.navigate({ routeName: 'Profile' })}
+    style={styles.item}
+    >
+    <Image
+    resizeMode="contain"
+    source={urgentIcon}
+    style={styles.itemImage}
+    />
+    <Text style={styles.itemText}>Urgent</Text>
+    <Text style={styles.itemCount}>5</Text>
+    </TouchableOpacity>
+    </View>
+      <View style={styles.row}>
+        <TouchableOpacity
+    onPress={() => props.navigation.navigate({ routeName: 'Charts' })}
+    style={styles.item}>
+    <Image
+    resizeMode="contain"
+    source={pendingIcon}
+    style={styles.itemImage}
+    />
+    <Text style={styles.itemText}>Pending</Text>
+    <Text style={styles.itemCount}>70</Text>
+    </TouchableOpacity>
+        <TouchableOpacity
+    onPress={() => props.navigation.navigate({ routeName: 'Gallery' })}
+    style={styles.item}
+    >
+    <Image
+    resizeMode="contain"
+    source={inprogressIcon}
+    style={styles.itemImage}
+    />
+    <Text style={styles.itemText}>In Progress</Text>
+    <Text style={styles.itemCount}>10</Text>
+    </TouchableOpacity>
+        <TouchableOpacity
+    onPress={() => props.navigation.navigate({ routeName: 'Profile' })}
+    style={styles.item}
+    >
+    <Image
+    resizeMode="contain"
+    source={completeIcon}
+    style={styles.itemImage}
+    />
+    <Text style={styles.itemText} style={{ fontSize: 10, color: 'green' }}>Complete</Text>
+    <Text style={styles.itemCount}>55</Text>
+    </TouchableOpacity>
+    </View>
+    </View>
+    <View style={styles.componentsSection}>
+      <Text style={styles.componentSectionHeader}>Sales Leads</Text>
+      <View style={styles.row}>
+        <TouchableOpacity
+    onPress={() => props.navigation.navigate({ routeName: 'Charts' })}
+    style={styles.item}>
+      <Image
+      resizeMode="contain"
+      source={allIcon}
+      style={styles.itemImage}
+      />
+      <Text style={styles.itemText}>All</Text>
       <Text style={styles.itemCount}>70</Text>
-      </TouchableOpacity>
-          <TouchableOpacity
-      onPress={() => props.navigation.navigate({ routeName: 'Gallery' })}
-      style={styles.item}
-      >
+    </TouchableOpacity>
+        <TouchableOpacity
+    onPress={() => props.navigation.navigate({ routeName: 'Gallery' })}
+    style={styles.item}
+    >
       <Image
       resizeMode="contain"
-      source={inprogressIcon}
+      source={newIcon}
       style={styles.itemImage}
       />
-      <Text style={styles.itemText}>In Progress</Text>
-      <Text style={styles.itemCount}>10</Text>
-      </TouchableOpacity>
-          <TouchableOpacity
-      onPress={() => props.navigation.navigate({ routeName: 'Profile' })}
-      style={styles.item}
-      >
-      <Image
-      resizeMode="contain"
-      source={completeIcon}
-      style={styles.itemImage}
-      />
-      <Text style={styles.itemText} style={{ fontSize: 10, color: 'green' }}>Complete</Text>
-      <Text style={styles.itemCount}>55</Text>
-      </TouchableOpacity>
-      </View>
-      </View>
-      <View style={styles.componentsSection}>
-        <Text style={styles.componentSectionHeader}>Sales Leads</Text>
-        <View style={styles.row}>
-          <TouchableOpacity
-      onPress={() => props.navigation.navigate({ routeName: 'Charts' })}
-      style={styles.item}>
-        <Image
-        resizeMode="contain"
-        source={allIcon}
-        style={styles.itemImage}
-        />
-        <Text style={styles.itemText}>All</Text>
-        <Text style={styles.itemCount}>70</Text>
-      </TouchableOpacity>
-          <TouchableOpacity
-      onPress={() => props.navigation.navigate({ routeName: 'Gallery' })}
-      style={styles.item}
-      >
-        <Image
-        resizeMode="contain"
-        source={newIcon}
-        style={styles.itemImage}
-        />
-        <Text style={styles.itemText}>New</Text>
-        <Text style={styles.itemCount}>70</Text>
-      </TouchableOpacity>
-          <TouchableOpacity
-      onPress={() => props.navigation.navigate({ routeName: 'Profile' })}
-      style={styles.item}
-      >
-      <Image
-      resizeMode="contain"
-      source={hotIcon}
-      style={styles.itemImage}
-      />
-      <Text style={styles.itemText}>Hot</Text>
+      <Text style={styles.itemText}>New</Text>
       <Text style={styles.itemCount}>70</Text>
-      </TouchableOpacity>
-      </View>
-        <View style={styles.row}>
-          <TouchableOpacity
-      onPress={() => props.navigation.navigate({ routeName: 'Charts' })}
-      style={styles.item}>
-      <Image
-      resizeMode="contain"
-      source={coldIcon}
-      style={styles.itemImage}
-      />
-      <Text style={styles.itemText}>Cold</Text>
-      <Text style={styles.itemCount}>70</Text>
-      </TouchableOpacity>
-          <TouchableOpacity
-      onPress={() => props.navigation.navigate({ routeName: 'Gallery' })}
-      style={styles.item}
-      >
-      <Image
-      resizeMode="contain"
-      source={deadIcon}
-      style={styles.itemImage}
-      />
-      <Text style={styles.itemText}>Dead</Text>
-      <Text style={styles.itemCount}>70</Text>
-      </TouchableOpacity>
-          <TouchableOpacity
-      onPress={() => props.navigation.navigate({ routeName: 'Profile' })}
-      style={styles.item}
-      >
-      <Image
-      resizeMode="contain"
-      source={completeIcon}
-      style={styles.itemImage}
-      />
-      <Text style={styles.itemText}>Complete</Text>
-      <Text style={styles.itemCount}>70</Text>
-      </TouchableOpacity>
-      </View>
-      </View>      
-    </ScrollView>
-    );
+    </TouchableOpacity>
+        <TouchableOpacity
+    onPress={() => props.navigation.navigate({ routeName: 'Profile' })}
+    style={styles.item}
+    >
+    <Image
+    resizeMode="contain"
+    source={hotIcon}
+    style={styles.itemImage}
+    />
+    <Text style={styles.itemText}>Hot</Text>
+    <Text style={styles.itemCount}>70</Text>
+    </TouchableOpacity>
+    </View>
+      <View style={styles.row}>
+        <TouchableOpacity
+    onPress={() => props.navigation.navigate({ routeName: 'Charts' })}
+    style={styles.item}>
+    <Image
+    resizeMode="contain"
+    source={coldIcon}
+    style={styles.itemImage}
+    />
+    <Text style={styles.itemText}>Cold</Text>
+    <Text style={styles.itemCount}>70</Text>
+    </TouchableOpacity>
+        <TouchableOpacity
+    onPress={() => props.navigation.navigate({ routeName: 'Gallery' })}
+    style={styles.item}
+    >
+    <Image
+    resizeMode="contain"
+    source={deadIcon}
+    style={styles.itemImage}
+    />
+    <Text style={styles.itemText}>Dead</Text>
+    <Text style={styles.itemCount}>70</Text>
+    </TouchableOpacity>
+        <TouchableOpacity
+    onPress={() => props.navigation.navigate({ routeName: 'Profile' })}
+    style={styles.item}
+    >
+    <Image
+    resizeMode="contain"
+    source={completeIcon}
+    style={styles.itemImage}
+    />
+    <Text style={styles.itemText}>Complete</Text>
+    <Text style={styles.itemCount}>70</Text>
+    </TouchableOpacity>
+    </View>
+    </View>      
+  </ScrollView>
+    
+    );//let loginData = <Text> Please log in First</Text>
+    // return (
+    //   <View>
+    //             {SyncStorage.get('LOGIN_DETAILS') ? homeData : loginData}
+    //   </View>
+    // );
   }
 }
 

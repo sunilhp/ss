@@ -4,12 +4,13 @@ import c from './../../../../Constants'
 import Toast from 'react-native-simple-toast'
 
 import ServiceAssign from './ServiceAssign'
+import SyncStorage from 'sync-storage';
 
 class ServiceAssignContainer extends React.Component {
 
     constructor(props) {
         super(props)
-        let id = '', serviceID = '', executiveInfo = [], serviceStatus = [], remark = '', appointmentTime = null;
+        let id = '', serviceID = '', executiveInfo = [],selectedExecutive ={}, serviceStatus = [], selectedServiceStatus ={}, remark = '', appointmentTime = null;
 
         //if formtype is update then you need to pass the product
         if (props.service) {
@@ -42,15 +43,15 @@ class ServiceAssignContainer extends React.Component {
 
     getExecutivesDetails = async () => {
         try {
-            const res =  await axios.post(`${C.API}/users/get`,{role_id:C.EXECUTIVE_ROLE_ID});
+            const res =  await axios.post(`${c.API}/users/get`,{role_id:c.EXECUTIVE_ROLE_ID},{headers:{ Authorization: 'Bearer '+SyncStorage.get('LOGIN_DETAILS')}});
             if (res.data.success) { this.setState({ executiveInfo: res.data.data })}
-        } catch (e) {}
+        } catch (e) {console.warn("user error",e.message)}
     }
     getStatuses = async () => {
         try {
-            const res =  await axios.post(`${C.API}/service_status/get`);
+            const res =  await axios.post(`${c.API}/service_status/get`,{headers:{ Authorization: 'Bearer '+SyncStorage.get('LOGIN_DETAILS')}});
             if (res.data.success) { this.setState({ serviceStatus: res.data.data })}
-        } catch (e) {console.warn(e)}
+        } catch (e) {console.warn(e.message)}
     }
 
     /**
@@ -59,13 +60,13 @@ class ServiceAssignContainer extends React.Component {
     assignService = async () => {
         const service = {
             service_id: this.state.serviceID,
-            assigned_to: this.state.executiveInfo.id,
+            assigned_to: this.state.selectedExecutive.id,
             admin_remark: this.state.remark,
             appointment_time: this.state.appointmentTime,
-            job_status: this.state.serviceStatus.id
+            job_status: this.state.selectedServiceStatus.id
         }
         try {
-            const res = await axios.post(`${c.API}/service_details`, service)
+            const res = await axios.post(`${c.API}/service_details`, service,{headers:{ Authorization: 'Bearer '+SyncStorage.get('LOGIN_DETAILS')}})
             if (res.data.success) this.setState({ id :'', serviceID :'', executiveInfo :{}, serviceStatus :{}, remark :'', appointmentTime:'', state: 1})
             else Toast.show("Service Assigned Successfully!")
         } catch (e) {
