@@ -33,7 +33,7 @@ export default function ManageScreen(props) {
             source={galleryIcon}
             style={styles.itemImage}
           />
-          <Text style={styles.itemText}>Staff</Text>
+          <Text style={styles.itemText}>Users</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => props.navigation.navigate({ routeName: 'ServiceType' })}
@@ -50,7 +50,7 @@ export default function ManageScreen(props) {
       <View style={styles.row}>
 
         <TouchableOpacity
-          onPress={() => props.navigation.navigate({ routeName: 'MachineType' })}
+          onPress={() => props.navigation.navigate({ routeName: 'ProductType' })}
           style={styles.item}
         >
           <Image
@@ -58,7 +58,7 @@ export default function ManageScreen(props) {
             source={chatIcon}
             style={styles.itemImage}
           />
-          <Text style={styles.itemText}>Machine Type</Text>
+          <Text style={styles.itemText}>Product Type</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => props.navigation.navigate({ routeName: 'Calendar' })}
@@ -69,7 +69,7 @@ export default function ManageScreen(props) {
             source={calendarIcon}
             style={styles.itemImage}
           />
-          <Text style={styles.itemText}>Machines</Text>
+          <Text style={styles.itemText}>Products</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => props.navigation.navigate({ routeName: 'Auth' })}
@@ -104,7 +104,7 @@ export default function ManageScreen(props) {
             source={galleryIcon}
             style={styles.itemImage}
           />
-          <Text style={styles.itemText}>Staff</Text>
+          <Text style={styles.itemText}>Users</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => props.navigation.navigate({ routeName: 'Roles' })}

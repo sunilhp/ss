@@ -2,8 +2,8 @@
 import { compose, lifecycle, withState } from 'recompose';
 import { connect } from 'react-redux';
 
-import MachineTypeView from './MachineTypeView';
-import { machineList } from './MachineTypeState';
+import ProductTypeView from './ProductTypeView';
+import { productTypeList } from './ProductTypeState';
 
 export default compose(
   connect(
@@ -12,13 +12,13 @@ export default compose(
       messagesListLoading: state.chat.messagesListLoading,
     }),
     {
-      machineList,
+      productTypeList,
     },
   ),
   lifecycle({
     componentDidMount() {
-      this.props.machineList();
+      this.props.productTypeList();
     },
   }),
   withState('searchText', 'setSearchText', ''),
-)(MachineTypeView);
+)(ProductTypeView);

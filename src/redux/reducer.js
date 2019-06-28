@@ -4,7 +4,7 @@ import { combineReducers } from 'redux';
 import reviews from '../modules/reviews/ReviewsState';
 import navigationType from '../modules/navigationType/NavigationTypeState';
 import serviceType from '../modules/serviceType/ServiceTypeState';
-import machineType from '../modules/machineType/MachineTypeState';
+import productType from '../modules/productType/ProductTypeState';
 import users from '../modules/users/UsersState';
 import customer from '../modules/customer/CustomerState';
 import gallery from '../modules/gallery/GalleryState';
@@ -18,7 +18,7 @@ export default combineReducers({
  reviews,
  navigationType,
  serviceType,
- machineType,
+ productType,
  users,
  customer,
  gallery,
