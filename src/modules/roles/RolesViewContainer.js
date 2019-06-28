@@ -2,8 +2,9 @@
 import { compose, lifecycle, withState } from 'recompose';
 import { connect } from 'react-redux';
 
-import StaffView from './StaffView';
-import { loadMessagesList } from './StaffState';
+import RolesView from './RolesView';
+import { rolesList } from './RolesState';
+
 export default compose(
   connect(
     state => ({
@@ -11,13 +12,13 @@ export default compose(
       messagesListLoading: state.chat.messagesListLoading,
     }),
     {
-      loadMessagesList,
+      rolesList,
     },
   ),
   lifecycle({
     componentDidMount() {
-      this.props.loadMessagesList();
+      this.props.rolesList();
     },
   }),
   withState('searchText', 'setSearchText', ''),
-)(StaffView);
+)(RolesView);

@@ -9,7 +9,7 @@ class ServiceAssignContainer extends React.Component {
 
     constructor(props) {
         super(props)
-        let id = '', serviceID = '', executiveInfo = {}, serviceStatus = {}, remark = '', appointmentTime ='';
+        let id = '', serviceID = '', executiveInfo = [], serviceStatus = [], remark = '', appointmentTime = null;
 
         //if formtype is update then you need to pass the product
         if (props.service) {
@@ -24,7 +24,9 @@ class ServiceAssignContainer extends React.Component {
         this.state = {
             //executiveInfo has array object of all executive
             //serviceStatus has array object of services
-            id , serviceID , executiveInfo , serviceStatus , remark , appointmentTime ,
+           
+            id ,serviceID ,executiveInfo , serviceStatus , remark ,
+             appointmentTime: new Date() ,
             state: -1, // 0 or 1 (1 means success, 0 means error)
         }
     }
@@ -48,7 +50,7 @@ class ServiceAssignContainer extends React.Component {
         try {
             const res =  await axios.post(`${C.API}/service_status/get`);
             if (res.data.success) { this.setState({ serviceStatus: res.data.data })}
-        } catch (e) {}
+        } catch (e) {console.warn(e)}
     }
 
     /**
@@ -64,7 +66,7 @@ class ServiceAssignContainer extends React.Component {
         }
         try {
             const res = await axios.post(`${c.API}/service_details`, service)
-            if (res.data.success) this.setState({ id = '', serviceID = '', executiveInfo = {}, serviceStatus = {}, remark = '', appointmentTime ='', state: 1})
+            if (res.data.success) this.setState({ id :'', serviceID :'', executiveInfo :{}, serviceStatus :{}, remark :'', appointmentTime:'', state: 1})
             else Toast.show("Service Assigned Successfully!")
         } catch (e) {
             console.warn(e)
@@ -95,26 +97,26 @@ class ServiceAssignContainer extends React.Component {
     }
 
     render() {
-        return <EditProduct
+    
+        return <ServiceAssign
             formtype={this.props.formtype}
 
-            //product fields
-            name={this.state.name}
-            description={this.state.description}
-            type={this.state.type}
-
-            types={this.state.types}
+            //service fields
             
-            //form message
-            message={this.state.message}
+            service_id = {this.state.serviceID}
+            assigned_to = {this.state.executiveInfo}
+            admin_remark = {this.state.remark}
+            appointment_time = {this.state.appointmentTime}
+            job_status = {this.state.serviceStatus}
+            
             state={this.state.state}
 
             //functions
             onChange={this.onChange}
             assignService={this.assignService}
-            updateProduct={this.updateProduct}
+            //updateProduct={this.updateProduct}
         />
     }
 }
 
-export default EditProductContainer
+export default ServiceAssignContainer

@@ -28,14 +28,14 @@ function loadedMessagesList(messagesList) {
   };
 }
 
- export function  serviceTypeList() {
+ export function  rolesList() {
   return dispatch => {
     dispatch(startMessagesListLoading());
     // TODO: Load messages list here
 
     let messagesList = [];
     let tmpres;
-   fetch(`${C.API}/service_type/get`, {
+   fetch(`${C.API}/user_roles/get`, {
       method: 'POST',
       headers: {
           Accept: 'application/json',

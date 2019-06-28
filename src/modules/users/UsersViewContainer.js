@@ -2,9 +2,8 @@
 import { compose, lifecycle, withState } from 'recompose';
 import { connect } from 'react-redux';
 
-import ServiceTypeView from './ServiceTypeView';
-import { serviceTypeList } from './ServiceTypeState';
-
+import UsersView from './UsersView';
+import { loadUsersList } from './UsersState';
 export default compose(
   connect(
     state => ({
@@ -12,13 +11,13 @@ export default compose(
       messagesListLoading: state.chat.messagesListLoading,
     }),
     {
-      serviceTypeList,
+      loadUsersList,
     },
   ),
   lifecycle({
     componentDidMount() {
-      this.props.serviceTypeList();
+      this.props.loadUsersList();
     },
   }),
   withState('searchText', 'setSearchText', ''),
-)(ServiceTypeView);
+)(UsersView);

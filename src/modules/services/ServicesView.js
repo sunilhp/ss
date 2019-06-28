@@ -72,7 +72,7 @@ export default class ServicesScreen extends React.Component {
 
   render() {
     const groupedData =
-      this.props.tabIndex === 0 ? this.props.new_services : this.props.tabIndex === 1 ? this.props.progresss_services : this.props.tabIndex === 2 ? this.props.pending_services : this.props.completed_services;
+      this.props.tabIndex === 0 ? this.props.unassigned_services : this.props.tabIndex === 1 ? this.props.new_services : this.props.tabIndex === 2 ? this.props.progress_services : this.props.tabIndex === 3 ? this.props.pending_services : this.props.complete_services ;
 
     return (
       

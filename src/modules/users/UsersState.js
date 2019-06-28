@@ -1,5 +1,6 @@
 import C from '../../../Constants';
-import SyncStorage from 'sync-storage';
+
+
 
 // Initial state
 const initialState = {
@@ -14,6 +15,15 @@ const MESSAGES_LIST_LOADED = 'ChatState/MESSAGES_LIST_LOADED';
 const MESSAGES_LOADED = 'ChatState/MESSAGES_LOADED';
 const MESSAGE_SENT = 'ChatState/MESSAGE_SENT';
 
+// export function loadMessagesList() {
+//   return dispatch => {
+//     dispatch(startMessagesListLoading());
+//     // TODO: Load messages list here
+//     setTimeout(() => {
+//       dispatch(loadedMessagesList(usersList));
+//     }, 1000);
+//   }
+// }
 // Action creators
 function startMessagesListLoading() {
   return {
@@ -28,18 +38,17 @@ function loadedMessagesList(messagesList) {
   };
 }
 
- export function  serviceTypeList() {
+ export function  loadUsersList() {
   return dispatch => {
     dispatch(startMessagesListLoading());
     // TODO: Load messages list here
 
     let messagesList = [];
     let tmpres;
-   fetch(`${C.API}/service_type/get`, {
+   fetch(`${C.API}/users/get`, {
       method: 'POST',
       headers: {
           Accept: 'application/json',
-          Authorization: 'Bearer '+SyncStorage.get('LOGIN_DETAILS'),
           'Content-Type': 'application/json',
       },
      // body: JSON.stringify(""),
@@ -49,6 +58,7 @@ function loadedMessagesList(messagesList) {
         tmpres = responseJson;
 
         rs = tmpres.data;
+        
         for(i=0;i<rs.length;i++)
         {
            var tmp = {};
@@ -58,7 +68,12 @@ function loadedMessagesList(messagesList) {
            tmp.name = rs[i].name;
            tmp.city = rs[i].city;
            tmp.state = rs[i].state;
-           
+           tmp.email = rs[i].email;
+           tmp.phone = rs[i].phone;
+           tmp.address = rs[i].address;
+           tmp.zipcode = rs[i].zipcode;
+           tmp.status = rs[i].status;
+           tmp.rolename = rs[i].role.name;
            messagesList.push(tmp);
         }
 
@@ -73,7 +88,7 @@ function loadedMessagesList(messagesList) {
 }
 
 // Reducer
-export default function RolesStateReducer(state = initialState, action = {}) {
+export default function UsersStateReducer(state = initialState, action = {}) {
   switch (action.type) {
     case MESSAGES_LIST_START_LOADING:
       return Object.assign({}, state, {

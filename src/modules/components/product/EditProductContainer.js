@@ -5,6 +5,8 @@ import Toast from 'react-native-simple-toast'
 
 import EditProduct from './EditProduct'
 
+import SyncStorage from 'sync-storage';
+
 class EditProductContainer extends React.Component {
 
     constructor(props) {
@@ -43,7 +45,7 @@ class EditProductContainer extends React.Component {
 
     getProductTypes = async () => {
         try {
-            const res =  await axios.post(`${c.API}/product_type/get`)
+            const res =  await axios.post(`${c.API}/product_type/get`,{headers:{ Authorization: 'Bearer '+SyncStorage.get('LOGIN_DETAILS')}})
             if (res.data.success) { this.setState({ types: res.data.data })}
         } catch (e) {}
     }

@@ -11,20 +11,10 @@ import { colors } from '../../styles';
 import { TextInput } from '../../common';
 import { Text, Caption, Title } from '../../common/StyledText';
 
-export default function CustomerScreen(props) {
+export default function RolesScreen(props) {
  
   const _renderItem = ({ item }) => (
-    <TouchableOpacity
-      onPress={() =>
-        props.navigation.navigate({
-          routeName: 'Messages',
-          params: {
-            title: item.userName,
-            ...item,
-          },
-        })
-      }
-    >
+
       <View style={styles.messageItem}>
         <View style={{ flex: 1, paddingLeft: 15 }}>
           <View
@@ -34,22 +24,16 @@ export default function CustomerScreen(props) {
               justifyContent: 'space-between',
             }}
           >
-            <Title color={colors.darkGray}>{item.userName}</Title>
+            <Title color={colors.darkGray}>{item.name}</Title>
             <Caption color={colors.lightGray}>{item.time}</Caption>
-          </View>
-          <View styleName="vertical v-start" style={{ alignSelf: 'stretch' }}>
-            <Caption color={colors.lightGray} numberOfLines={1}>
-              {item.lastMessage}
-            </Caption>
           </View>
         </View>
       </View>
-    </TouchableOpacity>
   );
 
   const _renderNoItemsComponent = () => (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>No Conversations</Text>
+      <Text>No Roles</Text>
     </View>
   );
 
@@ -58,24 +42,18 @@ export default function CustomerScreen(props) {
   let filteredMessages = props.messagesList;
   if (props.searchText) {
     filteredMessages = props.messagesList.filter(
-      message => (message.userName.indexOf(props.searchText) !== -1) || message.lastMessage.indexOf(props.searchText) !== -1,
+      message => (message.name.toLowerCase().indexOf(props.searchText.toLowerCase()) !== -1)
     );
   }
 
   return (
+    
     <View style={styles.container}>
-      <TextInput
-        type="bordered"
-        placeholder="Search"
-        placeholderTextColor={colors.lightGray}
-        dark
-        value={props.searchText}
-        onChangeText={value => props.setSearchText(value)}
-      />
+      
       <FlatList
         style={{ backgroundColor: colors.white }}
         refreshing={props.messagesListLoading}
-        onRefresh={props.loadMessagesList}
+        onRefresh={props.rolesList}
         ListEmptyComponent={_renderNoItemsComponent}
         data={filteredMessages}
         keyExtractor={_keyExtractor}

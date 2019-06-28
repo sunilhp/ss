@@ -20,12 +20,16 @@ import ChatScreen from '../chat/ChatViewContainer';
 import MessagesScreen from '../chat/MessagesViewContainer';
 import ChartsScreen from '../charts/ChartsViewContainer';
 import AuthScreen from '../auth/AuthViewContainer';
-import StaffScreen from '../staff/StaffViewContainer';
+import UsersScreen from '../users/UsersViewContainer';
+import UsersAddScreen from '../users/UsersAdd';
 import CustomerScreen from '../customer/CustomerViewContainer';
 import CustomerAddScreen from '../customer/CustomerAdd';
 import ServiceTypeScreen from '../serviceType/ServiceTypeViewContainer';
+import ServiceTypeAddScreen from '../serviceType/ServiceTypeAdd';
 import ServicesScreen from '../services/ServicesViewContainer';
 import MachineTypeScreen from '../machineType/MachineTypeViewContainer';
+import RolesScreen from '../roles/RolesViewContainer';
+import RolesAddScreen from '../roles/RolesAdd';
 
 import { colors, fonts } from '../../styles';
 
@@ -53,6 +57,13 @@ const stackNavigator = createStackNavigator(
         title: 'Profile',
       },
     },
+    Roles: {
+      screen: RolesScreen,
+      navigationOptions: {
+        title: 'Roles',
+      },
+    },
+    
     Gallery: {
       screen: GalleryScreen,
       navigationOptions: {
@@ -89,10 +100,28 @@ const stackNavigator = createStackNavigator(
         header: null,
       },
     },
+    UsersAdd: {
+      screen: UsersAddScreen,
+      navigationOptions: {
+      title: 'Users',
+      },
+    },
     CustomerAdd: {
       screen: CustomerAddScreen,
       navigationOptions: {
       title: 'Customer Information',
+      },
+    },
+    ServiceTypeAdd: {
+      screen: ServiceTypeAddScreen,
+      navigationOptions: {
+      title: 'Service Type',
+      },
+    },
+    RolesAdd: {
+      screen: RolesAddScreen,
+      navigationOptions: {
+      title: 'Roles',
       },
     },
     Customer: {
@@ -128,11 +157,37 @@ const stackNavigator = createStackNavigator(
       }),
      
     },
-    Staff: {
-      screen: StaffScreen,
-      navigationOptions: {
-        title: 'Staff',
-      },
+    Users: {
+      screen: UsersScreen,
+      navigationOptions: ({navigation}) => ({
+        title: 'Users',
+        headerRight: (
+          <View style={{ flexDirection: 'row' }}>
+             <TouchableOpacity
+               onPress={() => navigation.navigate('UsersAdd')}
+               style={{
+                 paddingRight: 10,
+               }}
+             >
+               <Image
+                 source={require('../../../assets/images/icons/plus.png')}
+                 resizeMode="contain"
+                 style={{
+                   width: 30,
+                   height: 20,
+                 }}
+               />
+             </TouchableOpacity>
+           </View>
+        ),
+        headerBackground: (
+          <Image
+            style={{ flex: 1 }}
+            source={headerBackground}
+            resizeMode="cover"
+          />
+        ),
+      }),
     },
     ServiceDetail: {
       screen: ServiceDetailScreen,
@@ -148,9 +203,35 @@ const stackNavigator = createStackNavigator(
     },
     ServiceType: {
       screen: ServiceTypeScreen,
-      navigationOptions: {
+      navigationOptions: ({navigation}) => ({
         title: 'Service Type',
-      },
+        headerRight: (
+          <View style={{ flexDirection: 'row' }}>
+             <TouchableOpacity
+               onPress={() => navigation.navigate('CustomerAdd')}
+               style={{
+                 paddingRight: 10,
+               }}
+             >
+               <Image
+                 source={require('../../../assets/images/icons/plus.png')}
+                 resizeMode="contain"
+                 style={{
+                   width: 30,
+                   height: 20,
+                 }}
+               />
+             </TouchableOpacity>
+           </View>
+        ),
+        headerBackground: (
+          <Image
+            style={{ flex: 1 }}
+            source={headerBackground}
+            resizeMode="cover"
+          />
+        ),
+      }),
     },
     MachineType: {
       screen: MachineTypeScreen,

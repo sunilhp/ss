@@ -2,6 +2,7 @@ import { compose, withState } from 'recompose';
 import C from '../../../Constants';
 import ServicesView from './ServicesView';
 
+const unassigned_service_data = [];
 const new_service_data = [];
 const progress_service_data =[];
 const pending_service_data = [];
@@ -43,6 +44,9 @@ fetch(`${C.API}/services/get`, {
        tmp.customerPhone = rs[i].customer.phone;
        tmp.customerAddress = rs[i].customer.address;
        tmp.customerZipcode = rs[i].customer.zipcode;
+       
+       if(rs[i].state == "Unassigned")
+       unassigned_service_data.push(tmp);
        if(rs[i].state == "New")
         new_service_data.push(tmp);
        if(rs[i].state == "In Progress")
@@ -55,10 +59,11 @@ fetch(`${C.API}/services/get`, {
   })
   .catch(err => {console.warn(err) })
   .done();
-
+  
 export default compose(
   withState('tabIndex', 'setTabIndex', 0),
-  withState('tabs', 'setTabs', ['New', 'In Progress','Pending', 'Completed' ]),
+  withState('tabs', 'setTabs', ['Unassigned','New', 'In Progress','Pending', 'Completed' ]),
+  withState('unassigned_services', 'setData', unassigned_service_data),
   withState('new_services', 'setData', new_service_data),
   withState('progress_services', 'setData', progress_service_data),
   withState('pending_services', 'setData', pending_service_data),

@@ -2,6 +2,7 @@ import React from 'react';
 import {StyleSheet, View, Text, TouchableOpacity, ScrollView, Image} from 'react-native';
 import { fonts, colors } from './../../styles';
 import { Button} from '../../common';
+import SyncStorage from 'sync-storage';
 
 const allIcon = require('../../../assets/images/service/service-all.png');
 const newIcon = require('../../../assets/images/service/service-new.png');
@@ -13,15 +14,42 @@ const hotIcon = require('../../../assets/images/service/leads-hot.png');
 const coldIcon = require('../../../assets/images/service/leads-cold.png');
 const deadIcon = require('../../../assets/images/service/leads-dead.png');
 
+class HomeScreen extends React.Component {
+  
+  constructor(props) {
+    super(props);
+  }
 
 
-export default function HomeScreen({ isExtended, setIsExtended, props }) {
- 
-  return (
-    <ScrollView
-        style={styles.container}
-        contentContainerStyle={{ paddingBottom: 20 }}
-        >
+  componentWillMount() {
+    var token = SyncStorage.get('LOGIN_DETAILS');
+    if(token != null)
+    {
+      console.warn("hello user")
+    }
+    else
+    {
+      this.props.navigation.navigate({ routeName: 'Auth' });
+    }
+  }
+  componentDidMount(){
+    var token = SyncStorage.get('LOGIN_DETAILS');
+    if(token != null)
+    {
+      console.warn("hello user")
+    }
+    else
+    {
+      this.props.navigation.navigate({ routeName: 'Auth' });
+    }
+  }
+
+  render() {
+    return (
+      <ScrollView
+      style={styles.container}
+      contentContainerStyle={{ paddingBottom: 20 }}
+      >
       <View style={styles.componentsSection}>
         <Text style={styles.componentSectionHeader}>Services Jobs</Text>
         <View style={styles.row}>
@@ -177,9 +205,11 @@ export default function HomeScreen({ isExtended, setIsExtended, props }) {
       </View>
       </View>      
     </ScrollView>
-  );
+    );
+  }
 }
 
+export default HomeScreen;
 
 
 const styles = StyleSheet.create({

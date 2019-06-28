@@ -11,16 +11,16 @@ import { colors } from '../../styles';
 import { TextInput } from '../../common';
 import { Text, Caption, Title } from '../../common/StyledText';
 
-export default function CustomerScreen(props) {
- 
+export default function UsersScreen(props) {
+  
   const _renderItem = ({ item }) => (
+    
     <TouchableOpacity
       onPress={() =>
         props.navigation.navigate({
-          routeName: 'CustomerAdd',
+          routeName: 'UsersAdd',
           params: {
-            title: item.name,
-            id: item.id,
+            title: item.userName,
             ...item,
           },
         })
@@ -34,14 +34,13 @@ export default function CustomerScreen(props) {
               flexDirection: 'row',
               justifyContent: 'space-between',
             }}
-          
           >
-            <Title color={colors.darkGray}>{item.name}</Title>
-            <Caption color={colors.lightGray}>{item.time}</Caption>
+            <Title color={colors.darkGray}>{item.name}( {item.rolename} )</Title>
+            {/* <Caption color={colors.lightGray}>{item.time}</Caption> */}
           </View>
           <View styleName="vertical v-start" style={{ alignSelf: 'stretch' }}>
             <Caption color={colors.lightGray} numberOfLines={1}>
-              {item.city} , {item.state}
+              {item.address}
             </Caption>
           </View>
         </View>
@@ -60,12 +59,11 @@ export default function CustomerScreen(props) {
   let filteredMessages = props.messagesList;
   if (props.searchText) {
     filteredMessages = props.messagesList.filter(
-      message => (message.name.toLowerCase().indexOf(props.searchText.toLowerCase()) !== -1) || (message.city.toLowerCase().indexOf(props.searchText.toLowerCase()) !== -1) || (message.state.toLowerCase().indexOf(props.searchText.toLowerCase()) !== -1)
+      message => (message.name.indexOf(props.searchText) !== -1),
     );
   }
 
   return (
-    
     <View style={styles.container}>
       <TextInput
         type="bordered"
@@ -78,7 +76,7 @@ export default function CustomerScreen(props) {
       <FlatList
         style={{ backgroundColor: colors.white }}
         refreshing={props.messagesListLoading}
-        onRefresh={props.customerList}
+        onRefresh={props.loadUsersList}
         ListEmptyComponent={_renderNoItemsComponent}
         data={filteredMessages}
         keyExtractor={_keyExtractor}

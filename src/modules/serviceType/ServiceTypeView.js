@@ -12,12 +12,13 @@ import { TextInput } from '../../common';
 import { Text, Caption, Title } from '../../common/StyledText';
 
 export default function ServiceTypeScreen(props) {
- 
+  
   const _renderItem = ({ item }) => (
+    
     <TouchableOpacity
       onPress={() =>
         props.navigation.navigate({
-          routeName: 'Messages',
+          routeName: 'ServiceTypeAdd',
           params: {
             title: item.userName,
             ...item,
@@ -34,12 +35,12 @@ export default function ServiceTypeScreen(props) {
               justifyContent: 'space-between',
             }}
           >
-            <Title color={colors.darkGray}>{item.userName}</Title>
-            <Caption color={colors.lightGray}>{item.time}</Caption>
+            <Title color={colors.darkGray}>{item.name}</Title>
+            {/* <Caption color={colors.lightGray}>{item.time}</Caption> */}
           </View>
           <View styleName="vertical v-start" style={{ alignSelf: 'stretch' }}>
             <Caption color={colors.lightGray} numberOfLines={1}>
-              {item.lastMessage}
+              {item.address}
             </Caption>
           </View>
         </View>
@@ -49,7 +50,7 @@ export default function ServiceTypeScreen(props) {
 
   const _renderNoItemsComponent = () => (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>No Conversations</Text>
+      <Text>No Service Type</Text>
     </View>
   );
 
@@ -58,7 +59,7 @@ export default function ServiceTypeScreen(props) {
   let filteredMessages = props.messagesList;
   if (props.searchText) {
     filteredMessages = props.messagesList.filter(
-      message => (message.userName.indexOf(props.searchText) !== -1) || message.lastMessage.indexOf(props.searchText) !== -1,
+      message => (message.name.indexOf(props.searchText) !== -1),
     );
   }
 
@@ -75,7 +76,7 @@ export default function ServiceTypeScreen(props) {
       <FlatList
         style={{ backgroundColor: colors.white }}
         refreshing={props.messagesListLoading}
-        onRefresh={props.loadMessagesList}
+        onRefresh={props.serviceTypeList}
         ListEmptyComponent={_renderNoItemsComponent}
         data={filteredMessages}
         keyExtractor={_keyExtractor}

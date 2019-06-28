@@ -13,6 +13,11 @@ import {
 
 import { fonts, colors } from '../../styles';
 import { TextInput, Button } from '../../common';
+import axios from 'axios';
+import C from '../../../Constants';
+import SimpleToast from 'react-native-simple-toast';
+import Toast from 'react-native-simple-toast';
+import SyncStorage from 'sync-storage';
 
 const FORM_STATES = {
   LOGIN: 0,
@@ -20,6 +25,11 @@ const FORM_STATES = {
 };
 
 export default class AuthScreen extends React.Component {
+  
+  constructor(props){
+    super(props);
+  }
+
   state = {
     anim: new Animated.Value(0),
 
@@ -79,6 +89,36 @@ export default class AuthScreen extends React.Component {
     };
   }
 
+  async userlogin()
+{
+  var id = this.state.username;
+  var password = this.state.password;
+  try{
+    const res = await axios.post(`${C.API}/users/login`,{email:id,password:password})
+    if(res.data.success)
+    {
+      
+      if(res.data.data.user.role == "admin")
+      {
+        Toast.show("welcom user");
+        SyncStorage.set('LOGIN_DETAILS',res.data.data.token);
+        
+        this.props.navigation.navigate({ routeName: 'Home' });
+      }
+      else
+      {
+        Toast.show("Only admin can Log in")
+      }
+    }
+    else
+    {
+      Toast.show("Invalid Credentials")
+    }
+  }
+  catch(e){
+    Toast.show("Invalid Credentials")
+  }
+}
   render() {
     const isRegister = this.state.formState === FORM_STATES.REGISTER;
     
@@ -104,11 +144,14 @@ export default class AuthScreen extends React.Component {
           <Animated.View
             style={[styles.section, styles.middle, this.fadeIn(700, -20)]}
           >
+            
             <TextInput
               placeholder="Username"
               style={styles.textInput}
               autoCapitalize="none"
               autoCorrect={false}
+              value={this.state.username}
+              onChangeText={(username) => this.setState({ username}) }
             />
 
             {this.state.formState === FORM_STATES.REGISTER && (
@@ -125,6 +168,8 @@ export default class AuthScreen extends React.Component {
               placeholder="Password"
               secureTextEntry
               style={styles.textInput}
+              value={this.state.password}
+              onChangeText={(password) => this.setState({ password}) }
             />
 
             <Animated.View
@@ -139,7 +184,7 @@ export default class AuthScreen extends React.Component {
                     ? 'Login'
                     : 'Register'
                 }
-                onPress={() => this.props.navigation.goBack()}
+                onPress={() => this.userlogin()}
               />
 
               {!this.state.isKeyboardVisible && (

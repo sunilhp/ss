@@ -22,6 +22,8 @@ import ViewProduct from './../components/product/ViewProduct'
 import EditProduct from './../components/product/EditProductContainer'
 import Header from './Header';
 import { CustomPicker } from 'react-native-custom-picker';
+import ServiceAssign from './../components/serviceAssign/ServiceAssignContainer';
+import SyncStorage from 'sync-storage';
 
 class ServiceHistory extends React.Component {
   state = { 
@@ -43,7 +45,7 @@ class ServiceHistory extends React.Component {
       let historyresp =  await axios.get(`${C.API}/service_details/history/${this.props.navigation.state.params.id}`);
       historyres = historyresp.data.data;
 
-      let executivesresp =  await axios.post(`${C.API}/users/get`,{role_id:C.EXECUTIVE_ROLE_ID});
+      let executivesresp =  await axios.post(`${C.API}/users/get`,{role_id:C.EXECUTIVE_ROLE_ID},{headers:{ Authorization: 'Bearer '+SyncStorage.get('LOGIN_DETAILS')}});
       executives = executivesresp.data.data;
 
       let service_statusresp =  await axios.post(`${C.API}/service_status/get`);
@@ -173,42 +175,7 @@ class ServiceHistory extends React.Component {
           <View style={styles.row}>
           <TouchableOpacity key={itemParams.id} style={styles.itemTwoContainer}> 
         
-           
-          <Text style={styles.textStyle} >Remarks</Text>
-            <TextInput
-                name='remarks'
-                placeholder="Product remarks"
-            />
-
-
-            <Text>Assign to</Text>
-            <CustomPicker style={{color:'#000'}}
-                options={renderExecutive(this.state.executives)}
-                getLabel={(item) => item.label}
-                onValueChange={(value, i) => {
-                  props.onChange('executives', { id: value.value, name: value.label })
-                }}      
-             />
-             
-             <Text style={styles.textStyle} >Job Status</Text>
-              <CustomPicker 
-                 options={renderServiceStatuses(this.state.service_statuses)}
-                 //value={{label: props.type.name ,value: props.type.id }}
-                 getLabel={(item) => item.label}
-                 onValueChange={(value, i) => {
-                     props.onChange('service_statuses', { id: value.value, name: value.label })
-                 }}
-              />
-              <Text style={styles.textStyle} >Appointment time</Text>
-               <CustomPicker 
-                  options={['asdf','asdf','fghf']}
-                  //value={{label: props.type.name ,value: props.type.id }}
-                  getLabel={(item) => item.label}
-                  onValueChange={(value, i) => {
-                      props.onChange('type', { id: value.value, name: value.label })
-                  }}
-               />
-
+           <ServiceAssign  />
 
 
 
