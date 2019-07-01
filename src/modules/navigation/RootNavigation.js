@@ -16,6 +16,7 @@ import GalleryScreen from '../gallery/GalleryViewContainer';
 import ProfileScreen from '../profile/ProfileViewContainer';
 import ArticleScreen from '../article/ArticleViewContainer';
 import ServiceDetailScreen from '../services/ServiceDetailViewContainer';
+import LeadDetailScreen from '../Leads/LeadDetailViewContainer';
 import ChatScreen from '../chat/ChatViewContainer';
 import MessagesScreen from '../chat/MessagesViewContainer';
 import ChartsScreen from '../charts/ChartsViewContainer';
@@ -193,6 +194,12 @@ const stackNavigator = createStackNavigator(
       screen: ServiceDetailScreen,
       navigationOptions: {
         title: 'Service Detail',
+      },
+    },
+    LeadDetail: {
+      screen: LeadDetailScreen,
+      navigationOptions: {
+        title: 'Lead Detail',
       },
     },    
     Services: {

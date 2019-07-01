@@ -18,18 +18,18 @@ import { colors, fonts } from '../../styles';
 import { Dropdown, Button, TextInput } from '../../common';
 import { Text, Title, Caption } from '../../common/StyledText';
 
-import ViewProduct from './../components/product/ViewProduct'
-import EditProduct from './../components/product/EditProductContainer'
+import ViewProduct from '../components/product/ViewProduct'
+import EditProduct from '../components/product/EditProductContainer'
 import Header from './Header';
 import { CustomPicker } from 'react-native-custom-picker';
-import ServiceAssign from './../components/serviceAssign/ServiceAssignContainer';
+import ServiceAssign from '../components/serviceAssign/ServiceAssignContainer';
 import SyncStorage from 'sync-storage';
 
-class ServiceHistory extends React.Component {
+class LeadHistory extends React.Component {
   state = { 
     history: [],
     executives:[],
-    service_statuses:[],
+    lead_statuses:[],
     isProductEditEnable : false,
    }
 
@@ -38,56 +38,63 @@ class ServiceHistory extends React.Component {
   async componentDidMount() {
     let historyres = [];
     let executives =[];
-    let service_status = [];
+    let lead_status = [];
 
     try
     {      
-      let historyresp =  await axios.get(`${C.API}/service_details/history/${this.props.navigation.state.params.id}`);
+      let historyresp =  await axios.get(`${C.API}/leads/history/${this.props.navigation.state.params.id}`);
       historyres = historyresp.data.data;
 
-      let executivesresp =  await axios.post(`${C.API}/users/get`,{role_id:C.EXECUTIVE_ROLE_ID},{headers:{ Authorization: 'Bearer '+SyncStorage.get('LOGIN_DETAILS')}});
-      executives = executivesresp.data.data;
+      // let executivesresp =  await axios.post(`${C.API}/users/get`,{role_id:C.EXECUTIVE_ROLE_ID},{headers:{ Authorization: 'Bearer '+SyncStorage.get('LOGIN_DETAILS')}});
+      // executives = executivesresp.data.data;
 
-      let service_statusresp =  await axios.post(`${C.API}/service_status/get`);
-      service_status = service_statusresp.data.data;
+      // let lead_statusresp =  await axios.post(`${C.API}/lead_status/get`);
+      // lead_status = lead_statusresp.data.data;
     }
     catch(error)
     {
       //console.warn(error);
     }
-    this.setState({ history: historyres,executives:executives,service_statuses:service_status});
+    this.setState(
+      { 
+        history: historyres,
+        // executives:executives,
+        // lead_statuses:lead_status
+      }
+    );
+
   }
 
 // service history images formatter
-  renderServiceHistoryCarousel = (images) => {
-    const formattedhistoryimages = [];
-    for(i=0;i<images.length;i++)
-    {
-      images[i] = images[i].replace(/\\/g,"/");
-      dd = {uri : images[i] };
-      formattedhistoryimages.push( dd);
-    }
-    return (
-      <View style={styles.carouselContainer}>
-        <Carousel
-          autoplay
-          sliderWidth={Dimensions.get('window').width}
-          itemWidth={Dimensions.get('window').width}
-          renderItem={({ item }) => (
-            <Image
-              resizeMode="contain"
-              style={{ height: 250, width: Dimensions.get('window').width }}
-              source={item}
-            />
-          )}
-          data={formattedhistoryimages}
-        />
-      </View> 
-    );
-  }
+  // renderServiceHistoryCarousel = (images) => {
+  //   const formattedhistoryimages = [];
+  //   for(i=0;i<images.length;i++)
+  //   {
+  //     images[i] = images[i].replace(/\\/g,"/");
+  //     dd = {uri : images[i] };
+  //     formattedhistoryimages.push( dd);
+  //   }
+  //   return (
+  //     <View style={styles.carouselContainer}>
+  //       <Carousel
+  //         autoplay
+  //         sliderWidth={Dimensions.get('window').width}
+  //         itemWidth={Dimensions.get('window').width}
+  //         renderItem={({ item }) => (
+  //           <Image
+  //             resizeMode="contain"
+  //             style={{ height: 250, width: Dimensions.get('window').width }}
+  //             source={item}
+  //           />
+  //         )}
+  //         data={formattedhistoryimages}
+  //       />
+  //     </View> 
+  //   );
+  // }
 
-  //service history 
-  renderServiceHistoryInformation = () => {
+  //Lead history 
+  renderLeadHistoryInformation = () => {
     const history = this.state.history
     return history.map((it, i) => {
       return (
@@ -98,10 +105,10 @@ class ServiceHistory extends React.Component {
         marginBottom:15,
         padding:10,
         alignItems:'center',}}>
-          <Text style={styles.itemTwoSubTitle}>{it.assigned_to_name}</Text>
-          <Text style={styles.itemTwoSubTitle}>{it.assigned_to_phone},  {it.assigned_to_email}</Text>
-          <Text style={styles.remarkTitle}>Remark : {it.executive_remark}</Text>
-          {this.renderServiceHistoryCarousel(it.images)}
+          <Text style={styles.itemTwoSubTitle}>{it.name}</Text>
+          <Text style={styles.itemTwoSubTitle}>{it.phone},  {it.email}</Text>
+          <Text style={styles.remarkTitle}>Remark : {it.remark}</Text>
+          {/* {this.renderServiceHistoryCarousel(it.images)} */}
         </View>
       )
     })
@@ -109,58 +116,37 @@ class ServiceHistory extends React.Component {
 
 
   //view to be shown in product area
-  renderProductView = (product) =>{
-      if(this.state.isProductEditEnable) 
-        return <EditProduct formtype='update' product={product}/> 
-      else 
-        return <ViewProduct product={product} />
-  }
+  // renderProductView = (product) =>{
+  //     if(this.state.isProductEditEnable) 
+  //       return <EditProduct formtype='update' product={product}/> 
+  //     else 
+  //       return <ViewProduct product={product} />
+  // }
 
   render() {
     const itemParams = this.props.navigation.state.params;
 
-    // service images formatter
-    const formattedimages = [];
-    for(i=0;i<itemParams.images.length;i++)
-    {
-      itemParams.images[i] = itemParams.images[i].replace(/\\/g,"/");
-      dd = {uri : itemParams.images[i] };
-      formattedimages.push( dd);
-    }
-  
     return (
       <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 20 }}>
         
-        {/* service information view */}
+        {/* Lead information view */}
         <View style={styles.componentsSection}>
-          <Text style={styles.componentSectionHeader}>Service Information</Text>
+          <Text style={styles.componentSectionHeader}>Lead Information</Text>
           <View style={styles.row}>
           <TouchableOpacity key={itemParams.id} style={styles.itemTwoContainer} onPress={() => this._openArticle(item)}>
             <View>
-              <Text style={styles.itemTwoPrice}>Type : {itemParams.serviceType}</Text>
+              <Text style={styles.itemTwoPrice}>Name : {itemParams.name}</Text>
               <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                 <Text style={styles.itemTwoSubTitle}>Date : {itemParams.createdOn}</Text>
                 <View style={styles.itemThreeMetaContainer}>
-                  <Text style={styles.itemTwoSubTitle}>Priority : {itemParams.priority}</Text>
+                  <Text style={styles.itemTwoSubTitle}>Status : {itemParams.status}</Text>
                 </View>
               </View>
               <Text style={styles.itemTwoSubTitle}>Message : {itemParams.message}</Text>
-            </View>
-            <View style={styles.carouselContainer}>
-              <Carousel
-                  autoplay
-                  sliderWidth={Dimensions.get('window').width-50}
-                  itemWidth={Dimensions.get('window').width}
-                  renderItem={({ item }) => (
-                    <Image
-                      resizeMode="contain"
-                      style={{ height: 250, width: Dimensions.get('window').width }}
-                      source={item}
-                    />
-                  )}
-                  data={formattedimages}
-                />
-              </View>      
+              <Text style={styles.itemTwoSubTitle}>Phone : {itemParams.phone}</Text>
+              <Text style={styles.itemTwoSubTitle}>Email : {itemParams.email}</Text>
+              <Text style={styles.itemTwoSubTitle}>Address : {itemParams.address}, {itemParams.city}, {itemParams.state}</Text>
+            </View>    
           </TouchableOpacity>
           </View>
         </View>
@@ -173,7 +159,7 @@ class ServiceHistory extends React.Component {
           <View style={styles.row}>
             <TouchableOpacity key={itemParams.id} > 
           
-              <ServiceAssign formtype="add" role="service" serviceID={this.props.navigation.state.params.id} />
+              <ServiceAssign formtype="add" role="leads" serviceID={this.props.navigation.state.params.id} />
 
             </TouchableOpacity>
           </View>
@@ -181,7 +167,7 @@ class ServiceHistory extends React.Component {
       
 
         {/* product information view */}
-        <View style={styles.componentsSection}>
+        {/* <View style={styles.componentsSection}>
          <Header 
             heading="Product Information" 
             btntext={this.state.isProductEditEnable?"Done":"Edit"} 
@@ -199,10 +185,10 @@ class ServiceHistory extends React.Component {
                 }
             )}
          </Header>
-        </View>
+        </View> */}
 
         {/* customer information view */}
-        <View style={styles.componentsSection}>
+        {/* <View style={styles.componentsSection}>
             <View style={{flexDirection: 'row', justifyContent: 'flex-end',}}>
                 <Text style={styles.componentSectionHeader}> Customer Information </Text> 
                 <Button
@@ -236,14 +222,14 @@ class ServiceHistory extends React.Component {
           </TouchableOpacity>
           </View>
         </View>
-        
-        {/* Service history view */}
+         */}
+        {/* Lead history view */}
         <View style={styles.componentsSection}>
         <Text style={styles.componentSectionHeader}>History</Text>
         <View style={styles.row}>
         <TouchableOpacity key={itemParams.id} style={styles.itemTwoContainer} onPress={() => this._openArticle(item)}> 
           <View>
-            {this.renderServiceHistoryInformation()}
+            {this.renderLeadHistoryInformation()}
           </View>
         </TouchableOpacity>
       </View>
@@ -254,7 +240,7 @@ class ServiceHistory extends React.Component {
   }
 }
 
-export default ServiceHistory;
+export default LeadHistory;
 
 const styles = StyleSheet.create({
   componentSectionHeader: {
@@ -474,14 +460,14 @@ const styles = StyleSheet.create({
       },
 });
 
-const renderServiceStatuses = (statuses) => {
-    return statuses.map(it => {
-        return {value: it.id,label :it.name}
-    }) 
-}
-const renderExecutive = (executives) => {
-  //console.warn(executives);
-  return executives.map(it => {
-      return {value: it.id,label :it.name}
-  }) 
-}
+// const renderServiceStatuses = (statuses) => {
+//     return statuses.map(it => {
+//         return {value: it.id,label :it.name}
+//     }) 
+// }
+// const renderExecutive = (executives) => {
+//   //console.warn(executives);
+//   return executives.map(it => {
+//       return {value: it.id,label :it.name}
+//   }) 
+// }

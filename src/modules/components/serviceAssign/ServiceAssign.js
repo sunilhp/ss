@@ -5,7 +5,7 @@
 
 
 import React from 'react'
-import {View, Text, TextInput, Button, Picker, StyleSheet, Platform, DatePickerIOS} from 'react-native'
+import {View, Text, TextInput, Button, Picker, StyleSheet, Platform, DatePickerIOS,Dimensions} from 'react-native'
 import Dropdown from './../../../common/Dropdown';
 import { CustomPicker } from 'react-native-custom-picker';
 import { DatePickerDialog } from 'react-native-datepicker-dialog'
@@ -17,10 +17,15 @@ import moment from 'moment';
 const ServiceAssign = (props) => {
     let renderButton
     let onClick
-    if (props.formtype == 'add') {
+    if (props.formtype == 'add' && props.role == "service") {
         renderButton = assignService
         onClick = props.assignService
-    } else {
+    }
+    else if (props.formtype =='add' && props.role == "leads") {
+        renderButton = assignLead
+        onClick = props.assignService
+    }
+     else {
         renderButton = () => null
         onClick = () => {}
     }
@@ -64,19 +69,15 @@ const ServiceAssign = (props) => {
             <Text style={styles.textStyle} >Appointment time</Text>
             <DatePickerIOS
                 date={props.appointment_time}
-                onDateChange={(date)=> console.warn(date)}
+                minuteInterval={10}
+                onDateChange={(date)=>{
+                    props.onChange('appointmentTime',date)
+                }}
                 />
-
-
-             
             {renderButton(onClick)}
         </View>
     )
 }
-
-
-
-
 
 const assignService = (onClick) => {
     return <Button title='Add' style={styles.buttonsStyle}  onPress={onClick} />
@@ -114,12 +115,13 @@ const styles = StyleSheet.create({
       borderBottomWidth: 1,
       padding:2,
       height:30,
+      width:Dimensions.get('window').width-65,
       fontSize:16
     },
     textStyle:{
         marginTop:20,
         height:30,
-        width:'100%',
+        width: Dimensions.get('window').width-60,
         fontSize:17
     },
     buttonsStyle:{

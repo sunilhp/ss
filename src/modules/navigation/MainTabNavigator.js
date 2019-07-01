@@ -10,6 +10,7 @@ import CalendarScreen from '../calendar/CalendarViewContainer';
 import ManageScreen from '../manage/ManageViewContainer';
 import ComponentsScreen from '../components/ComponentsViewContainer';
 import ServicesScreen from '../services/ServicesViewContainer';
+import LeadsScreen from '../Leads/LeadsViewContainer';
 const iconHome = require('../../../assets/images/tabbar/home.png');
 const iconCalendar = require('../../../assets/images/tabbar/calendar.png');
 const iconGrids = require('../../../assets/images/tabbar/grids.png');
@@ -83,43 +84,57 @@ export default createBottomTabNavigator(
             <Text style={styles.headerCaption}>Service</Text>
           </View>
         ),
-        headerRight: (
-          <View style={{ flexDirection: 'row' }}>
-            <TouchableOpacity
-              onPress={() => {}}
-              style={{
-                paddingRight: 10,
-              }}
-            >
-              <Image
-                source={require('../../../assets/images/phone.png')}
-                resizeMode="contain"
-                style={{
-                  width: 30,
-                  height: 20,
-                }}
-              />
-            </TouchableOpacity>
+        // headerRight: (
+        //   <View style={{ flexDirection: 'row' }}>
+        //     <TouchableOpacity
+        //       onPress={() => {}}
+        //       style={{
+        //         paddingRight: 10,
+        //       }}
+        //     >
+        //       <Image
+        //         source={require('../../../assets/images/phone.png')}
+        //         resizeMode="contain"
+        //         style={{
+        //           width: 30,
+        //           height: 20,
+        //         }}
+        //       />
+        //     </TouchableOpacity>
     
-            <TouchableOpacity
-              onPress={() => {}}
-              style={{
-                paddingRight: 25,
-              }}
-            >
-              <Image
-                source={require('../../../assets/images/camera.png')}
-                resizeMode="contain"
-                style={{
-                  width: 30,
-                  height: 20,
-                }}
-              />
-            </TouchableOpacity>
-          </View>
-        )
+        //     <TouchableOpacity
+        //       onPress={() => {}}
+        //       style={{
+        //         paddingRight: 25,
+        //       }}
+        //     >
+        //       <Image
+        //         source={require('../../../assets/images/camera.png')}
+        //         resizeMode="contain"
+        //         style={{
+        //           width: 30,
+        //           height: 20,
+        //         }}
+        //       />
+        //     </TouchableOpacity>
+        //   </View>
+        // )
       },
     },
+
+    Leads: {
+      screen: LeadsScreen,
+      navigationOptions: {
+        header: (
+          <View style={styles.headerContainer}>
+            <Image style={styles.headerImage} source={hederBackground} />
+            <Text style={styles.headerCaption}>Leads</Text>
+          </View>
+        ),
+      },
+    },
+
+
     Manage: {
       screen: ManageScreen,
       navigationOptions: {
@@ -131,17 +146,17 @@ export default createBottomTabNavigator(
         ),
       },
     },
-    Settings: {
-      screen: ComponentsScreen,
-      navigationOptions: {
-        header: (
-          <View style={styles.headerContainer}>
-            <Image style={styles.headerImage} source={hederBackground} />
-            <Text style={styles.headerCaption}>Components</Text>
-          </View>
-        ),
-      },
-    },
+    // Settings: {
+    //   screen: ComponentsScreen,
+    //   navigationOptions: {
+    //     header: (
+    //       <View style={styles.headerContainer}>
+    //         <Image style={styles.headerImage} source={hederBackground} />
+    //         <Text style={styles.headerCaption}>Components</Text>
+    //       </View>
+    //     ),
+    //   },
+    // },
     },
   {
     defaultNavigationOptions: ({ navigation }) => ({
@@ -157,6 +172,9 @@ export default createBottomTabNavigator(
             iconSource = iconCalendar;
             break;
           case 'Service':
+            iconSource = iconGrids;
+            break;
+          case 'Leads':
             iconSource = iconGrids;
             break;
           case 'Manage':

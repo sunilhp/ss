@@ -5,36 +5,47 @@ import Toast from 'react-native-simple-toast'
 
 import ServiceAssign from './ServiceAssign'
 import SyncStorage from 'sync-storage';
+import { StackNavigator } from 'react-navigation';
 
 class ServiceAssignContainer extends React.Component {
 
     constructor(props) {
         super(props)
-        let id = '', serviceID = '', executiveInfo = [],selectedExecutive ={}, serviceStatus = [], selectedServiceStatus ={}, remark = '', appointmentTime = null;
+        let  serviceID = '', executiveInfo = [],saleExecutiveInfo=[],selectedExecutive ={}, serviceStatus = [],leadsStatus=[], selectedServiceStatus ={}, remark = '', appointmentTime = null;
 
         //if formtype is update then you need to pass the product
-        if (props.service) {
-            id = props.service.id
-            serviceID = props.service.serviceID,
-            executiveInfo = props.service.executiveInfo,
-            serviceStatus = props.service.serviceStatus,
-            remark = props.service.remark,
-            appointmentTime = props.service.appointmentTime
+        // if (props.service) {
+        //     serviceID = props.service.id,
+        //     executiveInfo = props.service.executiveInfo,
+        //     serviceStatus = props.service.serviceStatus,
+        //     remark = props.service.remark,
+        //     appointmentTime = props.service.appointmentTime
+        // }
+        if(props.serviceID)
+        {
+            serviceID  = props.serviceID;
         }
 
         this.state = {
             //executiveInfo has array object of all executive
             //serviceStatus has array object of services
            
-            id ,serviceID ,executiveInfo , serviceStatus , remark ,
+            serviceID ,executiveInfo ,saleExecutiveInfo, serviceStatus ,leadsStatus, remark ,
              appointmentTime: new Date() ,
             state: -1, // 0 or 1 (1 means success, 0 means error)
         }
     }
 
     componentDidMount() {
-        this.getExecutivesDetails()
-        this.getStatuses()
+        if(this.props.role == "service"){
+            this.getExecutivesDetails()
+            this.getStatuses();
+        }
+        else
+        {
+            this.getsalesExecutivesDetails();
+            this.getleadsStatuses();
+        }
     }
 
     onChange = (name, value) => {
@@ -54,6 +65,19 @@ class ServiceAssignContainer extends React.Component {
         } catch (e) {console.warn(e.message)}
     }
 
+    getsalesExecutivesDetails = async () => {
+        try {
+            const res =  await axios.post(`${c.API}/users/get`,{role_id:c.SUPPORT_EXECUTIVE_ROLE_ID},{headers:{ Authorization: 'Bearer '+SyncStorage.get('LOGIN_DETAILS')}});
+            if (res.data.success) { this.setState({ saleExecutiveInfo: res.data.data })}
+        } catch (e) {console.warn("user error",e.message)}
+    }
+    getleadsStatuses = async () => {
+        try {
+            const res =  await axios.post(`${c.API}/leads_status/get`,{headers:{ Authorization: 'Bearer '+SyncStorage.get('LOGIN_DETAILS')}});
+            if (res.data.success) { this.setState({ leadsStatus: res.data.data })}
+        } catch (e) {console.warn(e.message)}
+    }
+
     /**
      * Service assign related functions
      */
@@ -67,10 +91,38 @@ class ServiceAssignContainer extends React.Component {
         }
         try {
             const res = await axios.post(`${c.API}/service_details`, service,{headers:{ Authorization: 'Bearer '+SyncStorage.get('LOGIN_DETAILS')}})
-            if (res.data.success) this.setState({ id :'', serviceID :'', executiveInfo :{}, serviceStatus :{}, remark :'', appointmentTime:'', state: 1})
-            else Toast.show("Service Assigned Successfully!")
+            if (res.data.success) 
+            {
+               // Toast.show("Service Assigned Successfully!");
+                this.props.navigation.goBack();
+            }
+            else
+                Toast.show("Something went wrong!!");
         } catch (e) {
-            console.warn(e)
+            console.warn(this.props.navigation)
+            Toast.show("Something went wrong!")
+        }
+    }
+
+    assignLead = async () => {
+        const lead = {
+            lead_id: this.state.serviceID,
+            assigned_to: this.state.selectedExecutive.id,
+            admin_remark: this.state.remark,
+            appointment_time: this.state.appointmentTime,
+            lead_status: this.state.selectedServiceStatus.id
+        }
+        try {
+            const res = await axios.post(`${c.API}/leads`, service,{headers:{ Authorization: 'Bearer '+SyncStorage.get('LOGIN_DETAILS')}})
+            if (res.data.success) 
+            {
+               // Toast.show("Service Assigned Successfully!");
+                this.props.navigation.goBack();
+            }
+            else
+                Toast.show("Something went wrong!!");
+        } catch (e) {
+            console.warn(this.props.navigation)
             Toast.show("Something went wrong!")
         }
     }
@@ -101,7 +153,7 @@ class ServiceAssignContainer extends React.Component {
     
         return <ServiceAssign
             formtype={this.props.formtype}
-
+            serviceID = {this.props.serviceID}
             //service fields
             
             service_id = {this.state.serviceID}
@@ -115,6 +167,7 @@ class ServiceAssignContainer extends React.Component {
             //functions
             onChange={this.onChange}
             assignService={this.assignService}
+            assignLead = {this.assignLead}
             //updateProduct={this.updateProduct}
         />
     }
