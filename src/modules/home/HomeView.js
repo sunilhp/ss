@@ -52,10 +52,11 @@ class HomeScreen extends React.Component {
  
   getServiceCount = async () => {
     try {
+      
         const res =  await axios.get(`${C.API}/services/count`);
         if (res.data.success) { 
           this.setState({ serviceCount: res.data.data });
-      }
+        }
     } catch (e) {
       console.warn("service count error ",e.message)
     }
@@ -90,7 +91,7 @@ class HomeScreen extends React.Component {
       style={styles.itemImage}
       />
       <Text style={styles.itemText}>All</Text>
-      <Text style={styles.itemCount}>{this.state.serviceCount.Total}</Text>
+      <Text style={styles.itemCount}>{this.state.serviceCount.total}</Text>
     </TouchableOpacity>
         <TouchableOpacity
     onPress={() => props.navigation.navigate({ routeName: 'Gallery' })}
@@ -102,7 +103,7 @@ class HomeScreen extends React.Component {
       style={styles.itemImage}
       />
       <Text style={styles.itemText}>New</Text>
-      <Text style={styles.itemCount}>{this.state.serviceCount.New}</Text>
+      <Text style={styles.itemCount}>{this.state.serviceCount.new}</Text>
     </TouchableOpacity>
         <TouchableOpacity
     onPress={() => props.navigation.navigate({ routeName: 'Profile' })}
@@ -114,7 +115,7 @@ class HomeScreen extends React.Component {
     style={styles.itemImage}
     />
     <Text style={styles.itemText}>Unassigned</Text>
-    <Text style={styles.itemCount}>{this.state.serviceCount.Unassigned}</Text>
+    <Text style={styles.itemCount}>{this.state.serviceCount.unassigned}</Text>
     </TouchableOpacity>
     </View>
       <View style={styles.row}>
@@ -127,7 +128,7 @@ class HomeScreen extends React.Component {
     style={styles.itemImage}
     />
     <Text style={styles.itemText}>Pending</Text>
-    <Text style={styles.itemCount}>{this.state.serviceCount.Pending}</Text>
+    <Text style={styles.itemCount}>{this.state.serviceCount.pending}</Text>
     </TouchableOpacity>
         <TouchableOpacity
     onPress={() => props.navigation.navigate({ routeName: 'Gallery' })}
@@ -139,7 +140,7 @@ class HomeScreen extends React.Component {
     style={styles.itemImage}
     />
     <Text style={styles.itemText}>In Progress</Text>
-    <Text style={styles.itemCount}>{this.state.serviceCount.inProgress}</Text>
+    <Text style={styles.itemCount}>{this.state.serviceCount.progress}</Text>
     </TouchableOpacity>
         <TouchableOpacity
     onPress={() => props.navigation.navigate({ routeName: 'Profile' })}
@@ -151,7 +152,7 @@ class HomeScreen extends React.Component {
     style={styles.itemImage}
     />
     <Text style={styles.itemText} style={{ fontSize: 10, color: 'green' }}>Completed</Text>
-    <Text style={styles.itemCount}>{this.state.serviceCount.Completed}</Text>
+    <Text style={styles.itemCount}>{this.state.serviceCount.completed}</Text>
     </TouchableOpacity>
     </View>
     </View>
@@ -167,7 +168,7 @@ class HomeScreen extends React.Component {
       style={styles.itemImage}
       />
       <Text style={styles.itemText}>All</Text>
-      <Text style={styles.itemCount}>{this.state.leadCount.Total}</Text>
+      <Text style={styles.itemCount}>{this.state.leadCount.total}</Text>
     </TouchableOpacity>
         <TouchableOpacity
     onPress={() => props.navigation.navigate({ routeName: 'Gallery' })}
@@ -179,7 +180,7 @@ class HomeScreen extends React.Component {
       style={styles.itemImage}
       />
       <Text style={styles.itemText}>New</Text>
-      <Text style={styles.itemCount}>{this.state.leadCount.New}</Text>
+      <Text style={styles.itemCount}>{this.state.leadCount.new}</Text>
     </TouchableOpacity>
         <TouchableOpacity
     onPress={() => props.navigation.navigate({ routeName: 'Profile' })}
@@ -191,7 +192,7 @@ class HomeScreen extends React.Component {
     style={styles.itemImage}
     />
     <Text style={styles.itemText}>Unassigned</Text>
-    <Text style={styles.itemCount}>{this.state.leadCount.Unassigned}</Text>
+    <Text style={styles.itemCount}>{this.state.leadCount.unassigned}</Text>
     </TouchableOpacity>
     </View>
       <View style={styles.row}>
@@ -204,7 +205,7 @@ class HomeScreen extends React.Component {
     style={styles.itemImage}
     />
     <Text style={styles.itemText}>Dead</Text>
-    <Text style={styles.itemCount}>{this.state.leadCount.Dead}</Text>
+    <Text style={styles.itemCount}>{this.state.leadCount.dead}</Text>
     </TouchableOpacity>
         <TouchableOpacity
     onPress={() => props.navigation.navigate({ routeName: 'Gallery' })}
@@ -216,7 +217,7 @@ class HomeScreen extends React.Component {
     style={styles.itemImage}
     />
     <Text style={styles.itemText}>Deal Done</Text>
-    <Text style={styles.itemCount}>{this.state.leadCount.DealDone}</Text>
+    <Text style={styles.itemCount}>{this.state.leadCount.deal_done}</Text>
     </TouchableOpacity>
         <TouchableOpacity
     onPress={() => props.navigation.navigate({ routeName: 'Profile' })}
@@ -228,7 +229,7 @@ class HomeScreen extends React.Component {
     style={styles.itemImage}
     />
     <Text style={styles.itemText}>Complete</Text>
-    <Text style={styles.itemCount}>{this.state.leadCount.Completed}</Text>
+    <Text style={styles.itemCount}>{this.state.leadCount.completed}</Text>
     </TouchableOpacity>
     </View>
     <View style={styles.row}>
@@ -242,7 +243,7 @@ class HomeScreen extends React.Component {
       style={styles.itemImage}
       />
       <Text style={styles.itemText}>In Progress</Text>
-      <Text style={styles.itemCount}>{this.state.leadCount.InProgress}</Text>
+      <Text style={styles.itemCount}>{this.state.leadCount.progress}</Text>
       </TouchableOpacity>
     </View>
 
