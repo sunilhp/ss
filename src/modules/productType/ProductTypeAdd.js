@@ -19,7 +19,7 @@ import SyncStorage from 'sync-storage';
 import axios from 'axios';
 
 
-export default class serviceTypeAddScreen extends React.Component {
+export default class productTypeAddScreen extends React.Component {
  
   constructor(props) {
 
@@ -36,7 +36,7 @@ export default class serviceTypeAddScreen extends React.Component {
   };
 
 static navigatioOptions = ({navigation}) => {
-  return{ title: "Edit Service Type" }
+  return{ title: "Edit Product Type" }
 }
 
   onSelect(index, value){
@@ -47,7 +47,7 @@ static navigatioOptions = ({navigation}) => {
 
 navtitle =()=>{
   this.props.navigation.setParams({
-        title:"Update Type"
+        title:"Update Product Type"
 
      })
 }
@@ -105,10 +105,10 @@ this.navtitle();
       name:  this.state.name
     };
     try{
-      const res = await axios.post(`${C.API}/service_type`,newService);
+      const res = await axios.post(`${C.API}/product_type`,newService);
       if(res.data.success)
       {
-        Toast.show("Service Type Added!!")
+        Toast.show("Product Type Added!!")
         this.props.navigation.goBack();
       }
       else

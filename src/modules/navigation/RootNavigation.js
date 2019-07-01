@@ -28,7 +28,8 @@ import CustomerAddScreen from '../customer/CustomerAdd';
 import ServiceTypeScreen from '../serviceType/ServiceTypeViewContainer';
 import ServiceTypeAddScreen from '../serviceType/ServiceTypeAdd';
 import ServicesScreen from '../services/ServicesViewContainer';
-import MachineTypeScreen from '../machineType/MachineTypeViewContainer';
+import ProductTypeScreen from '../productType/ProductTypeViewContainer';
+import ProductTypeAddScreen from '../productType/ProductTypeAdd';
 import RolesScreen from '../roles/RolesViewContainer';
 import RolesAddScreen from '../roles/RolesAdd';
 
@@ -117,6 +118,12 @@ const stackNavigator = createStackNavigator(
       screen: ServiceTypeAddScreen,
       navigationOptions: {
       title: 'Service Type',
+      },
+    },
+   ProductTypeAdd: {
+      screen: ProductTypeAddScreen,
+      navigationOptions: {
+      title: 'Product Type',
       },
     },
     RolesAdd: {
@@ -215,7 +222,7 @@ const stackNavigator = createStackNavigator(
         headerRight: (
           <View style={{ flexDirection: 'row' }}>
              <TouchableOpacity
-               onPress={() => navigation.navigate('CustomerAdd')}
+               onPress={() => navigation.navigate('ServiceTypeAdd')}
                style={{
                  paddingRight: 10,
                }}
@@ -240,11 +247,37 @@ const stackNavigator = createStackNavigator(
         ),
       }),
     },
-    MachineType: {
-      screen: MachineTypeScreen,
-      navigationOptions: {
-        title: 'Machine Type',
-      },
+    ProductType: {
+      screen: ProductTypeScreen,
+      navigationOptions: ({navigation}) => ({
+        title: 'Product Type',
+        headerRight: (
+          <View style={{ flexDirection: 'row' }}>
+             <TouchableOpacity
+               onPress={() => navigation.navigate('ProductTypeAdd')}
+               style={{
+                 paddingRight: 10,
+               }}
+             >
+               <Image
+                 source={require('../../../assets/images/icons/plus.png')}
+                 resizeMode="contain"
+                 style={{
+                   width: 30,
+                   height: 20,
+                 }}
+               />
+             </TouchableOpacity>
+           </View>
+        ),
+        headerBackground: (
+          <Image
+            style={{ flex: 1 }}
+            source={headerBackground}
+            resizeMode="cover"
+          />
+        ),
+      }),
     },
   },
   {

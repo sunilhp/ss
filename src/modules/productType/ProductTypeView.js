@@ -11,16 +11,16 @@ import { colors } from '../../styles';
 import { TextInput } from '../../common';
 import { Text, Caption, Title } from '../../common/StyledText';
 
-export default function MachineTypeScreen(props) {
- 
+export default function ProductTypeScreen(props) {
+  
   const _renderItem = ({ item }) => (
+    
     <TouchableOpacity
       onPress={() =>
         props.navigation.navigate({
-          routeName: 'CustomerAdd',
+          routeName: 'ProductTypeAdd',
           params: {
             title: item.name,
-            id: item.id,
             ...item,
           },
         })
@@ -34,16 +34,15 @@ export default function MachineTypeScreen(props) {
               flexDirection: 'row',
               justifyContent: 'space-between',
             }}
-          
           >
             <Title color={colors.darkGray}>{item.name}</Title>
             {/* <Caption color={colors.lightGray}>{item.time}</Caption> */}
           </View>
-          {/* <View styleName="vertical v-start" style={{ alignSelf: 'stretch' }}>
+          <View styleName="vertical v-start" style={{ alignSelf: 'stretch' }}>
             <Caption color={colors.lightGray} numberOfLines={1}>
-              {item.city} , {item.state}
+              {item.address}
             </Caption>
-          </View> */}
+          </View>
         </View>
       </View>
     </TouchableOpacity>
@@ -51,7 +50,7 @@ export default function MachineTypeScreen(props) {
 
   const _renderNoItemsComponent = () => (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>No Conversations</Text>
+      <Text>No Product Type</Text>
     </View>
   );
 
@@ -60,7 +59,7 @@ export default function MachineTypeScreen(props) {
   let filteredMessages = props.messagesList;
   if (props.searchText) {
     filteredMessages = props.messagesList.filter(
-      message => (message.name.toLowerCase().indexOf(props.searchText.toLowerCase()) !== -1)
+      message => (message.name.indexOf(props.searchText) !== -1),
     );
   }
 
@@ -77,7 +76,7 @@ export default function MachineTypeScreen(props) {
       <FlatList
         style={{ backgroundColor: colors.white }}
         refreshing={props.messagesListLoading}
-        onRefresh={props.loadMessagesList}
+        onRefresh={props.productTypeList}
         ListEmptyComponent={_renderNoItemsComponent}
         data={filteredMessages}
         keyExtractor={_keyExtractor}

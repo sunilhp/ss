@@ -184,7 +184,7 @@ navtitle =()=>{
                         this.setState({ zipcodeError: true });
                     }
                 }
-                    Toast.show("Staff Updated")
+                    Toast.show("User Updated")
                     this.setState({email : ''});
                     this.setState({name  : ''});
                     this.setState({phone : ''});

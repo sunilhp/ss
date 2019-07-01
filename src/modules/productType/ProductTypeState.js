@@ -1,5 +1,5 @@
 import C from '../../../Constants';
-
+import SyncStorage from 'sync-storage';
 
 // Initial state
 const initialState = {
@@ -28,7 +28,7 @@ function loadedMessagesList(messagesList) {
   };
 }
 
- export function  machineList() {
+ export function  productTypeList() {
   return dispatch => {
     dispatch(startMessagesListLoading());
     // TODO: Load messages list here
@@ -39,9 +39,10 @@ function loadedMessagesList(messagesList) {
       method: 'POST',
       headers: {
           Accept: 'application/json',
+          Authorization: 'Bearer '+SyncStorage.get('LOGIN_DETAILS'),
           'Content-Type': 'application/json',
       },
-      body: JSON.stringify(),
+     // body: JSON.stringify(""),
       })
       .then((response) => response.json())
       .then((responseJson) => { 
@@ -53,8 +54,11 @@ function loadedMessagesList(messagesList) {
            var tmp = {};
            tmp.id = rs[i].id;
            tmp.time = rs[i].created_on;
+   
            tmp.name = rs[i].name;
-          
+           tmp.city = rs[i].city;
+           tmp.state = rs[i].state;
+           
            messagesList.push(tmp);
         }
 
@@ -68,37 +72,8 @@ function loadedMessagesList(messagesList) {
   };
 }
 
-function loadedMessages(userId, messages) {
-  return {
-    type: MESSAGES_LOADED,
-    userId,
-    messages,
-  };
-}
-
-function newMessageSent(userId, message) {
-  return {
-    type: MESSAGE_SENT,
-    userId,
-    message,
-  };
-}
-
-export function loadMessages(userId) {
-  return dispatch => {
-    dispatch(loadedMessages(userId, messagesBackend[userId]));
-  };
-}
-
-export function sendMessage(userId, message) {
-  return dispatch => {
-    // Send message here
-    dispatch(newMessageSent(userId, message));
-  };
-}
-
 // Reducer
-export default function MachineStateReducer(state = initialState, action = {}) {
+export default function RolesStateReducer(state = initialState, action = {}) {
   switch (action.type) {
     case MESSAGES_LIST_START_LOADING:
       return Object.assign({}, state, {
@@ -114,26 +89,6 @@ export default function MachineStateReducer(state = initialState, action = {}) {
         messages: {
           ...state.messages,
           [action.userId]: action.messages,
-        },
-      });
-    case MESSAGE_SENT:
-      return Object.assign({}, state, {
-        messages: {
-          ...state.messages,
-          [action.userId]: [
-            ...state.messages[action.userId],
-            {
-              _id: Math.round(Math.random() * 1000000),
-              text: action.message,
-              createdAt: new Date(),
-              user: {
-                _id: 1,
-                name: 'Developer',
-              },
-              sent: true,
-              received: true,
-            },
-          ],
         },
       });
     default:
