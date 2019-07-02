@@ -156,6 +156,7 @@ class ServiceAssignContainer extends React.Component {
         {
         return <ServiceAssign
             formtype={this.props.formtype}
+            role={this.props.role}
             serviceID = {this.props.serviceID}
             //service fields
             

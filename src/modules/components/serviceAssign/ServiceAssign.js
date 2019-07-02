@@ -17,6 +17,7 @@ import moment from 'moment';
 const ServiceAssign = (props) => {
     let renderButton
     let onClick
+    
     if (props.formtype == 'add' && props.role == "service") {
         renderButton = assignService
         onClick = props.assignService
@@ -83,7 +84,9 @@ const assignService = (onClick) => {
     return <Button title='Add' style={styles.buttonsStyle}  onPress={onClick} />
 }
 
-   
+const assignLead = (onClick) => {
+    return <Button title='Add' style={styles.buttonsStyle}  onPress={onClick} />
+}  
 const renderUpdateButton = (onClick) => {
     return <Button title='Update' style={styles.buttonsStyle} onPress={onClick} />
 }
