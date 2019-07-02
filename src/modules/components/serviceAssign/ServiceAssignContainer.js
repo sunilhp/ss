@@ -6,6 +6,7 @@ import Toast from 'react-native-simple-toast'
 import ServiceAssign from './ServiceAssign'
 import SyncStorage from 'sync-storage';
 import { StackNavigator } from 'react-navigation';
+import { withNavigation } from 'react-navigation';
 
 class ServiceAssignContainer extends React.Component {
 
@@ -71,7 +72,6 @@ class ServiceAssignContainer extends React.Component {
             if (res.data.success) { this.setState({ saleExecutiveInfo: res.data.data })}
         } catch (e) {console.warn("user error",e.message)}
     }
-
     getleadsStatuses = async () => {
         try {
             const res =  await axios.post(`${c.API}/lead_status/get`,{headers:{ Authorization: 'Bearer '+SyncStorage.get('LOGIN_DETAILS')}});
@@ -94,13 +94,12 @@ class ServiceAssignContainer extends React.Component {
             const res = await axios.post(`${c.API}/service_details`, service,{headers:{ Authorization: 'Bearer '+SyncStorage.get('LOGIN_DETAILS')}})
             if (res.data.success) 
             {
-               // Toast.show("Service Assigned Successfully!");
+                Toast.show("Service Assigned Successfully!");
                 this.props.navigation.goBack();
             }
             else
                 Toast.show("Something went wrong!!");
         } catch (e) {
-            console.warn(this.props.navigation)
             Toast.show("Something went wrong!")
         }
     }
@@ -114,17 +113,16 @@ class ServiceAssignContainer extends React.Component {
             lead_status: this.state.selectedServiceStatus.id
         }
         try {
-            const res = await axios.post(`${c.API}/leads`, service,{headers:{ Authorization: 'Bearer '+SyncStorage.get('LOGIN_DETAILS')}})
+            const res = await axios.post(`${c.API}/leads_details`, lead,{headers:{ Authorization: 'Bearer '+SyncStorage.get('LOGIN_DETAILS')}})
             if (res.data.success) 
             {
-               // Toast.show("Service Assigned Successfully!");
+                Toast.show("Lead Assigned Successfully!");
                 this.props.navigation.goBack();
             }
             else
                 Toast.show("Something went wrong!!");
         } catch (e) {
-            console.warn(this.props.navigation)
-            Toast.show("Something went wrong!")
+            console.warn("Something went wrong!!")
         }
     }
 
@@ -151,9 +149,18 @@ class ServiceAssignContainer extends React.Component {
     }
 
     render() {
-    
-        if(this.props.role == "service")
-        {
+        
+        let assignedTo = "";
+        let jobStatus = "";
+
+        if(this.props.role == "service"){
+            assignedTo = this.state.executiveInfo;
+            jobStatus = this.state.serviceStatus;
+        }
+        else {
+            assignedTo = this.state.saleExecutiveInfo;
+            jobStatus = this.state.leadsStatus;
+        }
         return <ServiceAssign
             formtype={this.props.formtype}
             role={this.props.role}
@@ -161,10 +168,10 @@ class ServiceAssignContainer extends React.Component {
             //service fields
             
             service_id = {this.state.serviceID}
-            assigned_to = {this.state.executiveInfo}
+            assigned_to = {assignedTo}
             admin_remark = {this.state.remark}
             appointment_time = {this.state.appointmentTime}
-            job_status = {this.state.serviceStatus}
+            job_status = {jobStatus}
             
             state={this.state.state}
 
@@ -174,30 +181,8 @@ class ServiceAssignContainer extends React.Component {
             assignLead = {this.assignLead}
             //updateProduct={this.updateProduct}
         />
-        }
-        else
-        {
-            return <ServiceAssign
-            formtype={this.props.formtype}
-            serviceID = {this.props.serviceID}
-            //service fields
-            
-            service_id = {this.state.serviceID}
-            assigned_to = {this.state.saleExecutiveInfo}
-            admin_remark = {this.state.remark}
-            appointment_time = {this.state.appointmentTime}
-            job_status = {this.state.leadsStatus}
-            
-            state={this.state.state}
-
-            //functions
-            onChange={this.onChange}
-            assignService={this.assignService}
-            assignLead = {this.assignLead}
-            //updateProduct={this.updateProduct}
-        />
-        }
     }
 }
 
-export default ServiceAssignContainer
+//export default ServiceAssignContainer
+export default withNavigation(ServiceAssignContainer);

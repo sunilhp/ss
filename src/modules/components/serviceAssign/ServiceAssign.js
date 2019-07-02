@@ -19,11 +19,11 @@ const ServiceAssign = (props) => {
     let onClick
     
     if (props.formtype == 'add' && props.role == "service") {
-        renderButton = assignService
+        renderButton = renderServiceButton
         onClick = props.assignService
     }
     else if (props.formtype =='add' && props.role == "leads") {
-        renderButton = assignLead
+        renderButton = renderLeadButton
         onClick = props.assignLead
     }
      else {
@@ -80,13 +80,15 @@ const ServiceAssign = (props) => {
     )
 }
 
-const assignService = (onClick) => {
+const renderServiceButton = (onClick) => {
     return <Button title='Add' style={styles.buttonsStyle}  onPress={onClick} />
 }
 
-const assignLead = (onClick) => {
+const renderLeadButton = (onClick) => {
     return <Button title='Add' style={styles.buttonsStyle}  onPress={onClick} />
 }  
+
+
 const renderUpdateButton = (onClick) => {
     return <Button title='Update' style={styles.buttonsStyle} onPress={onClick} />
 }
