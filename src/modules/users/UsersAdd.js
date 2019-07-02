@@ -10,12 +10,15 @@ import {
   TouchableOpacity,
   ImageBackground,
   ScrollView,
+  DatePickerIOS,
 } from 'react-native';
 import C from '../../../Constants';
 import { TextInput, Button } from '../../common';
 import {RadioGroup,RadioButton} from 'react-native-flexi-radio-button'
 import Toast from 'react-native-simple-toast';
 import SyncStorage from 'sync-storage';
+import { CustomPicker } from 'react-native-custom-picker';
+import axios from 'axios'
 
 
 export default class usersAddScreen extends React.Component {
@@ -47,7 +50,12 @@ export default class usersAddScreen extends React.Component {
     addressError: false,
     cityError: false,
     passwordError: false,
-    zipcodeError: false
+    zipcodeError: false,
+    userRoles : [],
+    userRoleId:'',
+    userRoleName:'',
+    dob: new Date(),
+    doj: new Date()
   };
 
 static navigatioOptions = ({navigation}) => {
@@ -94,7 +102,10 @@ navtitle =()=>{
     }
     else
         this.setState({ usersIndex :0});
-    
+    //calling function to fetch user roles
+    this.getUserRoles();
+
+
     this.keyboardDidShowListener = Keyboard.addListener(
       Platform.select({ android: 'keyboardDidShow', ios: 'keyboardWillShow' }),
       this._keyboardDidShow.bind(this),
@@ -123,6 +134,13 @@ navtitle =()=>{
     LayoutAnimation.easeInEaseOut();
     this.setState({ isKeyboardVisible: false });
   }
+//fetching user roles from API
+  getUserRoles = async () => {
+    try {
+        const res =  await axios.post(`${C.API}/user_roles/get`,{headers:{ Authorization: 'Bearer '+SyncStorage.get('LOGIN_DETAILS')}});
+        if (res.data.success) { this.setState({ userRoles: res.data.data })}
+    } catch (e) {console.warn(e.message)}
+}
 
   submitForm(){ 
     if(this.props.navigation.state.params)
@@ -134,14 +152,15 @@ navtitle =()=>{
             pwd = this.state.password;
         let user = {
             id: this.props.navigation.state.params.id,
+           
             name:  this.state.name,
             email:  this.state.email,
             phone:  this.state.phone,
             address:  this.state.address,
-            password:  pwd,
-            city:  this.state.city,
-            state:  this.state.ustate,
-            zipcode:  this.state.zipcode,
+            password:  pwd, 
+            dob: this.state.dob,
+            doj:this.state.doj,
+            role_id:this.state.userRoleId,
             status: this.state.cstate
         };
     
@@ -209,10 +228,10 @@ navtitle =()=>{
             email:  this.state.email,
             phone:  this.state.phone,
             address:  this.state.address,
-            password:  this.state.password,
-            city:  this.state.city,
-            state:  this.state.ustate,
-            zipcode:  this.state.zipcode,
+            password:  this.state.password, 
+            dob: this.state.dob,
+            doj:this.state.doj,
+            role_id:this.state.userRoleId,
             status: this.state.cstate
         };
     
@@ -318,7 +337,16 @@ navtitle =()=>{
          <Animated.View
             // style={[styles.section, styles.middle, this.fadeIn(700, -20)]}
           >
-        
+            <TextInput
+              maxLength={50}
+              onChangeText={(name) => this.setState({ name , nameError:false})}
+              onSubmitEditing={() => this.name.focus()}
+              placeholder="Name"
+              returnKeyType="next"
+              style={[styles.textInput, this.state.nameError? styles.error:null]}
+              autoCorrect={false}
+              value={this.state.name}
+            />
             <TextInput
               autoCapitalize="none"
               keyboardType="email-address"
@@ -331,28 +359,6 @@ navtitle =()=>{
               value={this.state.email}
               autoCorrect={false}
               
-            />
-            <TextInput
-              autoCapitalize="none"
-              maxLength={20}
-              onChangeText={(password) => this.setState({ password , passwordError:false})}
-              onSubmitEditing={() => this.password.focus()}
-              placeholder="Password"
-              returnKeyType="next"
-              secureTextEntry={true}
-              style={[styles.textInput, this.state.passwordError? styles.error:null]}
-              autoCorrect={false}
-              value={this.state.password}
-            />
-            <TextInput
-              maxLength={50}
-              onChangeText={(name) => this.setState({ name , nameError:false})}
-              onSubmitEditing={() => this.name.focus()}
-              placeholder="Name"
-              returnKeyType="next"
-              style={[styles.textInput, this.state.nameError? styles.error:null]}
-              autoCorrect={false}
-              value={this.state.name}
             />
             <TextInput
               maxLength={20}
@@ -372,6 +378,50 @@ navtitle =()=>{
               autoCorrect={false}
               value={this.state.address}
             />
+            <TextInput
+              autoCapitalize="none"
+              maxLength={20}
+              onChangeText={(password) => this.setState({ password , passwordError:false})}
+              onSubmitEditing={() => this.password.focus()}
+              placeholder="Password"
+              returnKeyType="next"
+              secureTextEntry={true}
+              style={[styles.textInput, this.state.passwordError? styles.error:null]}
+              autoCorrect={false}
+              value={this.state.password}
+            />
+            <Text>User Role</Text>
+            <CustomPicker 
+              options={renderUserRoles(this.state.userRoles)}
+             
+              value={{label: this.state.userRoleName ,value: this.state.userRoleId }}
+              
+              getLabel={(item) => item.label}
+              onValueChange={(value, i) => {
+                this.state.userRoleId = value.value;
+                this.state.userRoleName = value.label;
+                 // props.onChange('selectedServiceStatus', { id: value.value, name: value.label })
+              }}
+            />
+            <Text>Date of Birth</Text>
+            <DatePickerIOS
+              date={this.state.dob}
+             // minuteInterval={10}
+              onDateChange={(date)=>{
+                this.state.dob = date;
+                 // props.onChange('appointmentTime',date)
+              }}
+            />
+            <Text> Date of Joining</Text>
+            <DatePickerIOS
+              date={this.state.doj}
+              minuteInterval={10}
+              onDateChange={(date)=>{
+                this.state.doj = date;
+                 // props.onChange('appointmentTime',date)
+              }}
+            />
+
 
             <RadioGroup
                 size={24}
@@ -403,6 +453,12 @@ navtitle =()=>{
       </ImageBackground>
     );
   }
+}
+
+const renderUserRoles = (userRolesList) => {
+  return userRolesList.map(it => {
+      return {value: it.id,label :it.name}
+  }) 
 }
 
 const styles = StyleSheet.create({
