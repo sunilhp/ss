@@ -21,7 +21,7 @@ fetch(`${C.API}/leads/get`, {
   .then((responseJson) => { 
     tmpres = responseJson;
     rs = tmpres.data;
-    for(i=0;i<rs.length;i++)
+    for(let i=0;i<rs.length;i++)
     { 
       var tmp = {};
       tmp.id = rs[i].id; 
@@ -39,16 +39,15 @@ fetch(`${C.API}/leads/get`, {
         unassigned_lead_data.push(tmp);
       if(rs[i].status == "New")
         new_lead_data.push(tmp);
-      if(rs[i].status == "In Progress")
+      if(rs[i].status == "In-Progress")
         progress_lead_data.push(tmp);
-      if(rs[i].status == "Deal Done")
+      if(rs[i].status == "Deal-Done")
         dealDone_lead_data.push(tmp);
       if(rs[i].status == "Dead")
         dead_lead_data.push(tmp);
       if(rs[i].status == "Completed")
         completed_lead_data.push(tmp);
     }
-
   })
   .catch(err => {console.warn("error is "+err) })
   .done();

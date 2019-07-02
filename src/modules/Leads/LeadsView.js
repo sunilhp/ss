@@ -19,7 +19,7 @@ export default class ServicesScreen extends React.Component {
  
   _getRenderItemFunction = () =>
   
-    [this.RenderRow,this.RenderRow, this.RenderRow, this.RenderRow][
+    [this.RenderRow,this.RenderRow,this.RenderRow, this.RenderRow, this.RenderRow][
       this.props.tabIndex
     ];
   _openArticle = lead => {
@@ -59,7 +59,7 @@ export default class ServicesScreen extends React.Component {
   render() {
 
     const groupedData =
-      this.props.tabIndex === 0 ? this.props.unassigned_leads : this.props.tabIndex === 1 ? this.props.new_leads : this.props.tabIndex === 2 ? this.props.progress_leads : this.props.tabIndex === 3 ? this.props.dead_leads : this.props.tabIndex === 4 ? this.props.dead_leads : this.props.completed_leads ;
+      this.props.tabIndex === 0 ? this.props.unassigned_leads : this.props.tabIndex === 1 ? this.props.new_leads : this.props.tabIndex === 2 ? this.props.progress_leads : this.props.tabIndex === 3 ? this.props.dead_leads : this.props.tabIndex === 4 ? this.props.dealDone_leads : this.props.completed_leads ;
 
     return (
       

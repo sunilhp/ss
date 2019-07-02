@@ -18,42 +18,41 @@ fetch(`${C.API}/services/get`, {
   })
   .then((response) => response.json())
   .then((responseJson) => { 
-    tmpres = responseJson;
-
-    rs = tmpres.data;
-    for(i=0;i<rs.length;i++)
+    myres = responseJson;
+    let serviceresp = myres.data;
+    for(let i=0;i<serviceresp.length;i++)
     { 
        var tmp = {};
-       tmp.id = rs[i].id; 
-       tmp.priority = rs[i].priority;
-       tmp.images = rs[i].service_images;
-       tmp.createdOn =rs[i].created_on;
-       tmp.message = rs[i].message;
-       tmp.serviceType = rs[i].service_type.name;
-       tmp.serviceTypeId = rs[i].service_type.id;
-       tmp.productId = rs[i].product.id;
-       tmp.product = rs[i].product.name;
-       tmp.productTypeId = rs[i].product_type.id;
-       tmp.productType = rs[i].product_type.name;
-       tmp.productDescription = rs[i].description;
-       tmp.customerId = rs[i].customer.id;
-       tmp.customerName = rs[i].customer.name;
-       tmp.customerCity = rs[i].customer.city;
-       tmp.customerState = rs[i].customer.state;
-       tmp.customerEmail = rs[i].customer.email;
-       tmp.customerPhone = rs[i].customer.phone;
-       tmp.customerAddress = rs[i].customer.address;
-       tmp.customerZipcode = rs[i].customer.zipcode;
+       tmp.id = serviceresp[i].id; 
+       tmp.priority = serviceresp[i].priority;
+       tmp.images = serviceresp[i].service_images;
+       tmp.createdOn =serviceresp[i].created_on;
+       tmp.message = serviceresp[i].message;
+       tmp.serviceType = serviceresp[i].service_type.name;
+       tmp.serviceTypeId = serviceresp[i].service_type.id;
+       tmp.productId = serviceresp[i].product.id;
+       tmp.product = serviceresp[i].product.name;
+       tmp.productTypeId = serviceresp[i].product_type.id;
+       tmp.productType = serviceresp[i].product_type.name;
+       tmp.productDescription = serviceresp[i].description;
+       tmp.customerId = serviceresp[i].customer.id;
+       tmp.customerName = serviceresp[i].customer.name;
+       tmp.customerCity = serviceresp[i].customer.city;
+       tmp.customeservicereSptate = serviceresp[i].customer.state;
+       tmp.customerEmail = serviceresp[i].customer.email;
+       tmp.customerPhone = serviceresp[i].customer.phone;
+       tmp.customerAddress = serviceresp[i].customer.address;
+       tmp.customerZipcode = serviceresp[i].customer.zipcode;
        
-       if(rs[i].state == "Unassigned")
+       if(serviceresp[i].state == "Unassigned")
        unassigned_service_data.push(tmp);
-       if(rs[i].state == "New")
+       if(serviceresp[i].state == "New")
         new_service_data.push(tmp);
-       if(rs[i].state == "In Progress")
+       if(serviceresp[i].state == "In Progress")
         progress_service_data.push(tmp);
-       if(rs[i].state == "Pending")
+       if(serviceresp[i].state == "Pending")
         pending_service_data.push(tmp);
-       if(rs[i].state == "Completed")
+       if(serviceresp[i].state == "Completed")
         completed_service_data.push(tmp);
     }
   })

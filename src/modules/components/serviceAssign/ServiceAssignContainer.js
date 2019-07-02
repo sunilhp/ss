@@ -71,9 +71,10 @@ class ServiceAssignContainer extends React.Component {
             if (res.data.success) { this.setState({ saleExecutiveInfo: res.data.data })}
         } catch (e) {console.warn("user error",e.message)}
     }
+
     getleadsStatuses = async () => {
         try {
-            const res =  await axios.post(`${c.API}/leads_status/get`,{headers:{ Authorization: 'Bearer '+SyncStorage.get('LOGIN_DETAILS')}});
+            const res =  await axios.post(`${c.API}/lead_status/get`,{headers:{ Authorization: 'Bearer '+SyncStorage.get('LOGIN_DETAILS')}});
             if (res.data.success) { this.setState({ leadsStatus: res.data.data })}
         } catch (e) {console.warn(e.message)}
     }
@@ -151,6 +152,8 @@ class ServiceAssignContainer extends React.Component {
 
     render() {
     
+        if(this.props.role == "service")
+        {
         return <ServiceAssign
             formtype={this.props.formtype}
             serviceID = {this.props.serviceID}
@@ -170,6 +173,29 @@ class ServiceAssignContainer extends React.Component {
             assignLead = {this.assignLead}
             //updateProduct={this.updateProduct}
         />
+        }
+        else
+        {
+            return <ServiceAssign
+            formtype={this.props.formtype}
+            serviceID = {this.props.serviceID}
+            //service fields
+            
+            service_id = {this.state.serviceID}
+            assigned_to = {this.state.saleExecutiveInfo}
+            admin_remark = {this.state.remark}
+            appointment_time = {this.state.appointmentTime}
+            job_status = {this.state.leadsStatus}
+            
+            state={this.state.state}
+
+            //functions
+            onChange={this.onChange}
+            assignService={this.assignService}
+            assignLead = {this.assignLead}
+            //updateProduct={this.updateProduct}
+        />
+        }
     }
 }
 

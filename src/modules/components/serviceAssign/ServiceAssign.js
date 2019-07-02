@@ -23,7 +23,7 @@ const ServiceAssign = (props) => {
     }
     else if (props.formtype =='add' && props.role == "leads") {
         renderButton = assignLead
-        onClick = props.assignService
+        onClick = props.assignLead
     }
      else {
         renderButton = () => null
