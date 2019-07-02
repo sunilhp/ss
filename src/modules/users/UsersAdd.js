@@ -26,6 +26,7 @@ export default class usersAddScreen extends React.Component {
   constructor(props) {
 
       super(props);
+      parameters = this.props.navigation.state.params;
   }
    
   state = {
@@ -55,7 +56,8 @@ export default class usersAddScreen extends React.Component {
     userRoleId:'',
     userRoleName:'',
     dob: new Date(),
-    doj: new Date()
+    doj: new Date(),
+    parameters:""
   };
 
 static navigatioOptions = ({navigation}) => {
@@ -76,7 +78,7 @@ navtitle =()=>{
 }
   componentWillMount() {
     this.navtitle();
-
+    console.warn(parameters);
     if(this.props.navigation.state.params)
     {
         if(this.props.navigation.state.params.status == true)
@@ -143,8 +145,8 @@ navtitle =()=>{
 }
 
   submitForm(){ 
-    if(this.props.navigation.state.params)
-    {
+    
+    if(parameters){
         var pwd = "";
         if(this.state.password == "")
             pwd = this.props.navigation.state.params.password;
@@ -178,40 +180,40 @@ navtitle =()=>{
         
                 if(!responseJson.status){
 
-                    if(responseJson.message.name){
-                        this.setState({ nameError: true });
-                    }
-                    if(responseJson.message.city){
-                        this.setState({ cityError: true });
-                    }
-                    if(responseJson.message.state){
-                        this.setState({ stateError: true });
-                    }
-                    if(responseJson.message.email){
-                        this.setState({ emailError: true });
-                    }
-                    if(responseJson.message.password){
-                        this.setState({ passwordError: true });
-                    }
-                    if(responseJson.message.phone){
-                        this.setState({ phoneError: true });
-                    }
-                    if(responseJson.message.address){
-                        this.setState({ addressError: true });
-                    }
-                    if(responseJson.message.zipcode){
-                        this.setState({ zipcodeError: true });
-                    }
+                    // if(responseJson.message.name){
+                    //     this.setState({ nameError: true });
+                    // }
+                    // if(responseJson.message.city){
+                    //     this.setState({ cityError: true });
+                    // }
+                    // if(responseJson.message.state){
+                    //     this.setState({ stateError: true });
+                    // }
+                    // if(responseJson.message.email){
+                    //     this.setState({ emailError: true });
+                    // }
+                    // if(responseJson.message.password){
+                    //     this.setState({ passwordError: true });
+                    // }
+                    // if(responseJson.message.phone){
+                    //     this.setState({ phoneError: true });
+                    // }
+                    // if(responseJson.message.address){
+                    //     this.setState({ addressError: true });
+                    // }
+                    // if(responseJson.message.zipcode){
+                    //     this.setState({ zipcodeError: true });
+                    // }
                 }
                     Toast.show("User Updated")
-                    this.setState({email : ''});
-                    this.setState({name  : ''});
-                    this.setState({phone : ''});
-                    this.setState({password   : ''});
-                    this.setState({address :''});
-                    this.setState({city :''});
-                    this.setState({ustate:''});
-                    this.setState({zipcode:''});
+                    // this.setState({email : ''});
+                    // this.setState({name  : ''});
+                    // this.setState({phone : ''});
+                    // this.setState({password   : ''});
+                    // this.setState({address :''});
+                    // this.setState({city :''});
+                    // this.setState({ustate:''});
+                    // this.setState({zipcode:''});
             })
             .catch(err => {console.warn(err) })
             .done();
@@ -221,8 +223,7 @@ navtitle =()=>{
             //   })
             this.props.navigation.goBack();
     }
-    else
-    {
+    else{
         let user = {
             name:  this.state.name,
             email:  this.state.email,
@@ -234,12 +235,12 @@ navtitle =()=>{
             role_id:this.state.userRoleId,
             status: this.state.cstate
         };
-    
+    console.warn("details are : ",user)
         fetch(`${C.API}/users`, {
             method: 'POST',
             headers: {
                 Accept: 'application/json',
-                Authorization: 'Bearer '+SyncStorage.set('LOGIN_DETAILS'),
+                Authorization: 'Bearer '+SyncStorage.get('LOGIN_DETAILS'),
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(user),
@@ -247,44 +248,44 @@ navtitle =()=>{
             .then((response) => response.json())
             .then((responseJson) => {
         
-                if(!responseJson.status){
+                // if(!responseJson.status){
 
-                    if(responseJson.message.name){
-                        this.setState({ nameError: true });
-                    }
-                    if(responseJson.message.city){
-                        this.setState({ cityError: true });
-                    }
-                    if(responseJson.message.state){
-                        this.setState({ stateError: true });
-                    }
-                    if(responseJson.message.email){
-                        this.setState({ emailError: true });
-                    }
-                    if(responseJson.message.password){
-                        this.setState({ passwordError: true });
-                    }
-                    if(responseJson.message.phone){
-                        this.setState({ phoneError: true });
-                    }
-                    if(responseJson.message.address){
-                        this.setState({ addressError: true });
-                    }
-                    if(responseJson.message.zipcode){
-                        this.setState({ zipcodeError: true });
-                    }
-                }
+                //     if(responseJson.message.name){
+                //         this.setState({ nameError: true });
+                //     }
+                //     if(responseJson.message.city){
+                //         this.setState({ cityError: true });
+                //     }
+                //     if(responseJson.message.state){
+                //         this.setState({ stateError: true });
+                //     }
+                //     if(responseJson.message.email){
+                //         this.setState({ emailError: true });
+                //     }
+                //     if(responseJson.message.password){
+                //         this.setState({ passwordError: true });
+                //     }
+                //     if(responseJson.message.phone){
+                //         this.setState({ phoneError: true });
+                //     }
+                //     if(responseJson.message.address){
+                //         this.setState({ addressError: true });
+                //     }
+                //     if(responseJson.message.zipcode){
+                //         this.setState({ zipcodeError: true });
+                //     }
+                // }
                 if(responseJson.success)
                 {
                     Toast.show("User added")
-                    this.setState({email : ''});
-                    this.setState({name  : ''});
-                    this.setState({phone : ''});
-                    this.setState({password   : ''});
-                    this.setState({address :''});
-                    this.setState({city :''});
-                    this.setState({ustate:''});
-                    this.setState({zipcode:''});
+                    // this.setState({email : ''});
+                    // this.setState({name  : ''});
+                    // this.setState({phone : ''});
+                    // this.setState({password   : ''});
+                    // this.setState({address :''});
+                    // this.setState({city :''});
+                    // this.setState({ustate:''});
+                    // this.setState({zipcode:''});
                     this.props.navigation.goBack();
                 }
                 else
@@ -304,12 +305,9 @@ navtitle =()=>{
             })
             .catch(err => {console.warn(err) })
             .done();
-            // this.props.navigation.navigate({
-            //     routeName: 'Customer',
-               
-            //   })
+            
            
-        }
+    }
   }
 
   loginUser(email, password){ /* email and password based authentication with Deployd */
