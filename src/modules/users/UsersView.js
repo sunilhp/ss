@@ -35,7 +35,7 @@ export default function UsersScreen(props) {
               justifyContent: 'space-between',
             }}
           >
-            <Title color={colors.darkGray}>{item.name}( {item.rolename} )</Title>
+            <Title color={colors.darkGray}>{item.name}( {item.roleName} )</Title>
             {/* <Caption color={colors.lightGray}>{item.time}</Caption> */}
           </View>
           <View styleName="vertical v-start" style={{ alignSelf: 'stretch' }}>

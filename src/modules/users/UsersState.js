@@ -59,22 +59,21 @@ function loadedMessagesList(messagesList) {
         tmpres = responseJson;
 
         rs = tmpres.data;
-        
+
         for(i=0;i<rs.length;i++)
         {
            var tmp = {};
-           tmp.id = rs[i].id;
-           tmp.time = rs[i].created_on;
-   
+           tmp.id = rs[i].id;   
            tmp.name = rs[i].name;
-           tmp.city = rs[i].city;
-           tmp.state = rs[i].state;
+           tmp.address = rs[i].address;
+           tmp.dob = rs[i].dob;
+           tmp.doj = rs[i].doj;
            tmp.email = rs[i].email;
            tmp.phone = rs[i].phone;
-           tmp.address = rs[i].address;
-           tmp.zipcode = rs[i].zipcode;
            tmp.status = rs[i].status;
-           tmp.rolename = rs[i].role.name;
+           tmp.createdOn = rs[i].created_on;
+           tmp.roleName = rs[i].role.name;
+           tmp.roleId = rs[i].role.role_id;
            messagesList.push(tmp);
         }
 

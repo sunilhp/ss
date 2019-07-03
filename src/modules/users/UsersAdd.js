@@ -26,7 +26,7 @@ export default class usersAddScreen extends React.Component {
   constructor(props) {
 
       super(props);
-      parameters = this.props.navigation.state.params;
+   // let parameters = this.props.navigation.state.params;
   }
    
   state = {
@@ -57,7 +57,7 @@ export default class usersAddScreen extends React.Component {
     userRoleName:'',
     dob: new Date(),
     doj: new Date(),
-    parameters:""
+    parameters: this.props.navigation.state.params
   };
 
 static navigatioOptions = ({navigation}) => {
@@ -78,35 +78,36 @@ navtitle =()=>{
 }
   componentWillMount() {
     this.navtitle();
-    console.warn(parameters);
-    if(this.props.navigation.state.params)
-    {
-        if(this.props.navigation.state.params.status == true)
-        {
-            this.setState({ usersIndex :0});
-        }
-        else
-        {
-            this.setState({ usersIndex : 1});
-        }
 
-        this.setState({
-            email : this.props.navigation.state.params.email,
-            name : this.props.navigation.state.params.name,
-            phone : this.props.navigation.state.params.phone,
-            password : this.props.navigation.state.params.password,
-            address : this.props.navigation.state.params.address,
-            city : this.props.navigation.state.params.city,
-            ustate : this.props.navigation.state.params.state,
-            zipcode : this.props.navigation.state.params.zipcode,
-            cstate : this.props.navigation.state.params.status
-        });
+    if(this.state.parameters)
+    {
+      if(this.state.parameters.status == true)
+      {
+          this.setState({ usersIndex :0});
+      }
+      else
+      {
+          this.setState({ usersIndex : 1});
+      }
+      this.setState({
+        name: this.state.parameters.name,
+        email: this.state.parameters.email,
+        phone: this.state.parameters.phone,
+        address: this.state.parameters.address,
+        password: this.state.parameters.password, 
+        dob: this.state.parameters.dob,
+        doj:this.state.parameters.doj,
+        role_id:this.state.parameters.roleId,
+        status: this.state.parameters.status,
+
+        userRoleId:this.state.parameters.roleId,
+        userRoleName:this.state.parameters.roleName
+      });
     }
     else
-        this.setState({ usersIndex :0});
+      this.setState({ usersIndex :0});
     //calling function to fetch user roles
     this.getUserRoles();
-
 
     this.keyboardDidShowListener = Keyboard.addListener(
       Platform.select({ android: 'keyboardDidShow', ios: 'keyboardWillShow' }),
@@ -118,9 +119,6 @@ navtitle =()=>{
     );
   }
 
-  componentDidMount() {
-   // Animated.timing(this.state.anim, { toValue: 3000, duration: 3000 }).start();
-  }
 
   componentWillUnmount() {
     this.keyboardDidShowListener.remove();
@@ -145,15 +143,14 @@ navtitle =()=>{
 }
 
   submitForm(){ 
-    
-    if(parameters){
+    if(this.state.parameters){
         var pwd = "";
         if(this.state.password == "")
-            pwd = this.props.navigation.state.params.password;
+            pwd = this.state.parameters.password;
         else
             pwd = this.state.password;
         let user = {
-            id: this.props.navigation.state.params.id,
+            id: this.state.parameters.id,
            
             name:  this.state.name,
             email:  this.state.email,
@@ -165,12 +162,12 @@ navtitle =()=>{
             role_id:this.state.userRoleId,
             status: this.state.cstate
         };
-    
+        
         fetch(`${C.API}/users/update`, {
             method: 'POST',
             headers: {
                 Accept: 'application/json',
-                Authorization: 'Bearer '+SyncStorage.set('LOGIN_DETAILS'),
+                Authorization: 'Bearer '+SyncStorage.get('LOGIN_DETAILS'),
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(user),
@@ -204,8 +201,10 @@ navtitle =()=>{
                     // if(responseJson.message.zipcode){
                     //     this.setState({ zipcodeError: true });
                     // }
-                }
                     Toast.show("User Updated")
+                }
+                else
+                  Toast.show("Something Went Wrong")
                     // this.setState({email : ''});
                     // this.setState({name  : ''});
                     // this.setState({phone : ''});
@@ -224,6 +223,9 @@ navtitle =()=>{
             this.props.navigation.goBack();
     }
     else{
+      if (this.state.name  == "" || this.state.email == "" || this.state.phone == "" || this.state.address == "" || this.state.password == "" || this.state.doj == "")
+        Toast.show("Please Fill all the Fields !!")
+      else {
         let user = {
             name:  this.state.name,
             email:  this.state.email,
@@ -235,7 +237,6 @@ navtitle =()=>{
             role_id:this.state.userRoleId,
             status: this.state.cstate
         };
-    console.warn("details are : ",user)
         fetch(`${C.API}/users`, {
             method: 'POST',
             headers: {
@@ -290,7 +291,7 @@ navtitle =()=>{
                 }
                 else
                 {
-                    console.warn(responseJson)
+                    
                     if(responseJson.message == "E-mail already exists")
                     {
                       Toast.show(responseJson.message);
@@ -299,14 +300,15 @@ navtitle =()=>{
                     {
                       Toast.show(responseJson.message.email.message)
                     }
-                  
-                    //Toast.show("Email already Exists")
+                    else
+                    {
+                      Toast.show("Please Fill all the fields First!!");
+                    }
                 }
             })
             .catch(err => {console.warn(err) })
             .done();
-            
-           
+      }    
     }
   }
 
@@ -392,7 +394,7 @@ navtitle =()=>{
             <CustomPicker 
               options={renderUserRoles(this.state.userRoles)}
              
-              value={{label: this.state.userRoleName ,value: this.state.userRoleId }}
+              value={(this.state.parameters)?{label: this.state.userRoleName ,value: this.state.userRoleId }:{}}
               
               getLabel={(item) => item.label}
               onValueChange={(value, i) => {
@@ -403,7 +405,8 @@ navtitle =()=>{
             />
             <Text>Date of Birth</Text>
             <DatePickerIOS
-              date={this.state.dob}
+              date={new Date(this.state.dob)}
+              mode = "date"
              // minuteInterval={10}
               onDateChange={(date)=>{
                 this.state.dob = date;
@@ -412,8 +415,9 @@ navtitle =()=>{
             />
             <Text> Date of Joining</Text>
             <DatePickerIOS
-              date={this.state.doj}
+              date={new Date(this.state.doj)}
               minuteInterval={10}
+              mode="date"
               onDateChange={(date)=>{
                 this.state.doj = date;
                  // props.onChange('appointmentTime',date)
