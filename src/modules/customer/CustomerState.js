@@ -1,4 +1,5 @@
 import C from '../../../Constants';
+import SyncStorage from 'sync-storage';
 
 
 
@@ -40,6 +41,7 @@ function loadedMessagesList(messagesList) {
       method: 'POST',
       headers: {
           Accept: 'application/json',
+          Authorization: 'Bearer '+SyncStorage.get('LOGIN_DETAILS'),
           'Content-Type': 'application/json',
       },
      // body: JSON.stringify(""),

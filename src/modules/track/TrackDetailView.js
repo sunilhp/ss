@@ -10,87 +10,60 @@ import {
   Dimensions,
 } from 'react-native';
 import axios from 'axios'
-import Carousel from 'react-native-snap-carousel';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import C from '../../../Constants';
 
 import { colors, fonts } from '../../styles';
 import { Dropdown, Button, TextInput } from '../../common';
 import { Text, Title, Caption } from '../../common/StyledText';
-
-import ViewProduct from '../components/product/ViewProduct'
-import EditProduct from '../components/product/EditProductContainer'
 import Header from './Header';
-import { CustomPicker } from 'react-native-custom-picker';
-import ServiceAssign from '../components/serviceAssign/ServiceAssignContainer';
 import SyncStorage from 'sync-storage';
 
 class TrackHistory extends React.Component {
+
+  constructor(props) {
+
+    super(props);
+ // let parameters = this.props.navigation.state.params;
+}
   state = { 
-    history: [],
-    executives:[],
-    service_statuses:[],
-    isProductEditEnable : false,
+    jobdetails:[]
    }
 
 //fetching history from network
 //pass id in params
   async componentDidMount() {
-    let historyres = [];
-    let executives =[];
-    let service_status = [];
-
+    let jobdetails = [];
     try
     {      
-      let historyresp =  await axios.get(`${C.API}/service_details/history/5cf75d01fee3492a8c8e7688`);
-      historyres = historyresp.data.data;
-
-      let executivesresp =  await axios.post(`${C.API}/users/get`,{role_id:C.EXECUTIVE_ROLE_ID},{headers:{ Authorization: 'Bearer '+SyncStorage.get('LOGIN_DETAILS')}});
-      executives = executivesresp.data.data;
-
-      let service_statusresp =  await axios.post(`${C.API}/service_status/get`);
-      service_status = service_statusresp.data.data;
+      let jobdetails =  await axios.get(`${C.API}/track/executives`,{headers:{ Authorization: 'Bearer '+SyncStorage.get('LOGIN_DETAILS')}});
+      jobdetails = jobdetails.data.data;
+      this.setState({ jobdetails:jobdetails});
     }
     catch(error)
     {
-      //console.warn(error);
+      console.warn("ERROR IS ",error);
     }
-    this.setState({ history: historyres,executives:executives,service_statuses:service_status});
+    
   }
 
-// service history images formatter
-  renderServiceHistoryCarousel = (images) => {
-    const formattedhistoryimages = [];
-    for(i=0;i<images.length;i++)
-    {
-      images[i] = images[i].replace(/\\/g,"/");
-      dd = {uri : images[i] };
-      formattedhistoryimages.push( dd);
-    }
-    return (
-      <View style={styles.carouselContainer}>
-        <Carousel
-          autoplay
-          sliderWidth={Dimensions.get('window').width}
-          itemWidth={Dimensions.get('window').width}
-          renderItem={({ item }) => (
-            <Image
-              resizeMode="contain"
-              style={{ height: 250, width: Dimensions.get('window').width }}
-              source={item}
-            />
-          )}
-          data={formattedhistoryimages}
-        />
-      </View> 
-    );
-  }
 
   //service history 
   renderServiceHistoryInformation = () => {
-    const history = this.state.history
-    return history.map((it, i) => {
+    const jobdetails = this.state.jobdetails;
+    return jobdetails.map((it, i) => {
       return (
+        <TouchableOpacity
+          style={styles.itemTwoContainer}
+          onPress={() =>
+            this.props.navigation.navigate({
+              routeName: 'TrackExecutive',
+              params: {
+                ...it,
+              },
+            })
+          }
+        > 
         <View style={{width:Dimensions.get('window').width-50,flex: 1,
         borderColor: colors.primaryLight,
         borderWidth: 1,
@@ -98,11 +71,13 @@ class TrackHistory extends React.Component {
         marginBottom:15,
         padding:10,
         alignItems:'center',}}>
-          <Text style={styles.itemTwoSubTitle}>{it.assigned_to_name}</Text>
-          <Text style={styles.itemTwoSubTitle}>{it.assigned_to_phone},  {it.assigned_to_email}</Text>
-          <Text style={styles.remarkTitle}>Remark : {it.executive_remark}</Text>
-          {this.renderServiceHistoryCarousel(it.images)}
+        <Text style={styles.itemTwoSubTitle}>Job Status: {it.job} and status: {it.status}</Text>
+        <Text style={styles.itemTwoSubTitle}>Address: {it.address.address}, {it.address.city},  {it.address.state}</Text>
+
+        <Text style={styles.itemTwoSubTitle}>{it.address.name}</Text>
+        <Text style={styles.itemTwoSubTitle}>{it.address.city},  {it.address.email}</Text>
         </View>
+        </TouchableOpacity>
       )
     })
   }
@@ -111,125 +86,15 @@ class TrackHistory extends React.Component {
 
   render() {
     const itemParams = this.props.navigation.state.params;
-
-    // service images formatter
-    const formattedimages = [];
-    // for(i=0;i<itemParams.images.length;i++)
-    // {
-    //   itemParams.images[i] = itemParams.images[i].replace(/\\/g,"/");
-    //   dd = {uri : itemParams.images[i] };
-    //   formattedimages.push( dd);
-    // }
-  
     return (
       <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 20 }}>
         
-        {/* service information view */}
-        <View style={styles.componentsSection}>
-          <Text style={styles.componentSectionHeader}>Service Information</Text>
-          <View style={styles.row}>
-          <TouchableOpacity style={styles.itemTwoContainer} onPress={() => this._openArticle(item)}>
-            <View>
-              <Text style={styles.itemTwoPrice}>Type : </Text>
-              <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                <Text style={styles.itemTwoSubTitle}>Date : </Text>
-                <View style={styles.itemThreeMetaContainer}>
-                  <Text style={styles.itemTwoSubTitle}>Priority :</Text>
-                </View>
-              </View>
-              <Text style={styles.itemTwoSubTitle}>Message : </Text>
-            </View>
-            <View style={styles.carouselContainer}>
-              <Carousel
-                  autoplay
-                  sliderWidth={Dimensions.get('window').width-50}
-                  itemWidth={Dimensions.get('window').width}
-                  renderItem={({ item }) => (
-                    <Image
-                      resizeMode="contain"
-                      style={{ height: 250, width: Dimensions.get('window').width }}
-                      source={item}
-                    />
-                  )}
-                  data={formattedimages}
-                />
-              </View>      
-          </TouchableOpacity>
-          </View>
-        </View>
-
-        {/* Service assigned to executive View */}
-        <View style={styles.componentsSection}>
-          <View style={{flexDirection: 'row', justifyContent: 'flex-end',}}>
-            <Text style={styles.componentSectionHeader}> Assign service </Text> 
-          </View> 
-          <View style={styles.row}>
-            <TouchableOpacity > 
-          
-              <ServiceAssign formtype="add" role="service" serviceID="5cf75d01fee3492a8c8e7688" />
-
-            </TouchableOpacity>
-          </View>
-        </View>
-      
-
-        {/* product information view */}
-        <View style={styles.componentsSection}>
-         <Header 
-            heading="Product Information" 
-            btntext={this.state.isProductEditEnable?"Done":"Edit"} 
-            onButtonClick={() => this.setState({ isProductEditEnable: !this.state.isProductEditEnable })}
-            >
-            
-         </Header>
-        </View>
-
-        {/* customer information view */}
-        <View style={styles.componentsSection}>
-            <View style={{flexDirection: 'row', justifyContent: 'flex-end',}}>
-                <Text style={styles.componentSectionHeader}> Customer Information </Text> 
-                <Button
-                    style={{width:120,padding:0,height:25}}
-                    primary
-                    bordered
-                    caption="Edit"
-                    onPress={() =>
-                        this.props.navigation.navigate({
-                          routeName: 'CustomerAdd',
-                          params: {
-                            // name: itemParams.customerName,
-                            // id: itemParams.customerId, 
-                            // email: itemParams.customerEmail,
-                            // phone: itemParams.customerPhone,
-                            // address: itemParams.customerAddress,
-                            // city: itemParams.customerCity,
-                            // state: itemParams.customerState,
-                            // zipcode: itemParams.customerZipcode,
-                          },
-                        })
-                      }
-                />
-            </View>      
-          <View style={styles.row}>
-          <TouchableOpacity style={styles.itemTwoContainer} >
-              {/* <Text style={styles.itemTwoTitle}>{itemParams.customerName}</Text>
-              <Text style={styles.itemTwoSubTitle}>{itemParams.customerPhone},   {itemParams.customerEmail}</Text>
-              <Text style={styles.itemTwoSubTitle}>{itemParams.customerAddress}, {itemParams.customerCity}</Text>
-              <Text style={styles.itemTwoSubTitle}>{itemParams.customerState} , {itemParams.customerZipcode}</Text> */}
-          </TouchableOpacity>
-          </View>
-        </View>
-        
         {/* Service history view */}
         <View style={styles.componentsSection}>
-        <Text style={styles.componentSectionHeader}>History</Text>
+        <Text style={styles.componentSectionHeader}>Active Executives</Text>
         <View style={styles.row}>
-        <TouchableOpacity  style={styles.itemTwoContainer} onPress={() => this._openArticle(item)}> 
-          <View>
-            {this.renderServiceHistoryInformation()}
-          </View>
-        </TouchableOpacity>
-      </View>
+          {this.renderServiceHistoryInformation()}
+        </View>
       </View>
         
       </ScrollView>
@@ -456,15 +321,3 @@ const styles = StyleSheet.create({
         paddingHorizontal: 0,
       },
 });
-
-const renderServiceStatuses = (statuses) => {
-    return statuses.map(it => {
-        return {value: it.id,label :it.name}
-    }) 
-}
-const renderExecutive = (executives) => {
-  //console.warn(executives);
-  return executives.map(it => {
-      return {value: it.id,label :it.name}
-  }) 
-}
