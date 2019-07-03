@@ -11,13 +11,13 @@ import { colors } from '../../styles';
 import { TextInput } from '../../common';
 import { Text, Caption, Title } from '../../common/StyledText';
 
-export default function CustomerScreen(props) {
+export default function ProductScreen(props) {
  
   const _renderItem = ({ item }) => (
     <TouchableOpacity
       onPress={() =>
         props.navigation.navigate({
-          routeName: 'CustomerAdd',
+          routeName: 'ProductAdd',
           params: {
             title: item.name,
             id: item.id,
@@ -51,7 +51,7 @@ export default function CustomerScreen(props) {
 
   const _renderNoItemsComponent = () => (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>No Customers</Text>
+      <Text>No Products</Text>
     </View>
   );
 
@@ -60,7 +60,7 @@ export default function CustomerScreen(props) {
   let filteredMessages = props.messagesList;
   if (props.searchText) {
     filteredMessages = props.messagesList.filter(
-      message => (message.name.toLowerCase().indexOf(props.searchText.toLowerCase()) !== -1) || (message.city.toLowerCase().indexOf(props.searchText.toLowerCase()) !== -1) || (message.state.toLowerCase().indexOf(props.searchText.toLowerCase()) !== -1)
+      message => (message.name.toLowerCase().indexOf(props.searchText.toLowerCase()) !== -1)
     );
   }
 

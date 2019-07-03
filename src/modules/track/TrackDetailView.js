@@ -18,14 +18,14 @@ import { colors, fonts } from '../../styles';
 import { Dropdown, Button, TextInput } from '../../common';
 import { Text, Title, Caption } from '../../common/StyledText';
 
-import ViewProduct from './../components/product/ViewProduct'
-import EditProduct from './../components/product/EditProductContainer'
+import ViewProduct from '../components/product/ViewProduct'
+import EditProduct from '../components/product/EditProductContainer'
 import Header from './Header';
 import { CustomPicker } from 'react-native-custom-picker';
-import ServiceAssign from './../components/serviceAssign/ServiceAssignContainer';
+import ServiceAssign from '../components/serviceAssign/ServiceAssignContainer';
 import SyncStorage from 'sync-storage';
 
-class ServiceHistory extends React.Component {
+class TrackHistory extends React.Component {
   state = { 
     history: [],
     executives:[],
@@ -42,7 +42,7 @@ class ServiceHistory extends React.Component {
 
     try
     {      
-      let historyresp =  await axios.get(`${C.API}/service_details/history/${this.props.navigation.state.params.id}`);
+      let historyresp =  await axios.get(`${C.API}/service_details/history/5cf75d01fee3492a8c8e7688`);
       historyres = historyresp.data.data;
 
       let executivesresp =  await axios.post(`${C.API}/users/get`,{role_id:C.EXECUTIVE_ROLE_ID},{headers:{ Authorization: 'Bearer '+SyncStorage.get('LOGIN_DETAILS')}});
@@ -108,25 +108,18 @@ class ServiceHistory extends React.Component {
   }
 
 
-  //view to be shown in product area
-  renderProductView = (product) =>{
-      if(this.state.isProductEditEnable) 
-        return <EditProduct formtype='update' product={product}/> 
-      else 
-        return <ViewProduct product={product} />
-  }
 
   render() {
     const itemParams = this.props.navigation.state.params;
 
     // service images formatter
     const formattedimages = [];
-    for(i=0;i<itemParams.images.length;i++)
-    {
-      itemParams.images[i] = itemParams.images[i].replace(/\\/g,"/");
-      dd = {uri : itemParams.images[i] };
-      formattedimages.push( dd);
-    }
+    // for(i=0;i<itemParams.images.length;i++)
+    // {
+    //   itemParams.images[i] = itemParams.images[i].replace(/\\/g,"/");
+    //   dd = {uri : itemParams.images[i] };
+    //   formattedimages.push( dd);
+    // }
   
     return (
       <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 20 }}>
@@ -135,16 +128,16 @@ class ServiceHistory extends React.Component {
         <View style={styles.componentsSection}>
           <Text style={styles.componentSectionHeader}>Service Information</Text>
           <View style={styles.row}>
-          <TouchableOpacity key={itemParams.id} style={styles.itemTwoContainer} onPress={() => this._openArticle(item)}>
+          <TouchableOpacity style={styles.itemTwoContainer} onPress={() => this._openArticle(item)}>
             <View>
-              <Text style={styles.itemTwoPrice}>Type : {itemParams.serviceType}</Text>
+              <Text style={styles.itemTwoPrice}>Type : </Text>
               <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                <Text style={styles.itemTwoSubTitle}>Date : {itemParams.createdOn}</Text>
+                <Text style={styles.itemTwoSubTitle}>Date : </Text>
                 <View style={styles.itemThreeMetaContainer}>
-                  <Text style={styles.itemTwoSubTitle}>Priority : {itemParams.priority}</Text>
+                  <Text style={styles.itemTwoSubTitle}>Priority :</Text>
                 </View>
               </View>
-              <Text style={styles.itemTwoSubTitle}>Message : {itemParams.message}</Text>
+              <Text style={styles.itemTwoSubTitle}>Message : </Text>
             </View>
             <View style={styles.carouselContainer}>
               <Carousel
@@ -171,9 +164,9 @@ class ServiceHistory extends React.Component {
             <Text style={styles.componentSectionHeader}> Assign service </Text> 
           </View> 
           <View style={styles.row}>
-            <TouchableOpacity key={itemParams.id} > 
+            <TouchableOpacity > 
           
-              <ServiceAssign  formtype="add" role="service" serviceID={this.props.navigation.state.params.id} />
+              <ServiceAssign formtype="add" role="service" serviceID="5cf75d01fee3492a8c8e7688" />
 
             </TouchableOpacity>
           </View>
@@ -187,17 +180,7 @@ class ServiceHistory extends React.Component {
             btntext={this.state.isProductEditEnable?"Done":"Edit"} 
             onButtonClick={() => this.setState({ isProductEditEnable: !this.state.isProductEditEnable })}
             >
-            {this.renderProductView(
-                {
-                    id: itemParams.productId, 
-                    name: itemParams.product, 
-                    description: itemParams.productDescription,
-                    type: {
-                        id: itemParams.productTypeId,
-                        name: itemParams.productType,
-                    }
-                }
-            )}
+            
          </Header>
         </View>
 
@@ -214,25 +197,25 @@ class ServiceHistory extends React.Component {
                         this.props.navigation.navigate({
                           routeName: 'CustomerAdd',
                           params: {
-                            name: itemParams.customerName,
-                            id: itemParams.customerId, 
-                            email: itemParams.customerEmail,
-                            phone: itemParams.customerPhone,
-                            address: itemParams.customerAddress,
-                            city: itemParams.customerCity,
-                            state: itemParams.customerState,
-                            zipcode: itemParams.customerZipcode,
+                            // name: itemParams.customerName,
+                            // id: itemParams.customerId, 
+                            // email: itemParams.customerEmail,
+                            // phone: itemParams.customerPhone,
+                            // address: itemParams.customerAddress,
+                            // city: itemParams.customerCity,
+                            // state: itemParams.customerState,
+                            // zipcode: itemParams.customerZipcode,
                           },
                         })
                       }
                 />
             </View>      
           <View style={styles.row}>
-          <TouchableOpacity key={itemParams.id} style={styles.itemTwoContainer} >
-              <Text style={styles.itemTwoTitle}>{itemParams.customerName}</Text>
+          <TouchableOpacity style={styles.itemTwoContainer} >
+              {/* <Text style={styles.itemTwoTitle}>{itemParams.customerName}</Text>
               <Text style={styles.itemTwoSubTitle}>{itemParams.customerPhone},   {itemParams.customerEmail}</Text>
               <Text style={styles.itemTwoSubTitle}>{itemParams.customerAddress}, {itemParams.customerCity}</Text>
-              <Text style={styles.itemTwoSubTitle}>{itemParams.customerState} , {itemParams.customerZipcode}</Text>
+              <Text style={styles.itemTwoSubTitle}>{itemParams.customerState} , {itemParams.customerZipcode}</Text> */}
           </TouchableOpacity>
           </View>
         </View>
@@ -241,7 +224,7 @@ class ServiceHistory extends React.Component {
         <View style={styles.componentsSection}>
         <Text style={styles.componentSectionHeader}>History</Text>
         <View style={styles.row}>
-        <TouchableOpacity key={itemParams.id} style={styles.itemTwoContainer} onPress={() => this._openArticle(item)}> 
+        <TouchableOpacity  style={styles.itemTwoContainer} onPress={() => this._openArticle(item)}> 
           <View>
             {this.renderServiceHistoryInformation()}
           </View>
@@ -254,7 +237,7 @@ class ServiceHistory extends React.Component {
   }
 }
 
-export default ServiceHistory;
+export default TrackHistory;
 
 const styles = StyleSheet.create({
   componentSectionHeader: {

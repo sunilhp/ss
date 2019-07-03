@@ -32,6 +32,9 @@ import ProductTypeScreen from '../productType/ProductTypeViewContainer';
 import ProductTypeAddScreen from '../productType/ProductTypeAdd';
 import RolesScreen from '../roles/RolesViewContainer';
 import RolesAddScreen from '../roles/RolesAdd';
+import ProductAddScreen from '../product/ProductAdd';
+import ProductScreen from '../product/ProductViewContainer';
+import TrackDetailScreen from '../track/TrackDetailViewContainer'
 
 import { colors, fonts } from '../../styles';
 
@@ -65,7 +68,12 @@ const stackNavigator = createStackNavigator(
         title: 'Roles',
       },
     },
-    
+    TrackDetail: {
+      screen: TrackDetailScreen,
+      navigationOptions: {
+        title: 'Track Detail',
+      },
+    },
     Gallery: {
       screen: GalleryScreen,
       navigationOptions: {
@@ -76,6 +84,12 @@ const stackNavigator = createStackNavigator(
       screen: ArticleScreen,
       navigationOptions: {
         title: 'Article',
+      },
+    },
+    Track: {
+      screen: TrackDetailScreen,
+      navigationOptions: {
+        title: 'Track',
       },
     },
     Chat: {
@@ -114,6 +128,12 @@ const stackNavigator = createStackNavigator(
       title: 'Customer Information',
       },
     },
+    ProductAdd: {
+      screen: ProductAddScreen,
+      navigationOptions: {
+      title: 'Product Information',
+      },
+    },
     ServiceTypeAdd: {
       screen: ServiceTypeAddScreen,
       navigationOptions: {
@@ -140,6 +160,39 @@ const stackNavigator = createStackNavigator(
           <View style={{ flexDirection: 'row' }}>
              <TouchableOpacity
                onPress={() => navigation.navigate('CustomerAdd')}
+               style={{
+                 paddingRight: 10,
+               }}
+             >
+               <Image
+                 source={require('../../../assets/images/icons/plus.png')}
+                 resizeMode="contain"
+                 style={{
+                   width: 30,
+                   height: 20,
+                 }}
+               />
+             </TouchableOpacity>
+           </View>
+        ),
+        headerBackground: (
+          <Image
+            style={{ flex: 1 }}
+            source={headerBackground}
+            resizeMode="cover"
+          />
+        ),
+      }),
+     
+    },
+    Products: {
+      screen: ProductScreen,
+      navigationOptions: ({navigation}) => ({
+        title: 'Products',
+        headerRight: (
+          <View style={{ flexDirection: 'row' }}>
+             <TouchableOpacity
+               onPress={() => navigation.navigate('ProductAdd')}
                style={{
                  paddingRight: 10,
                }}

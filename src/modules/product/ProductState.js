@@ -1,5 +1,5 @@
 import C from '../../../Constants';
-
+import SyncStorage from 'sync-storage';
 
 
 // Initial state
@@ -29,17 +29,18 @@ function loadedMessagesList(messagesList) {
   };
 }
 
- export function  customerList() {
+ export function  productList() {
   return dispatch => {
     dispatch(startMessagesListLoading());
     // TODO: Load messages list here
 
     let messagesList = [];
     let tmpres;
-   fetch(`${C.API}/customers/get`, {
+   fetch(`${C.API}/products/get`, {
       method: 'POST',
       headers: {
           Accept: 'application/json',
+          Authorization: 'Bearer '+SyncStorage.get('LOGIN_DETAILS'),
           'Content-Type': 'application/json',
       },
      // body: JSON.stringify(""),

@@ -2,8 +2,8 @@
 import { compose, lifecycle, withState } from 'recompose';
 import { connect } from 'react-redux';
 
-import CustomerView from './CustomerView';
-import { customerList } from './CustomerState';
+import ProductView from './ProductView';
+import { productList } from './ProductState';
 
 export default compose(
   connect(
@@ -12,13 +12,13 @@ export default compose(
       messagesListLoading: state.chat.messagesListLoading,
     }),
     {
-      customerList,
+      productList,
     },
   ),
   lifecycle({
     componentDidMount() {
-      this.props.customerList();
+      this.props.productList();
     },
   }),
   withState('searchText', 'setSearchText', ''),
-)(CustomerView);
+)(ProductView);

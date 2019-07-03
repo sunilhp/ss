@@ -61,7 +61,7 @@ export default function ManageScreen(props) {
           <Text style={styles.itemText}>Product Type</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => props.navigation.navigate({ routeName: 'Calendar' })}
+          onPress={() => props.navigation.navigate({ routeName: 'Products' })}
           style={styles.item}
         >
           <Image
@@ -81,6 +81,19 @@ export default function ManageScreen(props) {
             style={styles.itemImage}
           />
           <Text style={styles.itemText}>Roles</Text>
+        </TouchableOpacity>
+      </View>
+      <View style={styles.row}>
+        <TouchableOpacity
+            onPress={() => props.navigation.navigate({ routeName: 'Track' })}
+            style={styles.item}
+          >
+          <Image
+            resizeMode="contain"
+            source={chartIcon}
+            style={styles.itemImage}
+          />
+          <Text style={styles.itemText}>Track</Text>
         </TouchableOpacity>
       </View>
      

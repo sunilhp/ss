@@ -16,6 +16,7 @@ import { TextInput, Button } from '../../common';
 import {RadioGroup,RadioButton} from 'react-native-flexi-radio-button'
 import Toast from 'react-native-simple-toast'
 import { StackNavigator } from 'react-navigation';
+import SyncStorage from 'sync-storage';
 
 export default class productAddScreen extends React.Component {
  
@@ -141,6 +142,7 @@ this.navtitle();
             method: 'POST',
             headers: {
                 Accept: 'application/json',
+                Authorization: 'Bearer '+SyncStorage.get('LOGIN_DETAILS'),
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(product),
@@ -207,6 +209,7 @@ this.navtitle();
             method: 'POST',
             headers: {
                 Accept: 'application/json',
+                Authorization: 'Bearer '+SyncStorage.get('LOGIN_DETAILS'),
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(product),
@@ -243,28 +246,27 @@ this.navtitle();
                 }
                 if(responseJson.success)
                 {
-                    Toast.show("Customer added")
-                    this.setState({email : ''});
-                    this.setState({name  : ''});
-                    this.setState({phone : ''});
-                    this.setState({password   : ''});
-                    this.setState({address :''});
-                    this.setState({city :''});
-                    this.setState({ustate:''});
-                    this.setState({zipcode:''});
+                    Toast.show("Product added")
+                   
+                    this.setState({name : ''});
+                    this.setState({type_id  : ''});
+                    this.setState({description : ''});
+                    this.setState({images   : ''});
+                    this.setState({active :''});
+                   
                     this.props.navigation.goBack();
                 }
                 else
                 {
                     console.warn(responseJson)
-                    if(responseJson.message == "E-mail already exists")
-                    {
-                      Toast.show(responseJson.message);
-                    }
-                    else if(responseJson.message.email != "required")
-                    {
-                      Toast.show(responseJson.message.email.message)
-                    }
+                    // if(responseJson.message == "E-mail already exists")
+                    // {
+                    //   Toast.show(responseJson.message);
+                    // }
+                    // else if(responseJson.message.email != "required")
+                    // {
+                    //   Toast.show(responseJson.message.email.message)
+                    // }
                   
                     //Toast.show("Email already Exists")
                 }
