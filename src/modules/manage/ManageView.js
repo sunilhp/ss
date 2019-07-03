@@ -72,41 +72,6 @@ export default function ManageScreen(props) {
           <Text style={styles.itemText}>Products</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => props.navigation.navigate({ routeName: 'Auth' })}
-          style={styles.item}
-        >
-          <Image
-            resizeMode="contain"
-            source={profileIcon}
-            style={styles.itemImage}
-          />
-          <Text style={styles.itemText}>Login</Text>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.row}>
-        <TouchableOpacity
-            onPress={() => props.navigation.navigate({ routeName: 'Chat' })}
-            style={styles.item}
-          >
-          <Image
-            resizeMode="contain"
-            source={chartIcon}
-            style={styles.itemImage}
-          />
-          <Text style={styles.itemText}>Customers</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => props.navigation.navigate({ routeName: 'Gallery' })}
-          style={styles.item}
-        >
-          <Image
-            resizeMode="contain"
-            source={galleryIcon}
-            style={styles.itemImage}
-          />
-          <Text style={styles.itemText}>Users</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
           onPress={() => props.navigation.navigate({ routeName: 'Roles' })}
           style={styles.item}
         >
@@ -118,6 +83,7 @@ export default function ManageScreen(props) {
           <Text style={styles.itemText}>Roles</Text>
         </TouchableOpacity>
       </View>
+     
 {/* 
 
       <View style={styles.row}>
