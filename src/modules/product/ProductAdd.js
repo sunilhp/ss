@@ -17,6 +17,8 @@ import {RadioGroup,RadioButton} from 'react-native-flexi-radio-button'
 import Toast from 'react-native-simple-toast'
 import { StackNavigator } from 'react-navigation';
 import SyncStorage from 'sync-storage';
+import { CustomPicker } from 'react-native-custom-picker';
+import axios from 'axios';
 
 export default class productAddScreen extends React.Component {
  
@@ -34,7 +36,10 @@ export default class productAddScreen extends React.Component {
     name:'',
     description:'',
     images:'',
-    active:''
+    active:'',
+    productTypes : [],
+    typeId:'',
+    typeuserRolesName:'',
 
     // email : '',
     // name  : '',
@@ -90,11 +95,16 @@ this.navtitle();
           name : this.props.navigation.state.params.name,
           description : this.props.navigation.state.params.description,
           images : this.props.navigation.state.params.images,
-          active : this.props.navigation.state.params.active
+          active : this.props.navigation.state.params.active,
+          typeId: this.props.navigation.state.typeId,
+          typeName: this.props.navigation.state.typeName,
+          status: this.state.parameters.status,
         });
     }
     else
         this.setState({ productsIndex :0});
+
+        this.getProductTypes();
     
     this.keyboardDidShowListener = Keyboard.addListener(
       Platform.select({ android: 'keyboardDidShow', ios: 'keyboardWillShow' }),
@@ -125,6 +135,14 @@ this.navtitle();
     this.setState({ isKeyboardVisible: false });
   }
 
+  //fetching user roles from API
+  getProductTypes = async () => {
+    try {
+        const res =  await axios.post(`${C.API}/product_type/get`,{headers:{ Authorization: 'Bearer '+SyncStorage.get('LOGIN_DETAILS')}});
+        if (res.data.success) { this.setState({ productTypes: res.data.data })}
+    } catch (e) {console.warn(e.message)}
+  }
+  
   submitForm(){ 
     if(this.props.navigation.state.params)
     {
@@ -135,7 +153,9 @@ this.navtitle();
             type_id : this.state.type_id,
             description : this.state.description,
             images : this.state.images,
-            active : this.state.active
+            active : this.state.active,
+            typeId: this.state.typeId,
+            typeName: this.state.typeName
         };
     
         fetch(`${C.API}/products/update`, {
@@ -179,13 +199,14 @@ this.navtitle();
                 }
                     Toast.show("Product Updated")
                     
-                    this.setState({name  : ''});
-                    this.setState({type_id : ''});
-                    this.setState({password   : ''});
-                    this.setState({address :''});
-                    this.setState({city :''});
-                    this.setState({ustate:''});
-                    this.setState({zipcode:''});
+                    this.setState({name: ''});
+                    this.setState({type_id: ''});
+                    this.setState({description: ''});
+                    this.setState({images:''});
+                    this.setState({active:''});
+                    this.setState({typeId:''});
+                    this.setState({typeName:''});
+                   
             })
             .catch(err => {console.warn(err) })
             .done();
@@ -202,7 +223,9 @@ this.navtitle();
             type_id : this.state.type_id,
             description : this.state.description,
             images : this.state.images,
-            active : this.state.active 
+            active : this.state.active,
+            typeId: this.state.typeId,
+            typeName: this.state.typeName
         };
     
         fetch(`${C.API}/products`, {
@@ -248,11 +271,13 @@ this.navtitle();
                 {
                     Toast.show("Product added")
                    
-                    this.setState({name : ''});
-                    this.setState({type_id  : ''});
-                    this.setState({description : ''});
-                    this.setState({images   : ''});
-                    this.setState({active :''});
+                    this.setState({name: ''});
+                    this.setState({type_id: ''});
+                    this.setState({description: ''});
+                    this.setState({images: ''});
+                    this.setState({active:''});
+                    this.setState({typeId:''});
+                    this.setState({typeName:''});
                    
                     this.props.navigation.goBack();
                 }
@@ -307,32 +332,7 @@ this.navtitle();
             // style={[styles.section, styles.middle, this.fadeIn(700, -20)]}
           >
         
-            <TextInput
-              autoCapitalize="none"
-              keyboardType="email-address"
-              maxLength={150}
-              onChangeText={(email) => this.setState({ email , emailError:false})}
-              onSubmitEditing={() => this.email.focus()}
-              placeholder="Email address"
-              returnKeyType="next"
-              style={[styles.textInput, this.state.emailError? styles.error:null]}
-              value={this.state.email}
-              autoCorrect={false}
-              
-            />
-            <TextInput
-              autoCapitalize="none"
-              maxLength={20}
-              onChangeText={(password) => this.setState({ password , passwordError:false})}
-              onSubmitEditing={() => this.password.focus()}
-              placeholder="Password"
-              returnKeyType="next"
-              secureTextEntry={true}
-              style={[styles.textInput, this.state.passwordError? styles.error:null]}
-              autoCorrect={false}
-              value={this.state.password}
-            />
-            <TextInput
+           <TextInput
               maxLength={50}
               onChangeText={(name) => this.setState({ name , nameError:false})}
               onSubmitEditing={() => this.name.focus()}
@@ -342,59 +342,34 @@ this.navtitle();
               autoCorrect={false}
               value={this.state.name}
             />
-            <TextInput
-              maxLength={20}
-              onChangeText={(phone) => this.setState({ phone , phoneError:false})}
-              placeholder="Phone"
-              returnKeyType="next"
-              style={[styles.textInput, this.state.phoneError? styles.error:null]}
-              autoCorrect={false}
-              value={this.state.phone}
+            <Text>Product Type</Text>
+            <CustomPicker 
+              options={renderProductType(this.state.productTypes)}
+             
+              value={(this.state.parameters)?{label: this.state.typeName ,value: this.state.typeId }:{}}
+              
+              getLabel={(item) => item.label}
+              onValueChange={(value, i) => {
+                this.state.typeId = value.value;
+                this.state.typeName = value.label;
+                 // props.onChange('selectedServiceStatus', { id: value.value, name: value.label })
+              }}
             />
             <TextInput
-              maxLength={20}
-              onChangeText={(city) => this.setState({ city , cityError:false})}
-              placeholder="City"
+              multiline={true}
+              numberOfLines={4}
+              placeholder="Description"
               returnKeyType="next"
-              style={[styles.textInput, this.state.cityError? styles.error:null]}
+              style={[styles.textInput, this.state.nameError? styles.error:null]}
               autoCorrect={false}
-              value={this.state.city}
-            />
-            <TextInput
-              maxLength={20}
-              onChangeText={(ustate) => this.setState({ ustate, stateError:false })}
-              placeholder="State"
-              returnKeyType="next"
-              style={[styles.textInput, this.state.stateError? styles.error:null]}
-              autoCorrect={false}
-              value={this.state.ustate}
-            />
-            <TextInput
-              maxLength={200}
-              onChangeText={(address) => this.setState({ address , addressError:false})}
-              placeholder="Address"
-              returnKeyType="next"
-              style={[styles.textInput, this.state.addressError? styles.error:null]}
-              autoCorrect={false}
-              value={this.state.address}
-            />
-
-
-            <TextInput
-              maxLength={20}
-              onChangeText={(zipcode) => this.setState({ zipcode , zipcodeError:false})}
-              placeholder="zipcode"
-              returnKeyType="next"
-              style={[styles.textInput, this.state.zipcodeError? styles.error:null]}
-              autoCorrect={false}
-              value={this.state.zipcode}
-            />
+              onChangeText={(text) => this.setState({description})}
+              value={this.state.description}/>
             <RadioGroup
                 size={24}
                 thickness={2}
                 color='#9575b2'
                 highlightColor='#ccc8b9'
-                selectedIndex={this.state.customersIndex}
+                selectedIndex={this.state.productsIndex}
                 onSelect = {(index, value) => this.onSelect(index, value)}
             >
                 <RadioButton value='true'> 
@@ -418,7 +393,15 @@ this.navtitle();
         </ScrollView>
       </ImageBackground>
     );
+
+
+
   }
+}
+const renderProductType = (userRolesList) => {
+  return userRolesList.map(it => {
+      return {value: it.id,label :it.name}
+  }) 
 }
 
 const styles = StyleSheet.create({

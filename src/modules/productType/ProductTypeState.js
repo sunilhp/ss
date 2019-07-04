@@ -53,11 +53,8 @@ function loadedMessagesList(messagesList) {
         {
            var tmp = {};
            tmp.id = rs[i].id;
-           tmp.time = rs[i].created_on;
-   
            tmp.name = rs[i].name;
-           tmp.city = rs[i].city;
-           tmp.state = rs[i].state;
+           tmp.description = rs[i].description;
            
            messagesList.push(tmp);
         }
