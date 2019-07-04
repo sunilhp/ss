@@ -81,44 +81,10 @@ export default createBottomTabNavigator(
         header: (
           <View style={styles.headerContainer}>
             <Image style={styles.headerImage} source={hederBackground} />
-            <Text style={styles.headerCaption}>Service</Text>
+            <Text style={styles.headerCaption}>Services</Text>
           </View>
         ),
-        // headerRight: (
-        //   <View style={{ flexDirection: 'row' }}>
-        //     <TouchableOpacity
-        //       onPress={() => {}}
-        //       style={{
-        //         paddingRight: 10,
-        //       }}
-        //     >
-        //       <Image
-        //         source={require('../../../assets/images/phone.png')}
-        //         resizeMode="contain"
-        //         style={{
-        //           width: 30,
-        //           height: 20,
-        //         }}
-        //       />
-        //     </TouchableOpacity>
-    
-        //     <TouchableOpacity
-        //       onPress={() => {}}
-        //       style={{
-        //         paddingRight: 25,
-        //       }}
-        //     >
-        //       <Image
-        //         source={require('../../../assets/images/camera.png')}
-        //         resizeMode="contain"
-        //         style={{
-        //           width: 30,
-        //           height: 20,
-        //         }}
-        //       />
-        //     </TouchableOpacity>
-        //   </View>
-        // )
+        
       },
     },
 
