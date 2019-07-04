@@ -11,12 +11,13 @@ import {
   ImageBackground,
   ScrollView,
 } from 'react-native';
-import C from '../../../Constants';
+import c from '../../../Constants';
 import { TextInput, Button } from '../../common';
 import {RadioGroup,RadioButton} from 'react-native-flexi-radio-button'
 import Toast from 'react-native-simple-toast'
 import { StackNavigator } from 'react-navigation';
-import axios from 'axios'
+import axios from 'axios';
+import SyncStorage from 'sync-storage';
 
 export default class serviceAddScreen extends React.Component {
  
@@ -37,11 +38,11 @@ export default class serviceAddScreen extends React.Component {
     // Current visible form
     isKeyboardVisible: false,
     serviceIndex:0,
-    ProductInfo,
-    CustomerInfo,
-    Priority,
-    ProductType,
-    ServiceType
+    ProductInfo:[],
+    CustomerInfo: [],
+    Priority :[],
+    ProductType :[],
+    ServiceType :[]
   };
 
 static navigatioOptions = ({navigation}) => {
@@ -62,23 +63,23 @@ navtitle =()=>{
 }
   componentWillMount() {
 this.navtitle();
-    if(this.props.navigation.state.params)
-    {
-        if(this.props.navigation.state.params.status == true)
-        {
-            this.setState({ serviceIndex :0});
-        }
-        else
-        {
-            this.setState({ serviceIndex : 1});
-        }
-        this.setState({
-            //email : this.props.navigation.state.params.email,
+    // if(this.props.navigation.state.params)
+    // {
+    //     if(this.props.navigation.state.params.status == true)
+    //     {
+    //         this.setState({ serviceIndex :0});
+    //     }
+    //     else
+    //     {
+    //         this.setState({ serviceIndex : 1});
+    //     }
+    //     this.setState({
+    //         //email : this.props.navigation.state.params.email,
            
-        });
-    }
-    else
-        this.setState({ serviceIndex :0});
+    //     });
+    // }
+    // else
+    //     this.setState({ serviceIndex :0});
     
     this.keyboardDidShowListener = Keyboard.addListener(
       Platform.select({ android: 'keyboardDidShow', ios: 'keyboardWillShow' }),
@@ -112,23 +113,23 @@ this.navtitle();
 getProductInfo = async () => {
     try {
         const res =  await axios.post(`${c.API}/products/get`,{headers:{ Authorization: 'Bearer '+SyncStorage.get('LOGIN_DETAILS')}});
-        if (res.data.success) { this.setState({ ProductInfo: res.data.data })}
-        console.warn( "product Info  : ",this.state. ProductInfo);
+        if (res.data.success) { this.setState({ ProductInfo:res.data.data })}
+        console.warn( "product Info  : ",this.state.ProductInfo);
     } catch (e) {console.warn("Product fetching error",e.message)}
 }
 //fetching customer info from Network
 getCustomerInfo = async () => {
   try {
       const res =  await axios.post(`${c.API}/customers/get`,{headers:{ Authorization: 'Bearer '+SyncStorage.get('LOGIN_DETAILS')}});
-      if (res.data.success) { this.setState({ CustomerInfo: res.data.data })}
-      console.warn( "Customer Info  : ",this.state. CustomerInfo);
+      if (res.data.success) { this.setState({ CustomerInfo:res.data.data })}
+      console.warn( "Customer Info  : ",this.state.CustomerInfo);
   } catch (e) {console.warn("customer fetching error",e.message)}
 }
 //fetching priority info from Network
 getPriority = async () => {
   try {
       const res =  await axios.post(`${c.API}/service_priority/get`,{headers:{ Authorization: 'Bearer '+SyncStorage.get('LOGIN_DETAILS')}});
-      if (res.data.success) { this.setState({ Priority: res.data.data })}
+      if (res.data.success) { this.setState({ Priority:res.data.data })}
       console.warn( "Priority  : ",this.state.Priority);
   } catch (e) {console.warn("Priority fetching error",e.message)}
 }
@@ -136,7 +137,7 @@ getPriority = async () => {
 getProductType = async () => {
   try {
       const res =  await axios.post(`${c.API}/product_type/get`,{headers:{ Authorization: 'Bearer '+SyncStorage.get('LOGIN_DETAILS')}});
-      if (res.data.success) { this.setState({ ProductInfo: res.data.data })}
+      if (res.data.success) { this.setState({ ProductInfo:res.data.data })}
       console.warn( "productType Info  : ",this.state.ProductType);
   } catch (e) {console.warn("ProductType fetching error",e.message)}
 }
@@ -144,9 +145,8 @@ getProductType = async () => {
 getServiceType = async () => {
   try {
       const res =  await axios.post(`${c.API}/service_type/get`,{headers:{ Authorization: 'Bearer '+SyncStorage.get('LOGIN_DETAILS')}});
-      if (res.data.success) { this.setState({ ServiceType: res.data.data })}
-      console.warn( "ServiceType Info  : ",this.state.Ser 
-      );
+      if (res.data.success) { this.setState({ ServiceType:res.data.data })}
+      console.warn( "ServiceType Info  : ",this.state.ServiceType); 
   } catch (e) {console.warn("ServiceType fetching error",e.message)}
 }
 
