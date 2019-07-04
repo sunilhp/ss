@@ -36,6 +36,7 @@ import ProductAddScreen from '../product/ProductAdd';
 import ProductScreen from '../product/ProductViewContainer';
 import TrackDetailScreen from '../track/TrackDetailViewContainer';
 import TrackExecutiveScreen from '../track/TrackExecutive';
+import ServiceAddScreen from '../serviceType/ServiceTypeAdd';
 
 
 import { colors, fonts } from '../../styles';
@@ -195,6 +196,39 @@ const stackNavigator = createStackNavigator(
       }),
      
     },
+    Service: {
+      screen: ServicesScreen,
+      navigationOptions: ({navigation}) => ({
+        title: 'Service',
+        headerTitle:'Services',
+        headerRight: (
+          <View style={{ flexDirection: 'row' }}>
+             <TouchableOpacity
+               onPress={() => navigation.navigate('ServiceAdd')}
+               style={{
+                 paddingRight: 10,
+               }}
+             >
+               <Image
+                 source={require('../../../assets/images/icons/plus.png')}
+                 resizeMode="contain"
+                 style={{
+                   width: 30,
+                   height: 20,
+                 }}
+               />
+             </TouchableOpacity>
+           </View>
+        ),
+        headerBackground: (
+          <Image
+            style={{ flex: 1 }}
+            source={headerBackground}
+            resizeMode="cover"
+          />
+        ),
+      }),
+    },
     Products: {
       screen: ProductScreen,
       navigationOptions: ({navigation}) => ({
@@ -271,13 +305,13 @@ const stackNavigator = createStackNavigator(
       navigationOptions: {
         title: 'Lead Detail',
       },
-    },    
-    Services: {
-      screen: ServicesScreen,
+    }, 
+    ServiceAdd: {
+      screen: ServiceAddScreen,
       navigationOptions: {
-        title: 'Services',
+      title: 'Service',
       },
-    },
+    },   
     ServiceType: {
       screen: ServiceTypeScreen,
       navigationOptions: ({navigation}) => ({

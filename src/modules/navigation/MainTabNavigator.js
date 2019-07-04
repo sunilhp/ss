@@ -9,6 +9,7 @@ import HomeScreen from '../home/HomeViewContainer';
 import CalendarScreen from '../calendar/CalendarViewContainer';
 import ManageScreen from '../manage/ManageViewContainer';
 import ComponentsScreen from '../components/ComponentsViewContainer';
+
 import ServicesScreen from '../services/ServicesViewContainer';
 import LeadsScreen from '../Leads/LeadsViewContainer';
 const iconHome = require('../../../assets/images/tabbar/home.png');
@@ -17,7 +18,8 @@ const iconGrids = require('../../../assets/images/tabbar/grids.png');
 const iconPages = require('../../../assets/images/tabbar/pages.png');
 const iconComponents = require('../../../assets/images/tabbar/components.png');
 
-const hederBackground = require('../../../assets/images/topBarBg.png');
+
+const headerBackground = require('../../../assets/images/topBarBg.png');
 
 const styles = StyleSheet.create({
   tabBarItemContainer: {
@@ -69,7 +71,7 @@ export default createBottomTabNavigator(
       navigationOptions: {
         header: (
           <View style={styles.headerContainer}>
-            <Image style={styles.headerImage} source={hederBackground} />
+            <Image style={styles.headerImage} source={headerBackground} />
             <Text style={styles.headerCaption}>Reminders</Text>
           </View>
         ),
@@ -77,73 +79,27 @@ export default createBottomTabNavigator(
     },
     Service: {
       screen: ServicesScreen,
-      navigationOptions: {
-        header: (
-          <View style={styles.headerContainer}>
-            <Image style={styles.headerImage} source={hederBackground} />
-            <Text style={styles.headerCaption}>Service</Text>
-          </View>
-        ),
-        // headerRight: (
-        //   <View style={{ flexDirection: 'row' }}>
-        //     <TouchableOpacity
-        //       onPress={() => {}}
-        //       style={{
-        //         paddingRight: 10,
-        //       }}
-        //     >
-        //       <Image
-        //         source={require('../../../assets/images/phone.png')}
-        //         resizeMode="contain"
-        //         style={{
-        //           width: 30,
-        //           height: 20,
-        //         }}
-        //       />
-        //     </TouchableOpacity>
-    
-        //     <TouchableOpacity
-        //       onPress={() => {}}
-        //       style={{
-        //         paddingRight: 25,
-        //       }}
-        //     >
-        //       <Image
-        //         source={require('../../../assets/images/camera.png')}
-        //         resizeMode="contain"
-        //         style={{
-        //           width: 30,
-        //           height: 20,
-        //         }}
-        //       />
-        //     </TouchableOpacity>
-        //   </View>
-        // )
-      },
     },
-
     Leads: {
       screen: LeadsScreen,
       navigationOptions: {
         header: (
           <View style={styles.headerContainer}>
-            <Image style={styles.headerImage} source={hederBackground} />
+            <Image style={styles.headerImage} source={headerBackground} />
             <Text style={styles.headerCaption}>Leads</Text>
           </View>
         ),
       },
     },
-
-
     Manage: {
       screen: ManageScreen,
       navigationOptions: {
         header: (
           <View style={styles.headerContainer}>
-            <Image style={styles.headerImage} source={hederBackground} />
+            <Image style={styles.headerImage} source={headerBackground} />
             <Text style={styles.headerCaption}>Manage</Text>
           </View>
-        ),
+        )
       },
     },
     // Settings: {
@@ -151,7 +107,7 @@ export default createBottomTabNavigator(
     //   navigationOptions: {
     //     header: (
     //       <View style={styles.headerContainer}>
-    //         <Image style={styles.headerImage} source={hederBackground} />
+    //         <Image style={styles.headerImage} source={headerBackground} />
     //         <Text style={styles.headerCaption}>Components</Text>
     //       </View>
     //     ),
@@ -161,6 +117,7 @@ export default createBottomTabNavigator(
   {
     defaultNavigationOptions: ({ navigation }) => ({
       // eslint-disable-next-line react/prop-types
+      
       tabBarIcon: ({ focused }) => {
         const { routeName } = navigation.state;
         let iconSource;
@@ -196,6 +153,7 @@ export default createBottomTabNavigator(
           </View>
         );
       },
+      
     }),
     tabBarPosition: 'bottom',
     animationEnabled: false,
@@ -211,5 +169,51 @@ export default createBottomTabNavigator(
         color: colors.grey,
       },
     },
-  },
+    navigationOptions: ({ navigation }) => ({
+      headerRight: (
+        <View style={{ flexDirection: 'row' }}>
+           <TouchableOpacity
+             onPress={() => navigation.navigate('ServiceAdd')}
+             style={{
+               paddingRight: 10,
+             }}
+           >
+             <Image
+               source={require('../../../assets/images/icons/plus.png')}
+               resizeMode="contain"
+               style={{
+                 width: 30,
+                 height: 20,
+               }}
+             />
+           </TouchableOpacity>
+         </View>
+      ),
+   }),
+     //   navigationOptions: ({ navigation }) => ((navigation.state.routeName=='Service')?{}:{
+      
+  //     headerRight: (
+       
+  //       <View style={{ flexDirection: 'row' }}>
+          
+  //          <TouchableOpacity
+  //            onPress={() => navigation.navigate('ServiceAdd')}
+  //            style={{
+  //              paddingRight: 10,
+  //            }}
+  //          >
+  //            <Image
+  //              source={require('../../../assets/images/icons/plus.png')}
+  //              resizeMode="contain"
+  //              style={{
+  //                width: 30,
+  //                height: 20,
+  //              }}
+  //            /><Text></Text>
+  //          </TouchableOpacity>
+  //        </View>
+  //     ),
+  //  }),
+    
+  }
 );
