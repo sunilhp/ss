@@ -96,6 +96,21 @@ export default function ManageScreen(props) {
           <Text style={styles.itemText}>Track</Text>
         </TouchableOpacity>
       </View>
+
+
+      <View style={styles.row}>
+        <TouchableOpacity
+            onPress={() => props.navigation.navigate({ routeName: 'ServiceAdd' })}
+            style={styles.item}
+          >
+          <Image
+            resizeMode="contain"
+            source={chartIcon}
+            style={styles.itemImage}
+          />
+          <Text style={styles.itemText}>ADD SERVICE</Text>
+        </TouchableOpacity>
+      </View>
      
 {/* 
 

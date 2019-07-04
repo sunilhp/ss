@@ -25,6 +25,7 @@ import UsersScreen from '../users/UsersViewContainer';
 import UsersAddScreen from '../users/UsersAdd';
 import CustomerScreen from '../customer/CustomerViewContainer';
 import CustomerAddScreen from '../customer/CustomerAdd';
+import ServiceAddScreen from '../services/ServiceAdd';
 import ServiceTypeScreen from '../serviceType/ServiceTypeViewContainer';
 import ServiceTypeAddScreen from '../serviceType/ServiceTypeAdd';
 import ServicesScreen from '../services/ServicesViewContainer';
@@ -131,6 +132,12 @@ const stackNavigator = createStackNavigator(
       title: 'Customer Information',
       },
     },
+    ServiceAdd: {
+      screen: ServiceAddScreen,
+      navigationOptions: {
+      title: 'Service Information',
+      },
+    },
     ProductAdd: {
       screen: ProductAddScreen,
       navigationOptions: {
@@ -162,6 +169,38 @@ const stackNavigator = createStackNavigator(
       navigationOptions: {
       title: 'Roles',
       },
+    },
+    Services: {
+      screen: ServicesScreen,
+      navigationOptions: ({navigation}) => ({
+        title: 'Services',
+        headerRight: (
+          <View style={{ flexDirection: 'row' }}>
+             <TouchableOpacity
+               onPress={() => navigation.navigate('CustomerAdd')}
+               style={{
+                 paddingRight: 10,
+               }}
+             >
+               <Image
+                 source={require('../../../assets/images/icons/plus.png')}
+                 resizeMode="contain"
+                 style={{
+                   width: 30,
+                   height: 20,
+                 }}
+               />
+             </TouchableOpacity>
+           </View>
+        ),
+        headerBackground: (
+          <Image
+            style={{ flex: 1 }}
+            source={headerBackground}
+            resizeMode="cover"
+          />
+        ),
+      }),
     },
     Customer: {
       screen: CustomerScreen,
@@ -305,6 +344,7 @@ const stackNavigator = createStackNavigator(
       navigationOptions: {
         title: 'Lead Detail',
       },
+<<<<<<< HEAD
     }, 
     ServiceAdd: {
       screen: ServiceAddScreen,
@@ -312,6 +352,9 @@ const stackNavigator = createStackNavigator(
       title: 'Service',
       },
     },   
+=======
+    },    
+>>>>>>> 2542fcf74fff707a32480c0c0f423e51f5b4c0a3
     ServiceType: {
       screen: ServiceTypeScreen,
       navigationOptions: ({navigation}) => ({
