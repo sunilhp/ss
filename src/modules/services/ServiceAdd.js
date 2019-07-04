@@ -137,7 +137,7 @@ getPriority = async () => {
 getProductType = async () => {
   try {
       const res =  await axios.post(`${c.API}/product_type/get`,{headers:{ Authorization: 'Bearer '+SyncStorage.get('LOGIN_DETAILS')}});
-      if (res.data.success) { this.setState({ ProductInfo:res.data.data })}
+      if (res.data.success) { this.setState({ ProductType:res.data.data })}
       console.warn( "productType Info  : ",this.state.ProductType);
   } catch (e) {console.warn("ProductType fetching error",e.message)}
 }
