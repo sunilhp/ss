@@ -34,16 +34,10 @@ export default function ProductScreen(props) {
               flexDirection: 'row',
               justifyContent: 'space-between',
             }}
-          
           >
             <Title color={colors.darkGray}>{item.name}</Title>
-            <Caption color={colors.lightGray}>{item.time}</Caption>
           </View>
-          <View styleName="vertical v-start" style={{ alignSelf: 'stretch' }}>
-            <Caption color={colors.lightGray} numberOfLines={1}>
-              {item.city} , {item.state}
-            </Caption>
-          </View>
+          
         </View>
       </View>
     </TouchableOpacity>
