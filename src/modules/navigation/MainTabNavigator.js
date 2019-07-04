@@ -79,18 +79,6 @@ export default createBottomTabNavigator(
     },
     Service: {
       screen: ServicesScreen,
-<<<<<<< HEAD
-=======
-      navigationOptions: {
-        header: (
-          <View style={styles.headerContainer}>
-            <Image style={styles.headerImage} source={hederBackground} />
-            <Text style={styles.headerCaption}>Services</Text>
-          </View>
-        ),
-        
-      },
->>>>>>> 2542fcf74fff707a32480c0c0f423e51f5b4c0a3
     },
     Leads: {
       screen: LeadsScreen,

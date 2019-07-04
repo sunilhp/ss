@@ -344,7 +344,6 @@ const stackNavigator = createStackNavigator(
       navigationOptions: {
         title: 'Lead Detail',
       },
-<<<<<<< HEAD
     }, 
     ServiceAdd: {
       screen: ServiceAddScreen,
@@ -352,9 +351,6 @@ const stackNavigator = createStackNavigator(
       title: 'Service',
       },
     },   
-=======
-    },    
->>>>>>> 2542fcf74fff707a32480c0c0f423e51f5b4c0a3
     ServiceType: {
       screen: ServiceTypeScreen,
       navigationOptions: ({navigation}) => ({
