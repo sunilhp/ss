@@ -62,7 +62,7 @@ navtitle =()=>{
      })
 }
   componentWillMount() {
-this.navtitle();
+  this.navtitle();
     // if(this.props.navigation.state.params)
     // {
     //     if(this.props.navigation.state.params.status == true)

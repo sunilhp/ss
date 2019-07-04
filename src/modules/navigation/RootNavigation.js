@@ -37,7 +37,7 @@ import ProductAddScreen from '../product/ProductAdd';
 import ProductScreen from '../product/ProductViewContainer';
 import TrackDetailScreen from '../track/TrackDetailViewContainer';
 import TrackExecutiveScreen from '../track/TrackExecutive';
-import ServiceAddScreen from '../serviceType/ServiceTypeAdd';
+
 
 
 import { colors, fonts } from '../../styles';

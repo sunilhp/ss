@@ -169,9 +169,11 @@ export default createBottomTabNavigator(
         color: colors.grey,
       },
     },
-    navigationOptions: ({ navigation }) => ({
+    navigationOptions: ({ navigation }) => ((navigation.state.routes[navigation.state.index].key == 'Service')?{      
       headerRight: (
+       
         <View style={{ flexDirection: 'row' }}>
+          
            <TouchableOpacity
              onPress={() => navigation.navigate('ServiceAdd')}
              style={{
@@ -188,32 +190,7 @@ export default createBottomTabNavigator(
              />
            </TouchableOpacity>
          </View>
-      ),
-   }),
-     //   navigationOptions: ({ navigation }) => ((navigation.state.routeName=='Service')?{}:{
-      
-  //     headerRight: (
-       
-  //       <View style={{ flexDirection: 'row' }}>
-          
-  //          <TouchableOpacity
-  //            onPress={() => navigation.navigate('ServiceAdd')}
-  //            style={{
-  //              paddingRight: 10,
-  //            }}
-  //          >
-  //            <Image
-  //              source={require('../../../assets/images/icons/plus.png')}
-  //              resizeMode="contain"
-  //              style={{
-  //                width: 30,
-  //                height: 20,
-  //              }}
-  //            /><Text></Text>
-  //          </TouchableOpacity>
-  //        </View>
-  //     ),
-  //  }),
+      ),}:{}),
     
   }
 );
