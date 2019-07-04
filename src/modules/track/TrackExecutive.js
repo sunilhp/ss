@@ -7,7 +7,7 @@ class TrackExecutive extends Component {
 
     return (
       <View >
-      <Text>hello</Text>
+      <Text>hello ..</Text>
       </View>
     );
   }
