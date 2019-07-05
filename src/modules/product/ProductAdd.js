@@ -98,7 +98,7 @@ this.navtitle();
           active : this.props.navigation.state.params.active,
           typeId: this.props.navigation.state.typeId,
           typeName: this.props.navigation.state.typeName,
-          status: this.state.parameters.status,
+          //status: this.state.parameters.status,
         });
     }
     else
@@ -342,7 +342,7 @@ this.navtitle();
               autoCorrect={false}
               value={this.state.name}
             />
-            <Text>Product Type</Text>
+            <Text style={styles.textLabel}>Product Type</Text>
             <CustomPicker 
               options={renderProductType(this.state.productTypes)}
              
@@ -364,6 +364,7 @@ this.navtitle();
               autoCorrect={false}
               onChangeText={(text) => this.setState({description})}
               value={this.state.description}/>
+            <Text style={styles.textLabel}>Status</Text>  
             <RadioGroup
                 size={24}
                 thickness={2}
@@ -438,6 +439,11 @@ const styles = StyleSheet.create({
   textInput: {
     alignSelf: 'stretch',
     marginTop: 20,
+  },
+  textLabel: {
+    alignSelf: 'stretch',
+    marginTop: 20,
+    color: '#fff'
   },
   logo: {
     height: 150,

@@ -79,6 +79,9 @@ export default createBottomTabNavigator(
     },
     Service: {
       screen: ServicesScreen,
+      navigationOptions: {
+        headerTitle:"Services"
+      }
     },
     Leads: {
       screen: LeadsScreen,
@@ -169,7 +172,8 @@ export default createBottomTabNavigator(
         color: colors.grey,
       },
     },
-    navigationOptions: ({ navigation }) => ((navigation.state.routes[navigation.state.index].key == 'Service')?{      
+    navigationOptions: ({ navigation }) => ((navigation.state.routes[navigation.state.index].key == 'Service')?{   
+      headerTitle: "Services",
       headerRight: (
        
         <View style={{ flexDirection: 'row' }}>
@@ -190,7 +194,29 @@ export default createBottomTabNavigator(
              />
            </TouchableOpacity>
          </View>
-      ),}:{}),
+      )}:(navigation.state.routes[navigation.state.index].key == 'Leads')?{   
+        headerTitle: "Leads",
+        headerRight: (
+         
+          <View style={{ flexDirection: 'row' }}>
+            
+             <TouchableOpacity
+               onPress={() => navigation.navigate('LeadsAdd')}
+               style={{
+                 paddingRight: 10,
+               }}
+             >
+               <Image
+                 source={require('../../../assets/images/icons/plus.png')}
+                 resizeMode="contain"
+                 style={{
+                   width: 30,
+                   height: 20,
+                 }}
+               />
+             </TouchableOpacity>
+           </View>
+        )}:{}),
     
   }
 );
