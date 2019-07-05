@@ -18,17 +18,20 @@ import Toast from 'react-native-simple-toast'
 import { StackNavigator } from 'react-navigation';
 import axios from 'axios';
 import SyncStorage from 'sync-storage';
+import { CustomPicker } from 'react-native-custom-picker';
+import FormData from "form-data";
 
 export default class serviceAddScreen extends React.Component {
  
   constructor(props) {
 
       super(props);
-      let serviceIndex=0, message = "",ProductInfo = [], CustomerInfo = [], Priority =[], ProductType = [], ServiceType =[];
-      this.getCustomerInfo();
+      let serviceIndex=0, message = "", ProductName="",ProductId="", ProductInfo = [],CustomerName="",CustomerId="", CustomerInfo = [],PriorityName="",PriorityId="", Priority =[], ServiceTypeId="", ServiceTypeName = "", ServiceType =[],ProductTypeName="", ProductTypeId="",ProductType=[];
+      
       this.getPriority();
       this.getProductInfo();
       this.getProductType();
+      this.getCustomerInfo();
       this.getServiceType();
  
     }
@@ -38,10 +41,21 @@ export default class serviceAddScreen extends React.Component {
     // Current visible form
     isKeyboardVisible: false,
     serviceIndex:0,
+    message:"",
+    ProductName:"",
+    ProductId:"",
     ProductInfo:[],
+    CustomerName:"",
+    CustomerId:"5cf74177688a6c4ee851f52a",
     CustomerInfo: [],
+    PriorityName:"",
+    PriorityId:"",
     Priority :[],
+    ProductTypeName:"",
+    ProductTypeId:"",
     ProductType :[],
+    ServiceTypeName:"",
+    ServiceTypeId:"",
     ServiceType :[]
   };
 
@@ -55,67 +69,20 @@ static navigatioOptions = ({navigation}) => {
 //   })
 // }
 
-navtitle =()=>{
-  this.props.navigation.setParams({
-        title:"Update Service"
+// navtitle =()=>{
+//   this.props.navigation.setParams({
+//         title:"Update Service"
 
-     })
-}
-  componentWillMount() {
-  this.navtitle();
-    // if(this.props.navigation.state.params)
-    // {
-    //     if(this.props.navigation.state.params.status == true)
-    //     {
-    //         this.setState({ serviceIndex :0});
-    //     }
-    //     else
-    //     {
-    //         this.setState({ serviceIndex : 1});
-    //     }
-    //     this.setState({
-    //         //email : this.props.navigation.state.params.email,
-           
-    //     });
-    // }
-    // else
-    //     this.setState({ serviceIndex :0});
-    
-    this.keyboardDidShowListener = Keyboard.addListener(
-      Platform.select({ android: 'keyboardDidShow', ios: 'keyboardWillShow' }),
-      this._keyboardDidShow.bind(this),
-    );
-    this.keyboardDidHideListener = Keyboard.addListener(
-      Platform.select({ android: 'keyboardDidHide', ios: 'keyboardWillHide' }),
-      this._keyboardDidHide.bind(this),
-    );
-  }
+//      })
+// }
 
-  componentDidMount() {
-   // Animated.timing(this.state.anim, { toValue: 3000, duration: 3000 }).start();
-  }
-
-  componentWillUnmount() {
-    this.keyboardDidShowListener.remove();
-    this.keyboardDidHideListener.remove();
-  }
-
-  _keyboardDidShow() {
-    LayoutAnimation.easeInEaseOut();
-    this.setState({ isKeyboardVisible: true });
-  }
-
-  _keyboardDidHide() {
-    LayoutAnimation.easeInEaseOut();
-    this.setState({ isKeyboardVisible: false });
-  }
 //fetching product info from Network
 getProductInfo = async () => {
-    try {
-        const res =  await axios.post(`${c.API}/products/get`,{headers:{ Authorization: 'Bearer '+SyncStorage.get('LOGIN_DETAILS')}});
-        if (res.data.success) { this.setState({ ProductInfo:res.data.data })}
-        console.warn( "product Info  : ",this.state.ProductInfo);
-    } catch (e) {console.warn("Product fetching error",e.message)}
+  try {
+      const res =  await axios.post(`${c.API}/products/get`,{headers:{ Authorization: 'Bearer '+SyncStorage.get('LOGIN_DETAILS')}});
+      if (res.data.success) { this.setState({ ProductInfo:res.data.data })}
+      console.warn(this.state.ProductInfo)
+  } catch (e) {console.warn("Product fetching error",e.message)}
 }
 //fetching customer info from Network
 getCustomerInfo = async () => {
@@ -123,14 +90,15 @@ getCustomerInfo = async () => {
       const res =  await axios.post(`${c.API}/customers/get`,{headers:{ Authorization: 'Bearer '+SyncStorage.get('LOGIN_DETAILS')}});
       if (res.data.success) { this.setState({ CustomerInfo:res.data.data })}
       console.warn( "Customer Info  : ",this.state.CustomerInfo);
-  } catch (e) {console.warn("customer fetching error",e.message)}
+  } catch (e) {
+    console.warn("customer fetching error",e.message);
+  }
 }
 //fetching priority info from Network
 getPriority = async () => {
   try {
       const res =  await axios.post(`${c.API}/service_priority/get`,{headers:{ Authorization: 'Bearer '+SyncStorage.get('LOGIN_DETAILS')}});
       if (res.data.success) { this.setState({ Priority:res.data.data })}
-      console.warn( "Priority  : ",this.state.Priority);
   } catch (e) {console.warn("Priority fetching error",e.message)}
 }
 //fetching ProductType info from Network
@@ -138,7 +106,6 @@ getProductType = async () => {
   try {
       const res =  await axios.post(`${c.API}/product_type/get`,{headers:{ Authorization: 'Bearer '+SyncStorage.get('LOGIN_DETAILS')}});
       if (res.data.success) { this.setState({ ProductType:res.data.data })}
-      console.warn( "productType Info  : ",this.state.ProductType);
   } catch (e) {console.warn("ProductType fetching error",e.message)}
 }
 //fetching ServiceType info from Network
@@ -146,7 +113,6 @@ getServiceType = async () => {
   try {
       const res =  await axios.post(`${c.API}/service_type/get`,{headers:{ Authorization: 'Bearer '+SyncStorage.get('LOGIN_DETAILS')}});
       if (res.data.success) { this.setState({ ServiceType:res.data.data })}
-      console.warn( "ServiceType Info  : ",this.state.ServiceType); 
   } catch (e) {console.warn("ServiceType fetching error",e.message)}
 }
 
@@ -154,168 +120,96 @@ getServiceType = async () => {
   submitForm(){ 
     if(this.props.navigation.state.params)
     {
-        var pwd = "";
-        if(this.state.password == "")
-            pwd = this.props.navigation.state.params.password;
-        else
-            pwd = this.state.password;
-        let user = {
-            id: this.props.navigation.state.params.id,
-            name:  this.state.name,
-            email:  this.state.email,
-            phone:  this.state.phone,
-            address:  this.state.address,
-            password:  pwd,
-            city:  this.state.city,
-            state:  this.state.ustate,
-            zipcode:  this.state.zipcode,
-            status: this.state.cstate
-        };
+      console.warn(this.props.navigation.state.params);
+        // var pwd = "";
+        // if(this.state.password == "")
+        //     pwd = this.props.navigation.state.params.password;
+        // else
+        //     pwd = this.state.password;
+        // let user = {
+        //     id: this.props.navigation.state.params.id,
+        //     name:  this.state.name,
+        //     email:  this.state.email,
+        //     phone:  this.state.phone,
+        //     address:  this.state.address,
+        //     password:  pwd,
+        //     city:  this.state.city,
+        //     state:  this.state.ustate,
+        //     zipcode:  this.state.zipcode,
+        //     status: this.state.cstate
+        // };
     
-        fetch(`${C.API}/customers/update`, {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(user),
-            })
-            .then((response) => response.json())
-            .then((responseJson) => {
+        // fetch(`${c.API}/customers/update`, {
+        //     method: 'POST',
+        //     headers: {
+        //         Accept: 'application/json',
+        //         'Content-Type': 'application/json',
+        //     },
+        //     body: JSON.stringify(user),
+        //     })
+        //     .then((response) => response.json())
+        //     .then((responseJson) => {
         
-                if(!responseJson.status){
+        //         if(!responseJson.status){
 
-                    if(responseJson.message.name){
-                        this.setState({ nameError: true });
-                    }
-                    if(responseJson.message.city){
-                        this.setState({ cityError: true });
-                    }
-                    if(responseJson.message.state){
-                        this.setState({ stateError: true });
-                    }
-                    if(responseJson.message.email){
-                        this.setState({ emailError: true });
-                    }
-                    if(responseJson.message.password){
-                        this.setState({ passwordError: true });
-                    }
-                    if(responseJson.message.phone){
-                        this.setState({ phoneError: true });
-                    }
-                    if(responseJson.message.address){
-                        this.setState({ addressError: true });
-                    }
-                    if(responseJson.message.zipcode){
-                        this.setState({ zipcodeError: true });
-                    }
-                }
-                    Toast.show("Customer Updated")
-                    this.setState({email : ''});
-                    this.setState({name  : ''});
-                    this.setState({phone : ''});
-                    this.setState({password   : ''});
-                    this.setState({address :''});
-                    this.setState({city :''});
-                    this.setState({ustate:''});
-                    this.setState({zipcode:''});
-            })
-            .catch(err => {console.warn(err) })
-            .done();
-            // this.props.navigation.navigate({
-            //     routeName: 'Customer',
+        //         }
+        //             Toast.show("Customer Updated")
+        //             this.setState({email : ''});
+        //             this.setState({name  : ''});
+        //             this.setState({phone : ''});
+        //             this.setState({password   : ''});
+        //             this.setState({address :''});
+        //             this.setState({city :''});
+        //             this.setState({ustate:''});
+        //             this.setState({zipcode:''});
+        //     })
+        //     .catch(err => {console.warn(err) })
+        //     .done();
+        //     // this.props.navigation.navigate({
+        //     //     routeName: 'Customer',
                
-            //   })
-            this.props.navigation.goBack();
+        //     //   })
+        //     this.props.navigation.goBack();
     }
     else
     {
-        let user = {
-            name:  this.state.name,
-            email:  this.state.email,
-            phone:  this.state.phone,
-            address:  this.state.address,
-            password:  this.state.password,
-            city:  this.state.city,
-            state:  this.state.ustate,
-            zipcode:  this.state.zipcode,
-            status: this.state.cstate
-        };
-    
-        fetch(`${C.API}/customers`, {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(user),
-            })
-            .then((response) => response.json())
-            .then((responseJson) => {
-        
-                if(!responseJson.status){
+      if(this.state.ProductId == "") Toast.show("Please Choose Product Name!!");
+      else if(this.state.CustomerId == "") Toast.show("Please Choose Customer Name!!");
+      else if(this.state.ProductTypeId == "") Toast.show("Please Choose Product Type!!");
+      else if(this.state.ServiceTypeId == "") Toast.show("Please Choose Service Type!!");
+      else if(this.state.message == "") Toast.show("Please Fill Message!!");
+      else{
+        service = new FormData();
+        service.append("product_id",this.state.ProductId);
+        service.append("customer_id",this.state.CustomerId);
+        service.append("product_type",this.state.ProductTypeId);
+        service.append("service_type",this.state.ServiceTypeId);
+        service.append("message",this.state.message);
 
-                    if(responseJson.message.name){
-                        this.setState({ nameError: true });
-                    }
-                    if(responseJson.message.city){
-                        this.setState({ cityError: true });
-                    }
-                    if(responseJson.message.state){
-                        this.setState({ stateError: true });
-                    }
-                    if(responseJson.message.email){
-                        this.setState({ emailError: true });
-                    }
-                    if(responseJson.message.password){
-                        this.setState({ passwordError: true });
-                    }
-                    if(responseJson.message.phone){
-                        this.setState({ phoneError: true });
-                    }
-                    if(responseJson.message.address){
-                        this.setState({ addressError: true });
-                    }
-                    if(responseJson.message.zipcode){
-                        this.setState({ zipcodeError: true });
-                    }
-                }
-                if(responseJson.success)
-                {
-                    Toast.show("Customer added")
-                    this.setState({email : ''});
-                    this.setState({name  : ''});
-                    this.setState({phone : ''});
-                    this.setState({password   : ''});
-                    this.setState({address :''});
-                    this.setState({city :''});
-                    this.setState({ustate:''});
-                    this.setState({zipcode:''});
-                    this.props.navigation.goBack();
-                }
-                else
-                {
-                    console.warn(responseJson)
-                    if(responseJson.message == "E-mail already exists")
-                    {
-                      Toast.show(responseJson.message);
-                    }
-                    else if(responseJson.message.email != "required")
-                    {
-                      Toast.show(responseJson.message.email.message)
-                    }
-                  
-                    //Toast.show("Email already Exists")
-                }
-            })
-            .catch(err => {console.warn(err) })
-            .done();
-            // this.props.navigation.navigate({
-            //     routeName: 'Customer',
-               
-            //   })
-           
-        }
+      fetch(`${c.API}/services`, {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
+          },
+          body:service,
+          })
+          .then((response) => response.json())
+          .then((responseJson) => {
+            if(responseJson.success)
+            {
+                Toast.show("Customer added")
+                this.props.navigation.goBack();
+            }
+            else
+            {
+              Toast.show(responseJson)
+            }
+          })
+          .catch(err => {console.warn(err) })
+          .done();
+      }
+    }
   }   
 
   render() {
@@ -332,66 +226,69 @@ getServiceType = async () => {
           >
             <TextInput
               maxLength={50}
-              //onChangeText={(message) => this.setState({ message})}
+              onChangeText={(message) => this.setState({ message})}
              // onSubmitEditing={() => this.message.focus()}
               placeholder="Message"
               returnKeyType="next"
              // style={[styles.textInput, this.state.messageError? styles.error:null]}
               autoCorrect={false}
-           //   value={this.state.message}
+              value={this.state.message}
             />
-            {/* <Text>User Role</Text>
+            <Text>Product Name </Text>
             <CustomPicker 
-              options={renderUserRoles(this.state.userRoles)}
-             
-              value={(this.state.parameters)?{label: this.state.userRoleName ,value: this.state.userRoleId }:{}}
-              
+              options={renderProductInfo(this.state.ProductInfo)}
+              value={(this.state.ProductInfo)?{label: this.state.ProductName ,value: this.state.ProductId }:{}}
               getLabel={(item) => item.label}
               onValueChange={(value, i) => {
-                this.state.userRoleId = value.value;
-                this.state.userRoleName = value.label;
-                 // props.onChange('selectedServiceStatus', { id: value.value, name: value.label })
+                this.state.ProductId = value.value;
+                this.state.ProductName = value.label;
               }}
             />
-            <Text>User Role</Text>
+
+            {/* <Text>product Info  </Text>
             <CustomPicker 
-              options={renderUserRoles(this.state.userRoles)}
-             
-              value={(this.state.parameters)?{label: this.state.userRoleName ,value: this.state.userRoleId }:{}}
-              
+              options={renderProductInfo(this.state.ProductInfo)}
+              value={(this.state.ProductInfo)?{label: this.state.ProductName ,value: this.state.ProductId }:{}}
               getLabel={(item) => item.label}
               onValueChange={(value, i) => {
-                this.state.userRoleId = value.value;
-                this.state.userRoleName = value.label;
-                 // props.onChange('selectedServiceStatus', { id: value.value, name: value.label })
-              }}
-            />
-            <Text>User Role</Text>
-            <CustomPicker 
-              options={renderUserRoles(this.state.userRoles)}
-             
-              value={(this.state.parameters)?{label: this.state.userRoleName ,value: this.state.userRoleId }:{}}
-              
-              getLabel={(item) => item.label}
-              onValueChange={(value, i) => {
-                this.state.userRoleId = value.value;
-                this.state.userRoleName = value.label;
-                 // props.onChange('selectedServiceStatus', { id: value.value, name: value.label })
-              }}
-            />
-            <Text>User Role</Text>
-            <CustomPicker 
-              options={renderUserRoles(this.state.userRoles)}
-             
-              value={(this.state.parameters)?{label: this.state.userRoleName ,value: this.state.userRoleId }:{}}
-              
-              getLabel={(item) => item.label}
-              onValueChange={(value, i) => {
-                this.state.userRoleId = value.value;
-                this.state.userRoleName = value.label;
-                 // props.onChange('selectedServiceStatus', { id: value.value, name: value.label })
+                this.state.ProductId = value.value;
+                this.state.ProductName = value.label;
               }}
             /> */}
+
+            <Text>Priority  </Text>
+            <CustomPicker 
+              options={renderPriority(this.state.Priority)}
+              value={(this.state.Priority)?{label: this.state.PriorityName ,value: this.state.PriorityId }:{}}
+              getLabel={(item) => item.label}
+              onValueChange={(value, i) => {
+                this.state.PriorityId = value.value;
+                this.state.PriorityName = value.label;
+              }}
+            />
+
+            <Text>Product Type  </Text>
+            <CustomPicker 
+              options={renderProductType(this.state.ProductType)}
+              value={(this.state.ProductType)?{label: this.state.ProductTypeName ,value: this.state.ProductTypeId }:{}}
+              getLabel={(item) => item.label}
+              onValueChange={(value, i) => {
+                this.state.ProductTypeId = value.value;
+                this.state.ProductTypeName = value.label;
+              }}
+            />
+
+            <Text>Service Type  </Text>
+            <CustomPicker 
+              options={renderServiceType(this.state.ServiceType)}
+              value={(this.state.ServiceType)?{label: this.state.ServiceTypeName ,value: this.state.ServiceTypeId }:{}}
+              getLabel={(item) => item.label}
+              onValueChange={(value, i) => {
+                this.state.ServiceTypeId = value.value;
+                this.state.ServiceTypeName = value.label;
+              }}
+            />
+            
 
 
 
@@ -410,6 +307,32 @@ getServiceType = async () => {
       </ImageBackground>
     );
   }
+}
+
+const renderProductInfo = (ProductInfo) => {
+  return ProductInfo.map(it => {
+      return {value: it.id,label :it.name}
+  }) 
+}
+const renderPriority = (Priority) => {
+  return Priority.map(it => {
+      return {value: it.id,label :it.name}
+  }) 
+}
+const renderProductType = (ProductType) => {
+  return ProductType.map(it => {
+      return {value: it.id,label :it.name}
+  }) 
+}
+const renderServiceType = (ServiceType) => {
+  return ServiceType.map(it => {
+      return {value: it.id,label :it.name}
+  }) 
+}
+const renderCustomer = (Priority) => {
+  return Priority.map(it => {
+      return {value: it.id,label :it.name}
+  }) 
 }
 
 const styles = StyleSheet.create({
