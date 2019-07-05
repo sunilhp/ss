@@ -25,6 +25,7 @@ import { CustomPicker } from 'react-native-custom-picker';
 import ServiceAssign from './../components/serviceAssign/ServiceAssignContainer';
 import SyncStorage from 'sync-storage';
 
+
 class ServiceHistory extends React.Component {
   state = { 
     history: [],
@@ -134,8 +135,30 @@ class ServiceHistory extends React.Component {
         {/* service information view */}
         <View style={styles.componentsSection}>
           <Text style={styles.componentSectionHeader}>Service Information</Text>
+          <Button 
+            title='Edit'
+            onPress={() =>
+              this.props.navigation.navigate({
+                routeName: 'ServiceAdd',
+                params: {
+                  id: itemParams.id,
+                  ProductId : itemParams.productId,
+                  ProductName:itemParams.product,
+                  CustomerId : itemParams.customerId,
+                  CustomerName: itemParams.customerName,
+                  ProductTypeId : itemParams.productTypeId,
+                  ProductTypeName: itemParams.productType,
+                  ServiceTypeId : itemParams.serviceTypeId,
+                  ServiceTypeName: itemParams.serviceType,
+                  PriorityName: itemParams.priority,
+                  PriorityId: itemParams.priorityId,
+                  message : itemParams.message
+                },
+              })
+            }
+          />
           <View style={styles.row}>
-          <TouchableOpacity key={itemParams.id} style={styles.itemTwoContainer} onPress={() => this._openArticle(item)}>
+          <TouchableOpacity key={itemParams.id} style={styles.itemTwoContainer}>
             <View>
               <Text style={styles.itemTwoPrice}>Type : {itemParams.serviceType}</Text>
               <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
@@ -178,10 +201,9 @@ class ServiceHistory extends React.Component {
             </TouchableOpacity>
           </View>
         </View>
-      
 
         {/* product information view */}
-        <View style={styles.componentsSection}>
+        {/* <View style={styles.componentsSection}>
          <Header 
             heading="Product Information" 
             btntext={this.state.isProductEditEnable?"Done":"Edit"} 
@@ -199,7 +221,7 @@ class ServiceHistory extends React.Component {
                 }
             )}
          </Header>
-        </View>
+        </View> */}
 
         {/* customer information view */}
         <View style={styles.componentsSection}>
@@ -241,7 +263,7 @@ class ServiceHistory extends React.Component {
         <View style={styles.componentsSection}>
         <Text style={styles.componentSectionHeader}>History</Text>
         <View style={styles.row}>
-        <TouchableOpacity key={itemParams.id} style={styles.itemTwoContainer} onPress={() => this._openArticle(item)}> 
+        <TouchableOpacity key={itemParams.id} style={styles.itemTwoContainer} > 
           <View>
             {this.renderServiceHistoryInformation()}
           </View>

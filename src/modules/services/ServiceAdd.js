@@ -13,7 +13,6 @@ import {
 } from 'react-native';
 import c from '../../../Constants';
 import { TextInput, Button } from '../../common';
-import {RadioGroup,RadioButton} from 'react-native-flexi-radio-button'
 import Toast from 'react-native-simple-toast'
 import { StackNavigator } from 'react-navigation';
 import axios from 'axios';
@@ -33,7 +32,6 @@ export default class serviceAddScreen extends React.Component {
       this.getProductType();
       this.getCustomerInfo();
       this.getServiceType();
- 
     }
    
   state = {
@@ -46,7 +44,7 @@ export default class serviceAddScreen extends React.Component {
     ProductId:"",
     ProductInfo:[],
     CustomerName:"",
-    CustomerId:"5cf74177688a6c4ee851f52a",
+    CustomerId:"",
     CustomerInfo: [],
     PriorityName:"",
     PriorityId:"",
@@ -59,40 +57,60 @@ export default class serviceAddScreen extends React.Component {
     ServiceType :[]
   };
 
-static navigatioOptions = ({navigation}) => {
-  return{ title: "Edit Service" }
+componentWillMount() {
+  if(this.props.navigation.state.params)
+  {
+    this.setState({
+      ProductId : this.props.navigation.state.params.ProductId,
+      ProductName:this.props.navigation.state.params.ProductName,
+      CustomerId : this.props.navigation.state.params.CustomerId,
+      CustomerName: this.props.navigation.state.params.CustomerName,
+      ProductTypeId : this.props.navigation.state.params.ProductTypeId,
+      ProductTypeName: this.props.navigation.state.params.ProductTypeName,
+      ServiceTypeId : this.props.navigation.state.params.ServiceTypeId,
+      ServiceTypeName: this.props.navigation.state.params.ServiceTypeName,
+      PriorityName: this.props.navigation.state.params.PriorityName,
+      PriorityId: this.props.navigation.state.params.PriorityId,
+      message : this.props.navigation.state.params.message
+    });
+  }
 }
-//may be used
-// onSelect(index, value){
-//   this.setState({
-//       cstate : value
-//   })
-// }
+    
+//fetching customer info from Network
+getCustomerInfo = async () => {
+  let messagesList = [];
+  let tmpres;
+  await fetch(`${c.API}/customers/get`, {
+    method: 'POST',
+    headers: {
+        Accept: 'application/json',
+        Authorization: 'Bearer '+SyncStorage.get('LOGIN_DETAILS'),
+        'Content-Type': 'application/json',
+    },
+    })
+    .then((response) => response.json())
+    .then((responseJson) => { 
+      tmpres = responseJson;
+      rs = tmpres.data;
+      for(i=0;i<rs.length;i++)
+      {
+         var tmp = {};
+         tmp.id = rs[i].id;
+         tmp.name = rs[i].name;
+         messagesList.push(tmp);
+      }
+      this.setState({ CustomerInfo:messagesList });
+    })
+    .catch(err => {console.warn(err) })
+    .done();
 
-// navtitle =()=>{
-//   this.props.navigation.setParams({
-//         title:"Update Service"
-
-//      })
-// }
-
+}
 //fetching product info from Network
 getProductInfo = async () => {
   try {
       const res =  await axios.post(`${c.API}/products/get`,{headers:{ Authorization: 'Bearer '+SyncStorage.get('LOGIN_DETAILS')}});
       if (res.data.success) { this.setState({ ProductInfo:res.data.data })}
-      console.warn(this.state.ProductInfo)
   } catch (e) {console.warn("Product fetching error",e.message)}
-}
-//fetching customer info from Network
-getCustomerInfo = async () => {
-  try {
-      const res =  await axios.post(`${c.API}/customers/get`,{headers:{ Authorization: 'Bearer '+SyncStorage.get('LOGIN_DETAILS')}});
-      if (res.data.success) { this.setState({ CustomerInfo:res.data.data })}
-      console.warn( "Customer Info  : ",this.state.CustomerInfo);
-  } catch (e) {
-    console.warn("customer fetching error",e.message);
-  }
 }
 //fetching priority info from Network
 getPriority = async () => {
@@ -116,63 +134,9 @@ getServiceType = async () => {
   } catch (e) {console.warn("ServiceType fetching error",e.message)}
 }
 
-
   submitForm(){ 
     if(this.props.navigation.state.params)
-    {
-      console.warn(this.props.navigation.state.params);
-        // var pwd = "";
-        // if(this.state.password == "")
-        //     pwd = this.props.navigation.state.params.password;
-        // else
-        //     pwd = this.state.password;
-        // let user = {
-        //     id: this.props.navigation.state.params.id,
-        //     name:  this.state.name,
-        //     email:  this.state.email,
-        //     phone:  this.state.phone,
-        //     address:  this.state.address,
-        //     password:  pwd,
-        //     city:  this.state.city,
-        //     state:  this.state.ustate,
-        //     zipcode:  this.state.zipcode,
-        //     status: this.state.cstate
-        // };
-    
-        // fetch(`${c.API}/customers/update`, {
-        //     method: 'POST',
-        //     headers: {
-        //         Accept: 'application/json',
-        //         'Content-Type': 'application/json',
-        //     },
-        //     body: JSON.stringify(user),
-        //     })
-        //     .then((response) => response.json())
-        //     .then((responseJson) => {
-        
-        //         if(!responseJson.status){
-
-        //         }
-        //             Toast.show("Customer Updated")
-        //             this.setState({email : ''});
-        //             this.setState({name  : ''});
-        //             this.setState({phone : ''});
-        //             this.setState({password   : ''});
-        //             this.setState({address :''});
-        //             this.setState({city :''});
-        //             this.setState({ustate:''});
-        //             this.setState({zipcode:''});
-        //     })
-        //     .catch(err => {console.warn(err) })
-        //     .done();
-        //     // this.props.navigation.navigate({
-        //     //     routeName: 'Customer',
-               
-        //     //   })
-        //     this.props.navigation.goBack();
-    }
-    else
-    {
+    { 
       if(this.state.ProductId == "") Toast.show("Please Choose Product Name!!");
       else if(this.state.CustomerId == "") Toast.show("Please Choose Customer Name!!");
       else if(this.state.ProductTypeId == "") Toast.show("Please Choose Product Type!!");
@@ -180,16 +144,59 @@ getServiceType = async () => {
       else if(this.state.message == "") Toast.show("Please Fill Message!!");
       else{
         service = new FormData();
+        service.append("id",this.props.navigation.state.params.id);
         service.append("product_id",this.state.ProductId);
         service.append("customer_id",this.state.CustomerId);
         service.append("product_type",this.state.ProductTypeId);
         service.append("service_type",this.state.ServiceTypeId);
+        service.append("priority_id",this.state.PriorityId);
         service.append("message",this.state.message);
-
-      fetch(`${c.API}/services`, {
+        fetch(`${c.API}/services/update`, {
           method: 'POST',
           headers: {
             'Accept': 'application/json',
+            'Authorization':'Bearer '+SyncStorage.get('LOGIN_DETAILS'),
+            'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
+          },
+          body:service,
+        })
+        .then((response) => response.json())
+        .then((responseJson) => {
+          if(responseJson.success)
+          {
+              Toast.show("Service Updated")
+              this.props.navigation.goBack();
+          }
+          else
+          {
+            Toast.show(responseJson)
+          }
+        })
+        .catch(err => {console.warn(err) })
+        .done();
+    }
+  }
+    else
+    {
+      if(this.state.ProductId == "") Toast.show("Please Choose Product Name!!");
+      else if(this.state.CustomerId == "") Toast.show("Please Choose Customer Name!!");
+      else if(this.state.ProductTypeId == "") Toast.show("Please Choose Product Type!!");
+      else if(this.state.ServiceTypeId == "") Toast.show("Please Choose Service Type!!");
+      else if(this.state.PriorityId == "") Toast.show("Please Set Priority!!");
+      else if(this.state.message == "") Toast.show("Please Fill Message!!");
+      else{
+        service = new FormData();
+        service.append("product_id",this.state.ProductId);
+        service.append("customer_id",this.state.CustomerId);
+        service.append("product_type",this.state.ProductTypeId);
+        service.append("service_type",this.state.ServiceTypeId);
+        service.append("priority_id",this.state.PriorityId);
+        service.append("message",this.state.message);
+        fetch(`${c.API}/services`, {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Authorization':'Bearer '+SyncStorage.get('LOGIN_DETAILS'),
             'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
           },
           body:service,
@@ -198,7 +205,7 @@ getServiceType = async () => {
           .then((responseJson) => {
             if(responseJson.success)
             {
-                Toast.show("Customer added")
+                Toast.show("Service added")
                 this.props.navigation.goBack();
             }
             else
@@ -245,16 +252,16 @@ getServiceType = async () => {
               }}
             />
 
-            {/* <Text>product Info  </Text>
+            <Text>Customer Name </Text>
             <CustomPicker 
-              options={renderProductInfo(this.state.ProductInfo)}
-              value={(this.state.ProductInfo)?{label: this.state.ProductName ,value: this.state.ProductId }:{}}
+              options={renderCustomer(this.state.CustomerInfo)}
+              value={(this.state.CustomerInfo)?{label: this.state.CustomerName ,value: this.state.CustomerId }:{}}
               getLabel={(item) => item.label}
               onValueChange={(value, i) => {
-                this.state.ProductId = value.value;
-                this.state.ProductName = value.label;
+                this.state.CustomerId = value.value;
+                this.state.CustomerName = value.label;
               }}
-            /> */}
+            />
 
             <Text>Priority  </Text>
             <CustomPicker 
@@ -288,10 +295,6 @@ getServiceType = async () => {
                 this.state.ServiceTypeName = value.label;
               }}
             />
-            
-
-
-
               <Button
                 secondary
                 rounded

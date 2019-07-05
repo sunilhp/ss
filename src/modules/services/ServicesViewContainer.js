@@ -25,6 +25,7 @@ fetch(`${C.API}/services/get`, {
        var tmp = {};
        tmp.id = serviceresp[i].id; 
        tmp.priority = serviceresp[i].priority;
+       tmp.priorityId = serviceresp[i].priorityId;
        tmp.images = serviceresp[i].service_images;
        tmp.createdOn =serviceresp[i].created_on;
        tmp.message = serviceresp[i].message;
