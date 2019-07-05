@@ -67,4 +67,5 @@ export default compose(
   withState('dead_leads', 'setData', dead_lead_data),
   withState('completed_leads', 'setData', completed_lead_data),
   withState('progress_leads', 'setData', progress_lead_data),
+  withState('activeTab',this.props)
 )(LeadsView);
