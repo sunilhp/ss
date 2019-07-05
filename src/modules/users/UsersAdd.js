@@ -389,12 +389,10 @@ navtitle =()=>{
               autoCorrect={false}
               value={this.state.password}
             />
-            <Text>User Role</Text>
-            <CustomPicker 
+            <Text style={styles.textLabel}>User Role</Text>
+            <CustomPicker style={{color:'white'}}
               options={renderUserRoles(this.state.userRoles)}
-             
               value={(this.state.parameters)?{label: this.state.userRoleName ,value: this.state.userRoleId }:{}}
-              
               getLabel={(item) => item.label}
               onValueChange={(value, i) => {
                 this.state.userRoleId = value.value;
@@ -402,7 +400,7 @@ navtitle =()=>{
                  // props.onChange('selectedServiceStatus', { id: value.value, name: value.label })
               }}
             />
-            <Text>Date of Birth</Text>
+            <Text style={styles.textLabel}>Date of Birth</Text>
             <DatePickerIOS
               date={new Date(this.state.dob)}
               mode = "date"
@@ -412,7 +410,7 @@ navtitle =()=>{
                  // props.onChange('appointmentTime',date)
               }}
             />
-            <Text> Date of Joining</Text>
+            <Text style={styles.textLabel}> Date of Joining</Text>
             <DatePickerIOS
               date={new Date(this.state.doj)}
               minuteInterval={10}
@@ -496,6 +494,11 @@ const styles = StyleSheet.create({
   textInput: {
     alignSelf: 'stretch',
     marginTop: 20,
+  },
+  textLabel: {
+    alignSelf: 'stretch',
+    marginTop: 20,
+    color: '#fff'
   },
   logo: {
     height: 150,
