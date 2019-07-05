@@ -9,6 +9,8 @@ const dead_lead_data = [];
 const completed_lead_data = [];
 const progress_lead_data = [];
 
+
+function getLeads(){
 fetch(`${C.API}/leads/get`, {
   method: 'POST',
   headers: {
@@ -51,7 +53,11 @@ fetch(`${C.API}/leads/get`, {
   })
   .catch(err => {console.warn("error is "+err) })
   .done();
+}
   
+
+getLeads();
+
 export default compose(
   withState('tabIndex', 'setTabIndex', 0),
   withState('tabs', 'setTabs', ['Unassigned','New', 'In Progress','Dead', 'Deal Done' ,'Completed' ]),

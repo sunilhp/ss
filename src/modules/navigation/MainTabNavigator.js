@@ -201,7 +201,7 @@ export default createBottomTabNavigator(
           <View style={{ flexDirection: 'row' }}>
             
              <TouchableOpacity
-               onPress={() => navigation.navigate('LeadsAdd')}
+               onPress={() => navigation.navigate('LeadAdd')}
                style={{
                  paddingRight: 10,
                }}

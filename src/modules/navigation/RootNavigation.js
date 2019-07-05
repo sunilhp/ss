@@ -26,6 +26,7 @@ import UsersAddScreen from '../users/UsersAdd';
 import CustomerScreen from '../customer/CustomerViewContainer';
 import CustomerAddScreen from '../customer/CustomerAdd';
 import ServiceAddScreen from '../services/ServiceAdd';
+import LeadAddScreen from '../Leads/LeadAdd';
 import ServiceTypeScreen from '../serviceType/ServiceTypeViewContainer';
 import ServiceTypeAddScreen from '../serviceType/ServiceTypeAdd';
 import ServicesScreen from '../services/ServicesViewContainer';
@@ -134,6 +135,12 @@ const stackNavigator = createStackNavigator(
     },
     ServiceAdd: {
       screen: ServiceAddScreen,
+      navigationOptions: {
+      title: 'Service Information',
+      },
+    },
+    LeadAdd: {
+      screen: LeadAddScreen,
       navigationOptions: {
       title: 'Service Information',
       },

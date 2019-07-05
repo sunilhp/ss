@@ -134,29 +134,34 @@ class ServiceHistory extends React.Component {
         
         {/* service information view */}
         <View style={styles.componentsSection}>
+        <View style={{flexDirection: 'row', justifyContent: 'flex-end',}}>
           <Text style={styles.componentSectionHeader}>Service Information</Text>
-          <Button 
-            title='Edit'
-            onPress={() =>
-              this.props.navigation.navigate({
-                routeName: 'ServiceAdd',
-                params: {
-                  id: itemParams.id,
-                  ProductId : itemParams.productId,
-                  ProductName:itemParams.product,
-                  CustomerId : itemParams.customerId,
-                  CustomerName: itemParams.customerName,
-                  ProductTypeId : itemParams.productTypeId,
-                  ProductTypeName: itemParams.productType,
-                  ServiceTypeId : itemParams.serviceTypeId,
-                  ServiceTypeName: itemParams.serviceType,
-                  PriorityName: itemParams.priority,
-                  PriorityId: itemParams.priorityId,
-                  message : itemParams.message
-                },
-              })
-            }
-          />
+          <Button
+                    style={{width:120,padding:0,height:25}}
+                    primary
+                    bordered
+                    caption="Edit"
+                    onPress={() =>
+                      this.props.navigation.navigate({
+                        routeName: 'ServiceAdd',
+                        params: {
+                          id: itemParams.id,
+                          ProductId : itemParams.productId,
+                          ProductName:itemParams.product,
+                          CustomerId : itemParams.customerId,
+                          CustomerName: itemParams.customerName,
+                          ProductTypeId : itemParams.productTypeId,
+                          ProductTypeName: itemParams.productType,
+                          ServiceTypeId : itemParams.serviceTypeId,
+                          ServiceTypeName: itemParams.serviceType,
+                          PriorityName: itemParams.priority,
+                          PriorityId: itemParams.priorityId,
+                          message : itemParams.message
+                        },
+                      })
+                      }
+                />
+                </View>
           <View style={styles.row}>
           <TouchableOpacity key={itemParams.id} style={styles.itemTwoContainer}>
             <View>

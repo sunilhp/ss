@@ -130,10 +130,36 @@ class LeadHistory extends React.Component {
       <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 20 }}>
         
         {/* Lead information view */}
+        
         <View style={styles.componentsSection}>
+        <View style={{flexDirection: 'row', justifyContent: 'flex-end',}}>
           <Text style={styles.componentSectionHeader}>Lead Information</Text>
+          <Button
+                    style={{width:120,padding:0,height:25}}
+                    primary
+                    bordered
+                    caption="Edit"
+                    onPress={() =>
+                      this.props.navigation.navigate({
+                        routeName: 'LeadAdd',
+                        params: {
+                          id: itemParams.id,
+                          name : itemParams.name,
+                          email:itemParams.email,
+                          phone : itemParams.phone,
+                          city: itemParams.city,
+                          state : itemParams.state,
+                          address: itemParams.address,
+                          message : itemParams.message
+                        },
+                      })
+                      }
+                />
+                </View>
+       
+          
           <View style={styles.row}>
-          <TouchableOpacity key={itemParams.id} style={styles.itemTwoContainer} onPress={() => this._openArticle(item)}>
+          <TouchableOpacity key={itemParams.id} style={styles.itemTwoContainer}>
             <View>
               <Text style={styles.itemTwoPrice}>Name : {itemParams.name}</Text>
               <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
