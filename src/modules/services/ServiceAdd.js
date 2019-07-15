@@ -247,8 +247,16 @@ getServiceType = async () => {
               value={(this.state.ProductInfo)?{label: this.state.ProductName ,value: this.state.ProductId }:{}}
               getLabel={(item) => item.label}
               onValueChange={(value, i) => {
-                this.state.ProductId = value.value;
-                this.state.ProductName = value.label;
+                if(value != null) 
+                {
+                  this.state.ProductId = value.value;
+                  this.state.ProductName = value.label; 
+                }
+                else
+                {
+                  this.state.ProductId = "";
+                  this.state.ProductName = ""; 
+                }
               }}
             />
 
@@ -258,8 +266,14 @@ getServiceType = async () => {
               value={(this.state.CustomerInfo)?{label: this.state.CustomerName ,value: this.state.CustomerId }:{}}
               getLabel={(item) => item.label}
               onValueChange={(value, i) => {
-                this.state.CustomerId = value.value;
-                this.state.CustomerName = value.label;
+                if(value != null){
+                  this.state.CustomerId = value.value;
+                  this.state.CustomerName = value.label;
+                }
+                else{
+                  this.state.CustomerId = "";
+                  this.state.CustomerName = "";
+                }
               }}
             />
 
@@ -269,8 +283,14 @@ getServiceType = async () => {
               value={(this.state.Priority)?{label: this.state.PriorityName ,value: this.state.PriorityId }:{}}
               getLabel={(item) => item.label}
               onValueChange={(value, i) => {
+                if(value != null){
                 this.state.PriorityId = value.value;
                 this.state.PriorityName = value.label;
+                }
+                else{
+                  this.state.PriorityId = "";
+                  this.state.PriorityName = "";
+                }
               }}
             />
 
@@ -280,8 +300,14 @@ getServiceType = async () => {
               value={(this.state.ProductType)?{label: this.state.ProductTypeName ,value: this.state.ProductTypeId }:{}}
               getLabel={(item) => item.label}
               onValueChange={(value, i) => {
+                if(value != null){
                 this.state.ProductTypeId = value.value;
                 this.state.ProductTypeName = value.label;
+                }
+                else{
+                  this.state.ProductTypeId = "";
+                this.state.ProductTypeName ="";
+                }
               }}
             />
 
@@ -291,8 +317,14 @@ getServiceType = async () => {
               value={(this.state.ServiceType)?{label: this.state.ServiceTypeName ,value: this.state.ServiceTypeId }:{}}
               getLabel={(item) => item.label}
               onValueChange={(value, i) => {
+                if(value != null){
                 this.state.ServiceTypeId = value.value;
                 this.state.ServiceTypeName = value.label;
+                }
+                else{
+                  this.state.ServiceTypeId = "";
+                this.state.ServiceTypeName = "";
+                }
               }}
             />
               <Button

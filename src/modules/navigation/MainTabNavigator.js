@@ -11,7 +11,7 @@ import ManageScreen from '../manage/ManageViewContainer';
 import ComponentsScreen from '../components/ComponentsViewContainer';
 
 import ServicesScreen from '../services/ServicesViewContainer';
-import LeadsScreen from '../Leads/LeadsViewContainer';
+import LeadsScreen from '../leads/LeadsViewContainer';
 const iconHome = require('../../../assets/images/tabbar/home.png');
 const iconCalendar = require('../../../assets/images/tabbar/calendar.png');
 const iconGrids = require('../../../assets/images/tabbar/grids.png');

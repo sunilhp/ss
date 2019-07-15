@@ -16,7 +16,7 @@ import GalleryScreen from '../gallery/GalleryViewContainer';
 import ProfileScreen from '../profile/ProfileViewContainer';
 import ArticleScreen from '../article/ArticleViewContainer';
 import ServiceDetailScreen from '../services/ServiceDetailViewContainer';
-import LeadDetailScreen from '../Leads/LeadDetailViewContainer';
+import LeadDetailScreen from '../leads/LeadDetailViewContainer';
 import ChatScreen from '../chat/ChatViewContainer';
 import MessagesScreen from '../chat/MessagesViewContainer';
 import ChartsScreen from '../charts/ChartsViewContainer';
@@ -26,9 +26,11 @@ import UsersAddScreen from '../users/UsersAdd';
 import CustomerScreen from '../customer/CustomerViewContainer';
 import CustomerAddScreen from '../customer/CustomerAdd';
 import ServiceAddScreen from '../services/ServiceAdd';
-import LeadAddScreen from '../Leads/LeadAdd';
+import LeadAddScreen from '../leads/LeadAdd';
 import ServiceTypeScreen from '../serviceType/ServiceTypeViewContainer';
+import ComplaintScreen from '../complaints/ComplaintViewContainer';
 import ServiceTypeAddScreen from '../serviceType/ServiceTypeAdd';
+import ComplaintAddScreen from '../complaints/ComplaintAdd';
 import ServicesScreen from '../services/ServicesViewContainer';
 import ProductTypeScreen from '../productType/ProductTypeViewContainer';
 import ProductTypeAddScreen from '../productType/ProductTypeAdd';
@@ -142,7 +144,7 @@ const stackNavigator = createStackNavigator(
     LeadAdd: {
       screen: LeadAddScreen,
       navigationOptions: {
-      title: 'Service Information',
+      title: 'Lead Information',
       },
     },
     ProductAdd: {
@@ -155,6 +157,12 @@ const stackNavigator = createStackNavigator(
       screen: ServiceTypeAddScreen,
       navigationOptions: {
       title: 'Service Type',
+      },
+    },
+    ComplaintAdd: {
+      screen: ComplaintAddScreen,
+      navigationOptions: {
+      title: 'Complaint',
       },
     },
 
@@ -366,6 +374,38 @@ const stackNavigator = createStackNavigator(
           <View style={{ flexDirection: 'row' }}>
              <TouchableOpacity
                onPress={() => navigation.navigate('ServiceTypeAdd')}
+               style={{
+                 paddingRight: 10,
+               }}
+             >
+               <Image
+                 source={require('../../../assets/images/icons/plus.png')}
+                 resizeMode="contain"
+                 style={{
+                   width: 30,
+                   height: 20,
+                 }}
+               />
+             </TouchableOpacity>
+           </View>
+        ),
+        headerBackground: (
+          <Image
+            style={{ flex: 1 }}
+            source={headerBackground}
+            resizeMode="cover"
+          />
+        ),
+      }),
+    },  
+    Complaint: {
+      screen: ComplaintScreen,
+      navigationOptions: ({navigation}) => ({
+        title: 'Complaint',
+        headerRight: (
+          <View style={{ flexDirection: 'row' }}>
+             <TouchableOpacity
+               onPress={() => navigation.navigate('ComplaintAdd')}
                style={{
                  paddingRight: 10,
                }}

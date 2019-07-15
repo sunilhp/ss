@@ -21,6 +21,7 @@ class HomeScreen extends React.Component {
   
   constructor(props) {
     super(props);
+
     var token = SyncStorage.get('LOGIN_DETAILS');
     if(token == null || token == undefined)
     {
@@ -83,7 +84,7 @@ class HomeScreen extends React.Component {
       <Text style={styles.componentSectionHeader}>Services Jobs</Text>
       <View style={styles.row}>
         <TouchableOpacity
-    onPress={() => this.props.navigation.navigate({ routeName: 'Service'})}
+    onPress={() => this.props.navigation.navigate({ routeName: 'Service', params: { tabIndex: 0}})} 
     style={styles.item}>
       <Image
       resizeMode="contain"
@@ -94,7 +95,7 @@ class HomeScreen extends React.Component {
       <Text style={styles.itemCount}>{this.state.serviceCount.total}</Text>
     </TouchableOpacity>
         <TouchableOpacity
-    onPress={() => this.props.navigation.navigate({ routeName: 'Service' })}
+    onPress={() => this.props.navigation.navigate({ routeName: 'Service', params: { tabIndex: 1}})}
     style={styles.item}
     >
       <Image
@@ -106,9 +107,9 @@ class HomeScreen extends React.Component {
       <Text style={styles.itemCount}>{this.state.serviceCount.new}</Text>
     </TouchableOpacity>
         <TouchableOpacity
-    onPress={() => this.props.navigation.navigate({ routeName: 'Service' , params: { activeTab:1 } })}
+    onPress={() => this.props.navigation.navigate({ routeName: 'Service', params: { tabIndex: 0}})}
     style={styles.item}
-    params="1">
+    ramesh="1">
     <Image
     resizeMode="contain"
     source={urgentIcon}
@@ -120,7 +121,7 @@ class HomeScreen extends React.Component {
     </View>
       <View style={styles.row}>
         <TouchableOpacity
-    onPress={() => props.navigation.navigate({ routeName: 'Service' })}
+    onPress={() => this.props.navigation.navigate({ routeName: 'Service', params: { tabIndex: 3}})}
     style={styles.item}>
     <Image
     resizeMode="contain"
@@ -131,7 +132,7 @@ class HomeScreen extends React.Component {
     <Text style={styles.itemCount}>{this.state.serviceCount.pending}</Text>
     </TouchableOpacity>
         <TouchableOpacity
-    onPress={() => props.navigation.navigate({ routeName: 'Service' })}
+    onPress={() => this.props.navigation.navigate({ routeName: 'Service', params: { tabIndex: 2}})}
     style={styles.item}
     >
     <Image
@@ -143,7 +144,7 @@ class HomeScreen extends React.Component {
     <Text style={styles.itemCount}>{this.state.serviceCount.progress}</Text>
     </TouchableOpacity>
         <TouchableOpacity
-    onPress={() => props.navigation.navigate({ routeName: 'Service' })}
+    onPress={() => this.props.navigation.navigate({ routeName: 'Service', params: { tabIndex: 4}})}
     style={styles.item}
     >
     <Image
@@ -160,7 +161,7 @@ class HomeScreen extends React.Component {
       <Text style={styles.componentSectionHeader}>Sales Leads</Text>
       <View style={styles.row}>
         <TouchableOpacity
-    onPress={() => props.navigation.navigate({ routeName: 'Charts' })}
+    onPress={() => this.props.navigation.navigate({ routeName: 'Leads',params: { tabIndex: 0} })}
     style={styles.item}>
       <Image
       resizeMode="contain"
@@ -171,7 +172,7 @@ class HomeScreen extends React.Component {
       <Text style={styles.itemCount}>{this.state.leadCount.total}</Text>
     </TouchableOpacity>
         <TouchableOpacity
-    onPress={() => props.navigation.navigate({ routeName: 'Gallery' })}
+    onPress={() => this.props.navigation.navigate({ routeName: 'Leads',params: { tabIndex: 1} })}
     style={styles.item}
     >
       <Image
@@ -183,7 +184,7 @@ class HomeScreen extends React.Component {
       <Text style={styles.itemCount}>{this.state.leadCount.new}</Text>
     </TouchableOpacity>
         <TouchableOpacity
-    onPress={() => props.navigation.navigate({ routeName: 'Profile' })}
+    onPress={() => this.props.navigation.navigate({ routeName: 'Leads',params: { tabIndex: 0} })}
     style={styles.item}
     >
     <Image
@@ -197,7 +198,7 @@ class HomeScreen extends React.Component {
     </View>
       <View style={styles.row}>
         <TouchableOpacity
-    onPress={() => props.navigation.navigate({ routeName: 'Charts' })}
+     onPress={() => this.props.navigation.navigate({ routeName: 'Leads',params: { tabIndex: 3} })}
     style={styles.item}>
     <Image
     resizeMode="contain"
@@ -208,7 +209,7 @@ class HomeScreen extends React.Component {
     <Text style={styles.itemCount}>{this.state.leadCount.dead}</Text>
     </TouchableOpacity>
         <TouchableOpacity
-    onPress={() => props.navigation.navigate({ routeName: 'Gallery' })}
+    onPress={() => this.props.navigation.navigate({ routeName: 'Leads',params: { tabIndex: 4} })}
     style={styles.item}
     >
     <Image
@@ -220,7 +221,7 @@ class HomeScreen extends React.Component {
     <Text style={styles.itemCount}>{this.state.leadCount.deal_done}</Text>
     </TouchableOpacity>
         <TouchableOpacity
-    onPress={() => props.navigation.navigate({ routeName: 'Profile' })}
+    onPress={() => this.props.navigation.navigate({ routeName: 'Leads',params: { tabIndex: 5} })}
     style={styles.item}
     >
     <Image
@@ -234,7 +235,7 @@ class HomeScreen extends React.Component {
     </View>
     <View style={styles.row}>
       <TouchableOpacity
-      onPress={() => props.navigation.navigate({ routeName: 'Profile' })}
+       onPress={() => this.props.navigation.navigate({ routeName: 'Leads',params: { tabIndex: 2} })}
       style={styles.item}
       >
       <Image

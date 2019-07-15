@@ -10,8 +10,9 @@ import {
 import { colors } from '../../styles';
 import { TextInput } from '../../common';
 import { Text, Caption, Title } from '../../common/StyledText';
+import { withNavigation } from 'react-navigation';
 
-export default function UsersScreen(props) {
+function UsersScreen(props) {
   
   const _renderItem = ({ item }) => (
     
@@ -50,15 +51,15 @@ export default function UsersScreen(props) {
 
   const _renderNoItemsComponent = () => (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>No Customers</Text>
+      <Text>No Users</Text>
     </View>
   );
 
   const _keyExtractor = item => `${item.id}`;
 
-  let filteredMessages = props.messagesList;
+  let filteredMessages = props.users;
   if (props.searchText) {
-    filteredMessages = props.messagesList.filter(
+    filteredMessages = props.users.filter(
       message => (message.name.indexOf(props.searchText) !== -1),
     );
   }
@@ -75,8 +76,8 @@ export default function UsersScreen(props) {
       />
       <FlatList
         style={{ backgroundColor: colors.white }}
-        refreshing={props.messagesListLoading}
-        onRefresh={props.loadUsersList}
+        refreshing={props.isRefreshing}
+        onRefresh={props.getUsers}
         ListEmptyComponent={_renderNoItemsComponent}
         data={filteredMessages}
         keyExtractor={_keyExtractor}
@@ -117,3 +118,5 @@ const styles = StyleSheet.create({
     marginVertical: 15,
   },
 });
+
+export default withNavigation(UsersScreen);

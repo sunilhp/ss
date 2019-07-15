@@ -40,7 +40,7 @@ export default class leadAddScreen extends React.Component {
     address:"",
     message:""
   };
-
+  
 componentWillMount() {
   if(this.props.navigation.state.params)
   {

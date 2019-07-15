@@ -18,11 +18,11 @@ import { colors, fonts } from '../../styles';
 import { Dropdown, Button, TextInput } from '../../common';
 import { Text, Title, Caption } from '../../common/StyledText';
 
-import ViewProduct from './../components/product/ViewProduct'
-import EditProduct from './../components/product/EditProductContainer'
+import ViewProduct from '../components/product/ViewProduct'
+import EditProduct from '../components/product/EditProductContainer'
 import Header from './Header';
 import { CustomPicker } from 'react-native-custom-picker';
-import ServiceAssign from './../components/serviceAssign/ServiceAssignContainer';
+import ServiceAssign from '../components/serviceAssign/ServiceAssignContainer';
 import SyncStorage from 'sync-storage';
 
 
@@ -208,7 +208,7 @@ class ServiceHistory extends React.Component {
         </View>
 
         {/* product information view */}
-        {/* <View style={styles.componentsSection}>
+        <View style={styles.componentsSection}>
          <Header 
             heading="Product Information" 
             btntext={this.state.isProductEditEnable?"Done":"Edit"} 
@@ -226,7 +226,7 @@ class ServiceHistory extends React.Component {
                 }
             )}
          </Header>
-        </View> */}
+        </View>
 
         {/* customer information view */}
         <View style={styles.componentsSection}>

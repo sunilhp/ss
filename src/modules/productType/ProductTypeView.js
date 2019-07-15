@@ -10,8 +10,9 @@ import {
 import { colors } from '../../styles';
 import { TextInput } from '../../common';
 import { Text, Caption, Title } from '../../common/StyledText';
+import { withNavigation } from 'react-navigation';
 
-export default function ProductTypeScreen(props) {
+function ProductTypeScreen(props) {
   
   const _renderItem = ({ item }) => (
     
@@ -56,9 +57,9 @@ export default function ProductTypeScreen(props) {
 
   const _keyExtractor = item => `${item.id}`;
 
-  let filteredMessages = props.messagesList;
+  let filteredMessages = props.productTypes;
   if (props.searchText) {
-    filteredMessages = props.messagesList.filter(
+    filteredMessages = props.productTypes.filter(
       message => (message.name.indexOf(props.searchText) !== -1),
     );
   }
@@ -75,8 +76,8 @@ export default function ProductTypeScreen(props) {
       />
       <FlatList
         style={{ backgroundColor: colors.white }}
-        refreshing={props.messagesListLoading}
-        onRefresh={props.productTypeList}
+        refreshing={props.isRefreshing}
+        onRefresh={props.getProductTypes}
         ListEmptyComponent={_renderNoItemsComponent}
         data={filteredMessages}
         keyExtractor={_keyExtractor}
@@ -117,3 +118,5 @@ const styles = StyleSheet.create({
     marginVertical: 15,
   },
 });
+
+export default withNavigation(ProductTypeScreen);

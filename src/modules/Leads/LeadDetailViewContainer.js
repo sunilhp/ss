@@ -1,7 +1,6 @@
 // @flow
 import { compose, withState } from 'recompose';
 import { connect } from 'react-redux';
-
 import LeadDetailView from './LeadDetailView';
 
 export default compose(

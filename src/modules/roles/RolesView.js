@@ -10,8 +10,9 @@ import {
 import { colors } from '../../styles';
 import { TextInput } from '../../common';
 import { Text, Caption, Title } from '../../common/StyledText';
+import { withNavigation } from 'react-navigation';
 
-export default function RolesScreen(props) {
+function RolesScreen(props) {
  
   const _renderItem = ({ item }) => (
 
@@ -39,9 +40,9 @@ export default function RolesScreen(props) {
 
   const _keyExtractor = item => `${item.id}`;
 
-  let filteredMessages = props.messagesList;
+  let filteredMessages = props.roles;
   if (props.searchText) {
-    filteredMessages = props.messagesList.filter(
+    filteredMessages = props.roles.filter(
       message => (message.name.toLowerCase().indexOf(props.searchText.toLowerCase()) !== -1)
     );
   }
@@ -51,9 +52,9 @@ export default function RolesScreen(props) {
     <View style={styles.container}>
       
       <FlatList
-        style={{ backgroundColor: colors.white }}
-        refreshing={props.messagesListLoading}
-        onRefresh={props.rolesList}
+        style={{ backgroundColor: colors.white }} 
+        refreshing={props.isRefreshing}
+        onRefresh={props.getRoles}
         ListEmptyComponent={_renderNoItemsComponent}
         data={filteredMessages}
         keyExtractor={_keyExtractor}
@@ -94,3 +95,5 @@ const styles = StyleSheet.create({
     marginVertical: 15,
   },
 });
+
+export default withNavigation(RolesScreen);

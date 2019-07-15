@@ -12,6 +12,8 @@ import app from '../modules/AppState';
 import calendar from '../modules/calendar/CalendarState';
 import charts from '../modules/charts/ChartsState';
 import chat from '../modules/chat/ChatState';
+import leads from '../modules/leads/LeadState';
+import services from '../modules/services/ServiceState';
 
 export default combineReducers({
  // ## Generator Reducers
@@ -25,5 +27,7 @@ export default combineReducers({
  app,
  calendar,
  charts,
+ leads,
  chat,
+ services,
 });

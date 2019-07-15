@@ -1,25 +1,45 @@
-import { compose, withState } from 'recompose';
-import C from '../../../Constants';
+import React from 'react'
+import SyncStorage from 'sync-storage'
+import C from '../../../Constants'
 import ServicesView from './ServicesView';
 
-const unassigned_service_data = [];
-const new_service_data = [];
-const progress_service_data =[];
-const pending_service_data = [];
-const completed_service_data = [];
+class ServicesViewContainer extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state = { services: {}, isRefreshing: false, tabIndex: 0 }
+    }
 
-fetch(`${C.API}/services/get`, {
-  method: 'POST',
-  headers: {
-    Accept: 'application/json',
-    'Content-Type': 'application/json',
-  }//,
-  //body: JSON.stringify(""),
-  })
-  .then((response) => response.json())
-  .then((responseJson) => { 
-    myres = responseJson;
-    let serviceresp = myres.data;
+    componentDidMount() {
+        this.props.navigation.addListener('didFocus', () => {
+            this.getServices();
+            if(this.props.navigation.state.params)
+              this.setState({tabIndex:this.props.navigation.state.params.tabIndex})
+        })
+    }
+
+
+    getServices = () => this.setState({ isRefreshing: true }, this._getServices)
+
+    _getServices() {
+      fetch(`${C.API}/services/get`, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Authorization':'Bearer '+SyncStorage.get('LOGIN_DETAILS'),
+          'Content-Type': 'application/json',
+        }//,
+        //body: JSON.stringify(""),
+        })
+        .then((response) => response.json())
+        .then(this._parseResponse)
+        .catch(err => {console.warn("error is "+err) })
+        .done();
+    }
+
+    _parseResponse = (response) => {
+        const unassigned_service_data = [], new_service_data = [], progress_service_data =[], pending_service_data = [],completed_service_data = [];
+
+        let serviceresp = response.data;
     for(let i=0;i<serviceresp.length;i++)
     { 
        var tmp = {};
@@ -28,7 +48,7 @@ fetch(`${C.API}/services/get`, {
        tmp.priorityId = serviceresp[i].priorityId;
        tmp.images = serviceresp[i].service_images;
        tmp.createdOn =serviceresp[i].created_on;
-       tmp.message = serviceresp[i].message;
+       tmp.message1 = serviceresp[i].message;
        tmp.serviceType = serviceresp[i].service_type.name;
        tmp.serviceTypeId = serviceresp[i].service_type.id;
        tmp.productId = serviceresp[i].product.id;
@@ -56,16 +76,28 @@ fetch(`${C.API}/services/get`, {
        if(serviceresp[i].state == "Completed")
         completed_service_data.push(tmp);
     }
-  })
-  .catch(err => {console.warn(err) })
-  .done();
-  
-export default compose(
-  withState('tabIndex', 'setTabIndex', 0),
-  withState('tabs', 'setTabs', ['Unassigned','New', 'In Progress','Pending', 'Completed' ]),
-  withState('unassigned_services', 'setData', unassigned_service_data),
-  withState('new_services', 'setData', new_service_data),
-  withState('progress_services', 'setData', progress_service_data),
-  withState('pending_services', 'setData', pending_service_data),
-  withState('completed_services', 'setData', completed_service_data),
-)(ServicesView);
+        const services = { unassigned_service_data, new_service_data, progress_service_data, pending_service_data, completed_service_data }
+        this.setState({ services, isRefreshing: false })
+    }
+
+
+    changeTabIndex = (index) => {
+        this.setState({ tabIndex: index })
+    }
+
+
+    render() {
+        if (this.state.isLoading) 
+            return null
+        return <ServicesView
+            services={this.state.services} 
+            isRefreshing={this.state.isRefreshing}
+            tabIndex={this.state.tabIndex} 
+            tabs={['Unassigned','New', 'In Progress','Pending', 'Completed' ]} 
+            changeTabIndex={this.changeTabIndex}
+            getServices={this.getServices}
+            />
+    }
+}
+
+export default ServicesViewContainer

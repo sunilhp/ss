@@ -95,7 +95,7 @@ class LeadHistory extends React.Component {
 
   //Lead history 
   renderLeadHistoryInformation = () => {
-    const history = this.state.history
+    const history = this.state.history;
     return history.map((it, i) => {
       return (
         <View style={{width:Dimensions.get('window').width-50,flex: 1,
@@ -125,7 +125,6 @@ class LeadHistory extends React.Component {
 
   render() {
     const itemParams = this.props.navigation.state.params;
-
     return (
       <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 20 }}>
         
@@ -190,70 +189,12 @@ class LeadHistory extends React.Component {
             </TouchableOpacity>
           </View>
         </View>
-      
 
-        {/* product information view */}
-        {/* <View style={styles.componentsSection}>
-         <Header 
-            heading="Product Information" 
-            btntext={this.state.isProductEditEnable?"Done":"Edit"} 
-            onButtonClick={() => this.setState({ isProductEditEnable: !this.state.isProductEditEnable })}
-            >
-            {this.renderProductView(
-                {
-                    id: itemParams.productId, 
-                    name: itemParams.product, 
-                    description: itemParams.productDescription,
-                    type: {
-                        id: itemParams.productTypeId,
-                        name: itemParams.productType,
-                    }
-                }
-            )}
-         </Header>
-        </View> */}
-
-        {/* customer information view */}
-        {/* <View style={styles.componentsSection}>
-            <View style={{flexDirection: 'row', justifyContent: 'flex-end',}}>
-                <Text style={styles.componentSectionHeader}> Customer Information </Text> 
-                <Button
-                    style={{width:120,padding:0,height:25}}
-                    primary
-                    bordered
-                    caption="Edit"
-                    onPress={() =>
-                        this.props.navigation.navigate({
-                          routeName: 'CustomerAdd',
-                          params: {
-                            name: itemParams.customerName,
-                            id: itemParams.customerId, 
-                            email: itemParams.customerEmail,
-                            phone: itemParams.customerPhone,
-                            address: itemParams.customerAddress,
-                            city: itemParams.customerCity,
-                            state: itemParams.customerState,
-                            zipcode: itemParams.customerZipcode,
-                          },
-                        })
-                      }
-                />
-            </View>      
-          <View style={styles.row}>
-          <TouchableOpacity key={itemParams.id} style={styles.itemTwoContainer} >
-              <Text style={styles.itemTwoTitle}>{itemParams.customerName}</Text>
-              <Text style={styles.itemTwoSubTitle}>{itemParams.customerPhone},   {itemParams.customerEmail}</Text>
-              <Text style={styles.itemTwoSubTitle}>{itemParams.customerAddress}, {itemParams.customerCity}</Text>
-              <Text style={styles.itemTwoSubTitle}>{itemParams.customerState} , {itemParams.customerZipcode}</Text>
-          </TouchableOpacity>
-          </View>
-        </View>
-         */}
         {/* Lead history view */}
         <View style={styles.componentsSection}>
         <Text style={styles.componentSectionHeader}>History</Text>
         <View style={styles.row}>
-        <TouchableOpacity key={itemParams.id} style={styles.itemTwoContainer} onPress={() => this._openArticle(item)}> 
+        <TouchableOpacity key={itemParams.id} style={styles.itemTwoContainer} > 
           <View>
             {this.renderLeadHistoryInformation()}
           </View>

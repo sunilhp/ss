@@ -1,27 +1,28 @@
+
 import React from 'react'
 import SyncStorage from 'sync-storage'
 import C from '../../../Constants'
-import UsersView from './UsersView';
+import ComplaintView from './ComplaintView';
 
-class UserViewContainer extends React.Component {
+class ComplaintViewContainer extends React.Component {
     constructor(props) {
         super(props)
-        this.state = { users: [], isRefreshing: false}
+        this.state = { complaints: [], isRefreshing: false}
     }
 
     componentDidMount() {
         this.props.navigation.addListener('didFocus', () => {
-            this.getUsers();
+            this.getComplaints();
         })
     }
 
 
-    getUsers = () => this.setState({ isRefreshing: true }, this._getUsers)
+    getComplaints = () => this.setState({ isRefreshing: true }, this._getComplaints)
 
-    _getUsers() {
+    _getComplaints() {
       
-      fetch(`${C.API}/users/get`, {
-        method: 'POST',
+      fetch(`${C.API}/complaints/get`, {
+        method: 'GET',
         headers: {
             Accept: 'application/json',
             Authorization: 'Bearer '+SyncStorage.get('LOGIN_DETAILS'),
@@ -41,32 +42,28 @@ class UserViewContainer extends React.Component {
       for(i=0;i<rs.length;i++)
       {
          var tmp = {};
-         tmp.id = rs[i].id;   
+         tmp.id = rs[i].id;
+         tmp.created_on = rs[i].created_on;
          tmp.name = rs[i].name;
-         tmp.address = rs[i].address;
-         tmp.dob = rs[i].dob;
-         tmp.doj = rs[i].doj;
          tmp.email = rs[i].email;
          tmp.phone = rs[i].phone;
-         tmp.status = rs[i].status;
-         tmp.createdOn = rs[i].created_on;
-         tmp.roleName = rs[i].role.name;
-         tmp.roleId = rs[i].role.role_id;
+         tmp.message = rs[i].message;
+         
          messagesList.push(tmp);
       }
-        const users = messagesList;
-        this.setState({ users, isRefreshing: false })
+        const complaints = messagesList;
+        this.setState({ complaints, isRefreshing: false })
     }
 
     render() {
         if (this.state.isLoading) 
             return null
-        return <UsersView
-            users={this.state.users} 
+        return <ComplaintView
+            complaints={this.state.complaints} 
             isRefreshing={this.state.isRefreshing}
-            getUsers={this.getUsers}
+            getComplaints={this.getComplaints}
             />
     }
 }
 
-export default UserViewContainer
+export default ComplaintViewContainer

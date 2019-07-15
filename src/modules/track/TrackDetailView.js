@@ -51,6 +51,7 @@ class TrackHistory extends React.Component {
   //service history 
   renderServiceHistoryInformation = () => {
     const jobdetails = this.state.jobdetails;
+    console.warn(jobdetails)
     return jobdetails.map((it, i) => {
       return (
         <TouchableOpacity

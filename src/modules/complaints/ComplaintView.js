@@ -12,14 +12,14 @@ import { TextInput } from '../../common';
 import { Text, Caption, Title } from '../../common/StyledText';
 import { withNavigation } from 'react-navigation';
 
-function ServiceTypeScreen(props) {
+function ComplaintScreen(props) {
   
   const _renderItem = ({ item }) => (
     
     <TouchableOpacity
       onPress={() =>
         props.navigation.navigate({
-          routeName: 'ServiceTypeAdd',
+          routeName: 'ComplaintAdd',
           params: {
             title: item.userName,
             ...item,
@@ -37,7 +37,7 @@ function ServiceTypeScreen(props) {
             }}
           >
             <Title color={colors.darkGray}>{item.name}</Title>
-            {/* <Caption color={colors.lightGray}>{item.time}</Caption> */}
+            <Caption color={colors.lightGray}>{item.created_on}</Caption>
           </View>
           <View styleName="vertical v-start" style={{ alignSelf: 'stretch' }}>
             <Caption color={colors.lightGray} numberOfLines={1}>
@@ -51,15 +51,15 @@ function ServiceTypeScreen(props) {
 
   const _renderNoItemsComponent = () => (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>No Service Type</Text>
+      <Text>No Complaint Found</Text>
     </View>
   );
 
   const _keyExtractor = item => `${item.id}`;
 
-  let filteredMessages = props.serviceType;
+  let filteredMessages = props.complaints;
   if (props.searchText) {
-    filteredMessages = props.serviceType.filter(
+    filteredMessages = props.complaints.filter(
       message => (message.name.indexOf(props.searchText) !== -1),
     );
   }
@@ -77,7 +77,7 @@ function ServiceTypeScreen(props) {
       <FlatList
         style={{ backgroundColor: colors.white }}
         refreshing={props.isRefreshing}
-        onRefresh={props.getServiceTypes}
+        onRefresh={props.getComplaints}
         ListEmptyComponent={_renderNoItemsComponent}
         data={filteredMessages}
         keyExtractor={_keyExtractor}
@@ -119,4 +119,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default withNavigation(ServiceTypeScreen);
+export default withNavigation(ComplaintScreen);

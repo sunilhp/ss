@@ -11,68 +11,68 @@ import {
   Alert,
 } from 'react-native';
 import { colors, fonts } from '../../styles';
-
 import { RadioGroup, GridRow } from '../../common';
+import { withNavigation } from 'react-navigation';
 
 
-export default class ServicesScreen extends React.Component {
- 
-  _getRenderItemFunction = () =>
+ class ServicesScreen extends React.Component{
+  constructor(props) {
+    super(props);
+};
+
+_getRenderServiceItemFunction = () =>[this.RenderRow,this.RenderRow,this.RenderRow, this.RenderRow, this.RenderRow][this.props.tabIndex];
   
-    [this.RenderRow,this.RenderRow, this.RenderRow, this.RenderRow][
-      this.props.tabIndex
-    ];
-  _openArticle = article => {
-
+  _openArticle = service => {
     this.props.navigation.navigate({
       routeName: 'ServiceDetail',
       params: { 
-        title: article.product,
-        id: article.id,
-        name: article.customerName,
-        city: article.customerCity+' '+article.customerState,
-        ...article },
+        title: service.product,
+        id: service.id,
+        name: service.customerName,
+        city: service.customerCity+' '+service.customerState,
+        ...service },
     });
   };
 
   RenderRow = ({ item }) => (
-    <TouchableOpacity
-      key={item.id}
-      style={styles.itemThreeContainer}
-      onPress={() => this._openArticle(item)}
-    >
-      <View style={styles.itemThreeSubContainer}>
-        <View style={styles.itemThreeContent}>
-          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-            <Text style={styles.itemThreeBrand}>{item.product}</Text>
-            <View style={styles.itemThreeMetaContainer}>
-              {item.priority && (
-                <View
-                  style={[
-                    styles.badge,
-                    item.priority === 'Normal' && { backgroundColor: colors.green },
-                    item.priority === 'High' && { backgroundColor: colors.red },
-                    item.priority === 'Low' && { backgroundColor: colors.yellow },
-                  ]}
-                >
-                  <Text style={{ fontSize: 10, color: colors.white }} styleName="bright">{item.priority}</Text>
-                </View>
-              )}
-            </View>
-          </View>
-          <View>
-            <Text style={styles.itemThreeTitle}>{item.customerName}</Text> 
-            <Text style={styles.itemThreeSubtitle} numberOfLines={1}> {item.customerCity},{item.customerState}</Text>
-          </View>
-        </View>
-      </View>
-      <View style={styles.itemThreeHr} />
-    </TouchableOpacity>
+       <TouchableOpacity
+       key={item.id}
+       style={styles.itemThreeContainer}
+       onPress={() => this._openArticle(item)}
+     >
+       <View style={styles.itemThreeSubContainer}>
+         <View style={styles.itemThreeContent}>
+           <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+             <Text style={styles.itemThreeBrand}>{item.product}</Text>
+             <View style={styles.itemThreeMetaContainer}>
+               {item.priority && (
+                 <View
+                   style={[
+                     styles.badge,
+                     item.priority === 'Normal' && { backgroundColor: colors.green },
+                     item.priority === 'High' && { backgroundColor: colors.red },
+                     item.priority === 'Low' && { backgroundColor: colors.yellow },
+                   ]}
+                 >
+                   <Text style={{ fontSize: 10, color: colors.white }} styleName="bright">{item.priority}</Text>
+                 </View>
+               )}
+             </View>
+           </View>
+           <View>
+             <Text style={styles.itemThreeTitle}>{item.customerName}</Text> 
+             <Text style={styles.itemThreeSubtitle} numberOfLines={1}> {item.customerCity},{item.customerState}</Text>
+           </View>
+         </View>
+       </View>
+       <View style={styles.itemThreeHr} />
+     </TouchableOpacity> 
+    
   );
 
   render() {
-    const groupedData =
-      this.props.tabIndex === 0 ? this.props.unassigned_services : this.props.tabIndex === 1 ? this.props.new_services : this.props.tabIndex === 2 ? this.props.progress_services : this.props.tabIndex === 3 ? this.props.pending_services : this.props.complete_services ;
+     let groupedData =
+     this.props.tabIndex === 0 ? this.props.services.unassigned_service_data : this.props.tabIndex === 1 ? this.props.services.new_service_data : this.props.tabIndex === 2 ? this.props.services.progress_service_data : this.props.tabIndex === 3 ? this.props.services.pending_service_data : this.props.services.completed_service_data ;
 
     return (
       
@@ -81,7 +81,7 @@ export default class ServicesScreen extends React.Component {
           <RadioGroup
             selectedIndex={this.props.tabIndex}
             items={this.props.tabs}
-            onChange={this.props.setTabIndex}
+            onChange={this.props.changeTabIndex}
             underline
           />
         </View>
@@ -91,9 +91,12 @@ export default class ServicesScreen extends React.Component {
               ? `${this.props.tabIndex}-${item.id}`
               : `${item[0] && item[0].id}`
           }
-          style={{ backgroundColor: colors.white, paddingHorizontal: 15 }}
+          style={{ backgroundColor: colors.white, paddingHorizontal: 10 }}
           data={groupedData}
-          renderItem={this._getRenderItemFunction()}
+          extraData={this.props}
+          onRefresh={this.props.getServices}
+          refreshing={this.props.isRefreshing}
+          renderItem={this._getRenderServiceItemFunction()}
         />
       </View>
     );
@@ -245,3 +248,5 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
   },
 });
+
+export default withNavigation(ServicesScreen);

@@ -10,8 +10,9 @@ import {
 import { colors } from '../../styles';
 import { TextInput } from '../../common';
 import { Text, Caption, Title } from '../../common/StyledText';
+import { withNavigation } from 'react-navigation';
 
-export default function CustomerScreen(props) {
+function CustomerScreen(props) {
  
   const _renderItem = ({ item }) => (
     <TouchableOpacity
@@ -57,9 +58,9 @@ export default function CustomerScreen(props) {
 
   const _keyExtractor = item => `${item.id}`;
 
-  let filteredMessages = props.messagesList;
+  let filteredMessages = props.customers;
   if (props.searchText) {
-    filteredMessages = props.messagesList.filter(
+    filteredMessages = props.customers.filter(
       message => (message.name.toLowerCase().indexOf(props.searchText.toLowerCase()) !== -1) || (message.city.toLowerCase().indexOf(props.searchText.toLowerCase()) !== -1) || (message.state.toLowerCase().indexOf(props.searchText.toLowerCase()) !== -1)
     );
   }
@@ -77,8 +78,8 @@ export default function CustomerScreen(props) {
       />
       <FlatList
         style={{ backgroundColor: colors.white }}
-        refreshing={props.messagesListLoading}
-        onRefresh={props.customerList}
+        refreshing={props.isRefreshing}
+        onRefresh={props.getCustomers}
         ListEmptyComponent={_renderNoItemsComponent}
         data={filteredMessages}
         keyExtractor={_keyExtractor}
@@ -119,3 +120,5 @@ const styles = StyleSheet.create({
     marginVertical: 15,
   },
 });
+
+export default withNavigation(CustomerScreen);

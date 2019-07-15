@@ -100,7 +100,7 @@ export default function ManageScreen(props) {
 
       <View style={styles.row}>
         <TouchableOpacity
-            onPress={() => props.navigation.navigate({ routeName: 'ServiceAdd' })}
+            onPress={() => props.navigation.navigate({ routeName: 'Complaint' })}
             style={styles.item}
           >
           <Image
@@ -108,7 +108,7 @@ export default function ManageScreen(props) {
             source={chartIcon}
             style={styles.itemImage}
           />
-          <Text style={styles.itemText}>ADD SERVICE</Text>
+          <Text style={styles.itemText}>Complaints</Text>
         </TouchableOpacity>
       </View>
      

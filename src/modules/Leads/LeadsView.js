@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 import {
   StyleSheet,
   View,
@@ -9,23 +9,19 @@ import {
   Image,
   Dimensions,
   Alert,
-} from 'react-native';
-import { colors, fonts } from '../../styles';
+} from 'react-native'
+import { colors, fonts } from '../../styles'
+import { RadioGroup, GridRow } from '../../common'
+import { withNavigation } from 'react-navigation';
 
-import { RadioGroup, GridRow } from '../../common';
+class LeadsScreen extends React.Component{
+  constructor(props) {
+    super(props)
+  }
 
-
-
-
-export default class ServicesScreen extends React.Component {
- 
-  _getRenderItemFunction = () =>
+  _getRenderLeadItemFunction = () => [this.RenderRow,this.RenderRow,this.RenderRow, this.RenderRow, this.RenderRow][this.props.tabIndex];
   
-    [this.RenderRow,this.RenderRow,this.RenderRow, this.RenderRow, this.RenderRow][
-      this.props.tabIndex
-    ];
   _openArticle = lead => {
-
     this.props.navigation.navigate({
       routeName: 'LeadDetail',
       params: { 
@@ -37,12 +33,12 @@ export default class ServicesScreen extends React.Component {
     });
   };
 
+
   RenderRow = ({ item }) => (
     <TouchableOpacity
       key={item.id}
       style={styles.itemThreeContainer}
-      onPress={() => this._openArticle(item)}
-    >
+      onPress={() => this._openArticle(item)}>
       <View style={styles.itemThreeSubContainer}>
         <View style={styles.itemThreeContent}>
           <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
@@ -60,9 +56,11 @@ export default class ServicesScreen extends React.Component {
 
   render() {
 
-    const groupedData =
-      this.props.tabIndex === 0 ? this.props.unassigned_leads : this.props.tabIndex === 1 ? this.props.new_leads : this.props.tabIndex === 2 ? this.props.progress_leads : this.props.tabIndex === 3 ? this.props.dead_leads : this.props.tabIndex === 4 ? this.props.dealDone_leads : this.props.completed_leads ;
-
+    // const groupedData = this.props.messagesList;
+     let groupedData =
+       this.props.tabIndex === 0 ? this.props.leads.unassignedLeads : this.props.tabIndex === 1 ? this.props.leads.newLeads : this.props.tabIndex === 2 ? this.props.leads.inProgressLeads : this.props.tabIndex === 3 ? this.props.leads.deadLeads : this.props.tabIndex === 4 ? this.props.leads.dealDoneLeads : this.props.leads.completedLeads;
+      
+    
     return (
       
       <View style={styles.container}>
@@ -70,7 +68,7 @@ export default class ServicesScreen extends React.Component {
           <RadioGroup
             selectedIndex={this.props.tabIndex}
             items={this.props.tabs}
-            onChange={this.props.setTabIndex}
+            onChange={this.props.changeTabIndex}
             underline
           />
         </View>
@@ -82,7 +80,10 @@ export default class ServicesScreen extends React.Component {
           }
           style={{ backgroundColor: colors.white, paddingHorizontal: 10 }}
           data={groupedData}
-          renderItem={this._getRenderItemFunction()}
+          extraData={this.props}
+          onRefresh={this.props.getLeads}
+          refreshing={this.props.isRefreshing}
+          renderItem={this._getRenderLeadItemFunction()}
         />
       </View>
     );
@@ -234,3 +235,6 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
   },
 });
+
+
+export default withNavigation(LeadsScreen);
